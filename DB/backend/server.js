@@ -14,7 +14,7 @@ var path = require('path');
 var connection = mysql.createConnection({
   //db is the host and that name is assigned based on the 
   //container name given in the docker-compose file
-  host: 'db',
+  host: 'backend-db',
   port: '3306',
   user: 'user',
   password: 'password',
@@ -75,7 +75,7 @@ app.use(ExpressAPILogMiddleware(logger, { request: true }));
 //Attempting to connect to the database.
 connection.connect(function (err) {
   if (err)
-    logger.error("Cannot connect to DB!" + err.message);
+    logger.error("Cannot connect to DB! " + err.message);
   else
     logger.info("Connected to the DB!");
 });
@@ -86,17 +86,6 @@ connection.connect(function (err) {
 app.get('/', (req, res) => {
   res.status(200).send('Go to localhost:8000/setupdb');
 });
-
-app.get('/login',
-  function(req, res){
-    res.render('login');
-  });
-  
-app.post('/login', 
-  passport.authenticate('local', { failureRedirect: '/login' }),
-  function(req, res) {
-    res.redirect('/');
-  });
 
 //GET /setupdb
 app.get('/setupdb', (req, res) => {
@@ -131,7 +120,7 @@ app.get('/checkdb', (req, res) => {
   })
 });
 
-app.get('/goto', function(request, response) {
+app.get('/login', function(request, response) {
   response.sendFile(path.join(__dirname + '/login.html'));
   
 });
@@ -169,7 +158,7 @@ app.post('/auth', function(request, response) {
 				request.session.username = email;
 				response.redirect('/home');
 			} else {
-        response.redirect('/goto');
+        response.redirect('/login');
 			}			
 			response.end();
 		});
