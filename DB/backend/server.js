@@ -9,6 +9,7 @@ const cors = require('cors');
 const { log, ExpressAPILogMiddleware } = require('@rama41222/node-logger');
 const mysql = require('mysql');
 var path = require('path');
+var crypto = require('crypto');
 
 //create the mysql connection object.  
 var connection = mysql.createConnection({
@@ -89,13 +90,13 @@ app.get('/', (req, res) => {
 
 //GET /setupdb
 app.get('/setupdb', (req, res) => {
-  connection.query('create table if not exists accounts(id int(11) primary key, firstname varchar(50), lastname varchar(50), email varchar(100), password varchar(255))', function (err, rows, fields) {
+  connection.query('CREATE TABLE IF NOT EXISTS accounts(id INT(10) NOT NULL AUTO_INCREMENT, firstName varchar(50), lastName varchar(50), email varchar(100), password varchar(255), PRIMARY KEY(id))', function (err, rows, fields) {
     if (err)
       logger.error("Can't make table " + err.message);
     else
       logger.info('table created');
   });
-  connection.query("insert into accounts values ('45', 'Jaymie', 'Ruddock','jprudd@smu.edu', 'testpwd')", function(err, rows, fields) {  
+  connection.query("insert into accounts values ('0000000000','Jaymie', 'Ruddock','jprudd@smu.edu', 'testpwd')", function(err, rows, fields) {  
     if(err)
         logger.error('adding row to table failed ' + err.message);
     else
@@ -130,13 +131,15 @@ app.get('/register', function(request, response)  {
 });
 
 app.post('/reg', function(request, response) {
-  var idd = request.body.id;
   var firstname = request.body.firstname;
   var lastname = request.body.lastname;
 	var email = request.body.email;
-	var password = request.body.password;
+  var password = request.body.password;
+  var hashed_hex = crypto.createHash('sha224', password);
+  var hashed_password = hashed_hex.digest('string');
 	if (email && password) {
-		connection.query('insert into accounts values (?, ?, ?, ?, ?)', [idd, firstname, lastname, email, password], function(error, results, fields) {
+		connection.query('insert into accounts (firstName, lastName, email, password) values (?, ?, ?, ?)', [firstname, lastname, email, hashed_password], function(error, results, fields) {
+      logger.info(results);
       request.session.loggedin = true;
 			request.session.username = email;
       response.redirect('/home');
@@ -149,16 +152,21 @@ app.post('/reg', function(request, response) {
 
 app.post('/auth', function(request, response) {
 	var email = request.body.email;
-	var password = request.body.password;
+  var password = request.body.password;
+  var hashed_hex = crypto.createHash('sha224', password);
+  var hashed_password = hashed_hex.digest('string');
 	if (email && password) {
-		connection.query('SELECT * FROM accounts WHERE email = ? AND password = ?', [email, password], function(error, results, fields) {
+		connection.query('SELECT * FROM accounts WHERE email = ? AND password = ?', [email, hashed_password], function(error, results, fields) {
 			if (results.length > 0) {
         logger.info(results)
         request.session.loggedin = true;
-				request.session.username = email;
+				request.session.username = results.body.firstName;
 				response.redirect('/home');
 			} else {
-        response.redirect('/login');
+        //something about incorrect password or username
+        return res.status(400).send({ 
+          message : "Wrong Password"
+        });
 			}			
 			response.end();
 		});
