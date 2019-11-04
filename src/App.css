@@ -9,7 +9,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: rgb(9, 59, 90);
   max-height: 10vh;
   display: flex;
   flex-direction: column;
