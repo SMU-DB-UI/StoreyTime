@@ -1,13 +1,14 @@
 .container-login {
-  background-image: url('./bg-01.jpg');
+  background-image: url('../../imgs/bg-01.jpg');
   width: 100%;
-  height: calc(100% - 8vh);
+  height: 100%;
   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-box;
   display: -ms-flexbox;
   display: flex;
   flex-wrap: wrap;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 15px;
@@ -29,12 +30,26 @@
   left: 0;
   background-color: rgba(255,255,255,0.9);
 }
+
+.title {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  margin:auto;
+  margin-bottom: 2em;
+  max-width: 40vh;
+}
+
+.title > h1 {
+  font-size: 3.8em;
+  margin: auto;
+}
  
 .div-login {
   z-index: 1;
-  max-width: 40vw;
-  min-width: 30vw;
-  /* min-height: 60vh; */
+  max-width: 50vh;
+  min-width: 50vh;
+  max-height: 80vh;
   border-radius: 10px;
   overflow: hidden;
   padding: 55px 55px 37px 55px;
@@ -54,15 +69,13 @@
 
 .login-img {
   text-align: center;
-}
-
-.login-img img {
-  margin-bottom: 2em;
   border-radius: 50%;
+  max-width: 15em;
+  max-height: 15em;
 }
 
 .login-title {
-  font-size: 30px;
+  font-size: 3em;
   color: #fff;
   line-height: 1.2;
   text-align: center;

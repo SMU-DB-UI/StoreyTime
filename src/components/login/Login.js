@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import './login.css';
+import Logo from '../../imgs/logo.png';
 
 class Login extends Component {
   constructor(props){
@@ -17,9 +18,10 @@ class Login extends Component {
       <div className="container-login">
         <div className="div-login">
           <form className="login-form">
-            <span className="login-img">
-              <img src="https://placehold.it/150x150" alt="placehold"/>
-            </span>
+            <div className="title">
+              <img className="login-img " src={Logo} alt="placehold"/>
+              <h1>Ballot Buddy</h1>
+            </div>
             <span className="login-title">Log In</span>
             <br/>
             <br/>
