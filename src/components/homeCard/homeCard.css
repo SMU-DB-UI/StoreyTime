@@ -4,7 +4,7 @@
     min-height: 150px;
     margin-bottom: 2.5em;
     padding: 1em;
-    border: 5px solid #0B6196;
+    border: 5px solid rgb(9, 59, 90);
     border-radius: 1em;
 }
 
@@ -45,7 +45,7 @@
     flex-grow: 2;
 }
 
-.title {
+.cardTitle {
     display: flex;
 }
 

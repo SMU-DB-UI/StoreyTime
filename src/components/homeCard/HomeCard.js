@@ -10,7 +10,7 @@ class HomeCard extends Component {
                 <div className="cardBody">
                     <div className="cardContent">
                         <div className="cardInfo">
-                            <div className="title">
+                            <div className="cardTitle">
                                 <h1>Card Title</h1>
                                 <h2>Author Name</h2>
                             </div>

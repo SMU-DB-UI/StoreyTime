@@ -11,6 +11,8 @@ class Home extends Component {
                 <HomeCard />
                 <HomeCard />
                 <HomeCard />
+                <HomeCard />
+
             </div>
         )
     }
