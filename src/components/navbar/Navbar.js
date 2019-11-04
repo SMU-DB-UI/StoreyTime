@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import './navbar.css';
 
 class Navbar extends Component {
-    state = {  }
+    constructor(props) {
+        super(props);
+        this.state = {  }
+    }
+    
     render() { 
         return ( 
             <header className="App-header">
