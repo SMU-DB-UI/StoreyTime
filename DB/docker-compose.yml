@@ -17,7 +17,7 @@ services:
       - 3306:3306
     # persistant volume
     volumes:
-      - db_vol:/var/lib/mysql
+      - db_vol_2:/var/lib/mysql
     # shared network
     networks:
       - backend
@@ -56,4 +56,4 @@ networks:
   frontend:
 
 volumes:
-  db_vol: 
+  db_vol_2: 

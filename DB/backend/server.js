@@ -9,7 +9,7 @@ const cors = require('cors');
 const { log, ExpressAPILogMiddleware } = require('@rama41222/node-logger');
 const mysql = require('mysql');
 var path = require('path');
-var crypto = require('crypto');
+var crypto = require('crypto');//hash
 
 //create the mysql connection object.  
 var connection = mysql.createConnection({
