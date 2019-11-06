@@ -90,18 +90,12 @@ app.get('/', (req, res) => {
 
 //GET /setupdb
 app.get('/setupdb', (req, res) => {
-  connection.query('CREATE TABLE IF NOT EXISTS accounts(id INT(10) AUTO_INCREMENT, firstName varchar(50), lastName varchar(50), email varchar(100), password varchar(255), PRIMARY KEY(id))', function (err, rows, fields) {
+  connection.query('create table if not exists users (id INT(15) AUTO_INCREMENT, firstName varchar(50), lastName varchar(50), email varchar(100), password varchar(255), PRIMARY KEY(id, email))', function (err, rows, fields) {
     if (err)
       logger.error("Can't make table " + err.message);
     else
       logger.info('table created');
   });
-  // connection.query("insert into accounts values ('0000000000','Jaymie', 'Ruddock','jprudd@smu.edu', 'testpwd')", function(err, rows, fields) {  
-  //   if(err)
-  //       logger.error('adding row to table failed ' + err.message);
-  //   else
-  //     logger.info('added values to table');dock
-  // });
   res.status(200).send('created the table');
 });
 
@@ -138,8 +132,11 @@ app.post('/reg', function(request, response) {
   // var hashed_hex = crypto.createHash('sha224', password);
   // var hashed_password = hashed_hex.digest('string');
 	if (email && password) {
-		connection.query('insert into accounts values (NULL,?, ?, ?, ?)', [firstname, lastname, email, password], function(error, results, fields) {
-      logger.info(results);
+		connection.query('insert into users values (0, ?, ?, ?, ?)', [firstname, lastname, email, password], function(error, results, fields) {
+      if(error)
+      {
+        logger.error( error.message )
+      }
       request.session.loggedin = true;
 			request.session.username = email;
       response.redirect('/home');
