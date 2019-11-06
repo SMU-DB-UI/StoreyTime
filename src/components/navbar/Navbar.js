@@ -1,33 +1,22 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Logo from '../../imgs/logo.png';
 import './navbar.css';
 
-class Navbar extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {}
-    }
-
-    render() {
-        return (
-            <header className="App-header">
-                <div className="head">
-                    <div className="left">
-                        <img src={Logo} />
-                        <ul className="links">
-                            <li>Candidates</li>
-                            <li>Polls</li>
-                            <li>Voter Registration</li>
-                        </ul>
-                    </div>
-                    <div className="right">
-                        <span>Log out</span>
-                        <button>Profile</button>
-                    </div>
-                </div>
-            </header>
-        );
-    }
-}
+const Navbar = props => (
+    <header className='nav-container'>
+        <div className='nav-left'>
+            <img src={Logo} alt='' />
+            <ul className='nav-links'>
+                <li><h3>Candidates</h3></li>
+                <li><h3>Polls</h3></li>
+                <li><h3>Voter Registration</h3></li>
+            </ul>
+        </div>
+        <div className='nav-right'>
+            <span>Log out</span>
+            <button>Profile</button>
+        </div>
+    </header>
+);
 
 export default Navbar;

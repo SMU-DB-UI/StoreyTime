@@ -1,4 +1,4 @@
-.container-login {
+.login-container {
   background-image: url('../../imgs/bg-01.jpg');
   width: 100%;
   height: 100%;
@@ -15,8 +15,8 @@
   z-index: 1;
 }
 
-.container-login::before {
-  content: "";
+.login-container::before {
+  content: '';
   display: block;
   position: absolute;
   z-index: -1;
@@ -24,28 +24,29 @@
   height: 100%;
   top: 0;
   left: 0;
-  background-color: rgba(255,255,255,0.9);
+  background-color: rgba(255, 255, 255, 0.9);
 }
 
-.title {
+.login-title {
   display: flex;
   flex-direction: row;
   text-align: center;
-  margin:auto;
+  margin: auto;
   margin-bottom: 2em;
   max-width: 40vh;
 }
 
-.title > h1 {
+.login-title>h1 {
   font-size: 3.8em;
   margin: auto;
 }
- 
-.div-login {
+
+.login-box {
   z-index: 1;
-  max-width: 50vh;
-  min-width: 50vh;
-  max-height: 80vh;
+  min-width: 450px;
+  max-width: 450px;
+  min-height: 650px;
+  max-height: 650px;
   border-radius: 10px;
   overflow: hidden;
   padding: 55px 55px 37px 55px;
@@ -53,8 +54,8 @@
   background: rgb(9, 59, 90);
   background: -webkit-linear-gradient(180deg, rgb(9, 59, 90), rgb(127, 0, 0));
   background: -o-linear-gradient(180deg, rgb(9, 59, 90), rgb(127, 0, 0));
-  background: -moz-linear-gradient(180deg,rgb(9, 59, 90), rgb(127, 0, 0));
-  background: linear-gradient(180deg,rgb(9, 59, 90), rgb(127, 0, 0));
+  background: -moz-linear-gradient(180deg, rgb(9, 59, 90), rgb(127, 0, 0));
+  background: linear-gradient(180deg, rgb(9, 59, 90), rgb(127, 0, 0));
   color: white;
 }
 
@@ -70,7 +71,7 @@
   max-height: 15em;
 }
 
-.login-title {
+.login-label {
   font-size: 3em;
   color: #fff;
   line-height: 1.2;
@@ -79,22 +80,22 @@
   display: block;
 }
 
-.username-wrapper {
+.login-username-wrapper {
   width: 100%;
   position: relative;
-  border-bottom: 2px solid rgba(255,255,255,0.24);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.24);
   margin-bottom: 2em;
 }
 
-.password-wrapper {
+.login-password-wrapper {
   width: 100%;
   position: relative;
-  border-bottom: 2px solid rgba(255,255,255,0.24);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.24);
   margin-bottom: 1.5em;
 }
 
-.username,
-.password {
+.login-username,
+.login-password {
   font-size: 16px;
   color: #fff;
   line-height: 1.2;
@@ -109,14 +110,14 @@
 }
 
 ::placeholder {
-  color:white;
+  color: white;
 }
 
-.button-wrapper {
+.login-button-wrapper {
   margin-bottom: 2em;
 }
 
-.button-wrapper button {
+.login-button-wrapper button {
   font-size: 2em;
   padding: .4em 1.5em;
   border-radius: 2em;
@@ -129,22 +130,22 @@
   font-size: 2em;
 }
 
-.register-wrapper {
+.login-register-wrapper {
   font-size: 2em;
   margin-top: 3em;
   margin-bottom: 2em;
 }
 
-.register-wrapper p {
+.login-register-wrapper p {
   margin: 0;
 }
 
-.register-wrapper a {
+.login-register-wrapper a {
   text-decoration: underline;
   color: white;
 }
 
-.register-wrapper a:hover {
+.login-register-wrapper a:hover {
   color: white;
   text-decoration: none;
 }
