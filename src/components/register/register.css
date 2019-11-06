@@ -16,7 +16,7 @@
 }
 
 .register-container::before {
-    content: "";
+    content: '';
     display: block;
     position: absolute;
     z-index: -1;
