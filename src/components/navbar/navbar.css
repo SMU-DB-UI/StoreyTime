@@ -4,10 +4,13 @@
     box-sizing: border-box;
 }
 
-.head {
-    /* height: 8vh; */
-    width: 100%;
+.nav-container {
+    background-color: rgb(9, 59, 90);
+    height: 6em;
     display: flex;
+    align-items: center;
+    color: white;
+    width: 100%;
     justify-content: space-between;
 }
 
@@ -17,14 +20,14 @@
     margin-left: .5em;
 }
 
-.links {
+.nav-links {
     list-style: none;
     display: inline-block;
     margin: .6em 0;
     padding: 0;
 }
 
-.links > li {
+.nav-links>li {
     list-style: none;
     display: inline-block;
     border-left-color: white;
@@ -34,8 +37,10 @@
     padding-left: .5vw;
 }
 
+.nav-left {
+    display: flex;
+}
 
-
-.left img {
-    height: 2em;
+.nav-left img {
+    height: 4em;
 }
