@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>Login Form Tutorial</title>
+		<title>Search for a User</title>
 		<style>
 		.login-form {
 			width: 300px;
@@ -36,11 +36,10 @@
 		</style>
 	</head>
 	<body>
-		<div class="login-form">
-			<h1>Login Form</h1>
-			<form action="auth" method="POST">
-				<input type="text" name="email" placeholder="Email" required>
-				<input type="password" name="password" placeholder="Password" required>
+		<div class="search-form">
+			<h1>Search Form</h1>
+			<form action="search" method="POST">
+				<input type="text" name="fullName" placeholder="Full Name" required>
 				<input type="submit">
 			</form>
 		</div>
