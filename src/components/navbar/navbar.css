@@ -37,10 +37,42 @@
     padding-left: .5vw;
 }
 
-.nav-left {
+.nav-container a {
+    color: white;
+}
+
+.nav-container a:hover {
+    color: rgb(245, 215, 215);
+    
+    text-decoration: none;
+}
+
+.nav-left,
+.nav-right {
     display: flex;
+    height: inherit;
+    padding: 0;
+    align-items: center;
 }
 
 .nav-left img {
     height: 4em;
+}
+
+.nav-right button {
+    font-size: 12pt;
+    padding: .4em 1.5em;
+    border-radius: .5em;
+    margin: 0 1em;
+    margin-bottom: .5rem;
+    color: black;
+    border-style: none;
+}
+
+.nav-right button:hover {
+    background-color: rgb(245, 215, 215);
+}
+
+.nav-right button > h3 {
+    margin: 0;
 }

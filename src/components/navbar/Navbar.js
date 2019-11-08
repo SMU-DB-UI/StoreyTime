@@ -7,14 +7,14 @@ const Navbar = props => (
         <div className='nav-left'>
             <img src={Logo} alt='' />
             <ul className='nav-links'>
-                <li><h3>Candidates</h3></li>
-                <li><h3>Polls</h3></li>
-                <li><h3>Voter Registration</h3></li>
+                <li><h3><a href="https://vote.gov/">Candidates</a></h3></li>
+                <li><h3><a href="https://vote.gov/">Polls</a></h3></li>
+                <li><h3><a href="https://vote.gov/">Voter Registration</a></h3></li>
             </ul>
         </div>
         <div className='nav-right'>
-            <span>Log out</span>
-            <button>Profile</button>
+            <h3><a href="https://vote.gov/">Log out</a></h3>
+            <button><h3>Profile</h3></button>
         </div>
     </header>
 );
