@@ -4,7 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const cors = require('cors');
-const { log, ExpressAPILogMiddleware } = require('@rama41222/node-logger');
+//const { log, ExpressAPILogMiddleware } = require('@rama41222/node-logger');
 const mysql = require('mysql');
 var path = require('path');
 var crypto = require('crypto'); //hash
@@ -45,7 +45,7 @@ app.use(flash());
 
 app.use(bodyParser.json());
 app.use(cors());
-app.use(ExpressAPILogMiddleware(logger, { request: true }));
+//app.use(ExpressAPILogMiddleware(logger, { request: true }));
 
 //Attempting to connect to the database.
 connection.connect(function (err) {
