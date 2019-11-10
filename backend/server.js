@@ -4,7 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const cors = require('cors');
-//const { log, ExpressAPILogMiddleware } = require('@rama41222/node-logger');
+const { log, ExpressAPILogMiddleware } = require('@rama41222/node-logger');
 const mysql = require('mysql');
 var path = require('path');
 var crypto = require('crypto'); //hash
@@ -15,7 +15,7 @@ var connection = mysql.createConnection({
   port: '3306',
   user: 'user',
   password: 'password',
-  database: 'db'
+  database: 'ballotBuddy'
 });
 
 //set up some configs for express. 
