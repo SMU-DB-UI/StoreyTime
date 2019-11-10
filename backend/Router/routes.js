@@ -2,48 +2,31 @@
 
 module.exports = function(app) {
 
-
-    //implement controller in here
-
-    /**     REQUEST HANDLERS        */
-    //GET /
-    app.get('/', (req, res) => {
-        res.status(200).send('Go to localhost:8000/setupdb');
-    });
-  
-    //GET /setupdb
-    app.get('/setupdb', (req, res) => {
-        connection.query('create table if not exists users (id INT(15) AUTO_INCREMENT, firstName varchar(50), lastName varchar(50), email varchar(100), password varchar(255), PRIMARY KEY(id, email))', function (err, rows, fields) {
-        if (err)
-            logger.error("Can't make table " + err.message);
-        else
-            logger.info('table created');
-        });
-        res.status(200).send('created the table');
-    });
-
-    app.get('/login', function(request, response) {
-        response.sendFile(path.join(__dirname + '/login.html')); 
-      });
+    var userController = require('../Controller/userController.js');
+    // var groupController = require('../Controller/groupsController.js');
+    // var pollController = require('../Controller/pollsController.js');
+    // var postController = require('../Controller/postsController.js');
+    
+    //USER LOGIN/REGISTER
+    app.route('/login')
+      .post(userController.loginUser);
       
-    app.get('/register', function(request, response)  {
-        response.sendFile(path.join(__dirname + '/register.html')); 
-      });
+    app.route('/register')
+      .post(userController.createUser);
 
-    app.get('/home', function(request, response) {
-        if (request.session.loggedin) {
-        logger.info(request.session);
-            response.send('Welcome back, ' + request.session.username + '!');
-        } else {
-            response.send('Please login to view this page!');
-        }
-        response.end();
-    });
-    
-    app.get('/search', function(request, response) {
-      response.sendFile(path.join(__dirname + '/search.html'));
-    
-    });
+    //USER UPDATE
+    app.route('/updateProfile/:user_id')
+      .put(userController.updateUser);
+
+    // app.get('/home', function(request, response) {
+    //     if (request.session.loggedin) {
+    //     logger.info(request.session);
+    //         response.send('Welcome back, ' + request.session.username + '!');
+    //     } else {
+    //         response.send('Please login to view this page!');
+    //     }
+    //     response.end();
+    //});
 
 
     //POST

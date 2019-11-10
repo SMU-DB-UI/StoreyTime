@@ -18,7 +18,7 @@ var User = function(user) {
 //after registration, should redirect to setupProfile page to add picture, tags, etc
 User.createUser = function(newUser, result) {
     connection.query( "INSERT INTO ballotBuddy.users VALUES (0, ' newUser.firstName ', ' newUser.lastName', 'newUser.email', 'newUser.password', 'newUser.user_type', 'newUser.state');" )
-    function (err) {
+     {
         if (err)
         {
             result(err, null);
@@ -33,7 +33,7 @@ User.createUser = function(newUser, result) {
 
 //login user
 User.login = function(user, result) {
-    connection.query("SELECT ")
+    //connection.query("SELECT ")
 
 };
 
