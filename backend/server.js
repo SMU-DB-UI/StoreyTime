@@ -34,10 +34,5 @@ app.listen(config.port, config.host, (e) => {
   logger.info(`${config.name} running on ${config.host}:${config.port}`);
 }); 
 
-app.get('/', function(err, result)
-{
-  result.status(200).send("on 0.0.0.0:3000");
-});
-
 var routes = require('./Router/routes.js');
 routes(app);
