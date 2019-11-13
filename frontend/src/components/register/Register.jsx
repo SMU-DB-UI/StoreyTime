@@ -1,43 +1,119 @@
 import React, { Component } from 'react';
 import './register.css';
+import { UserRepo } from '../../api'; 
 
 class Register extends Component {
+
+    userRepo = new UserRepo();
+
     constructor(props) {
         super(props);
         this.state = {
             firstName: '',
             lastName: '',
             email: '',
-            userState: ''
+            password: '',
+            state: '',
+            user_type: '',
+            isRegistered: false
         }
+    }
+
+    async onSubmit() {
+        var user = {
+          email: this.state.email,
+          password: this.state.password,
+          firstName: this.state.firstName,
+          lastName: this.state.lastName,
+          state: this.state.state,
+          user_type: this.state.user_type
+        }
+
+        await this.userRepo.registerUser(user)
+            .then(resp => {
+                this.setState(pState => {
+                    pState.email='';
+                    pState.password='';
+                    pState.firstName = '';
+                    pState.lastName='';
+                    pState.state='';
+                    pState.user_type='';
+                    pState.isRegistered=true;
+                    return pState;
+                });
+            })
+            .catch(resp => {
+                console.log(resp);
+                alert(resp);
+            });
     }
 
     render() {
         return (
             <div className='register-container'>
                 <div className='register-box'>
+                {this.state.isRegistered && <div className="info">
+                        Account successfully created! Please login with your new credentials
+                        <a href="/login">Here!</a>
+                    </div>
+                }
                     <form className='register-form'>
                         <span className='register-label'>Register</span>
                         <div className='register-input-wrapper'>
                             <div className='register-firstname-wrapper'>
                                 <span className='glyphicon glyphicon-plus-sign icon'></span>
-                                <input className='register-firstname' type='text' name='register-firstname' placeholder='First Name' />
+                                <input 
+                                    className='register-firstname' 
+                                    type='text' 
+                                    name='register-firstname' 
+                                    placeholder='First Name'
+                                    value={this.state.firstName}
+                                    onChange={e => this.setState({ firstName: e.target.value })} 
+                                />
                             </div>
                             <div className='register-lastname-wrapper'>
                                 <span className='glyphicon glyphicon-plus-sign icon'></span>
-                                <input className='register-lastname' type='text' name='register-lastname' placeholder='Last Name' />
+                                <input 
+                                    className='register-lastname' 
+                                    type='text' 
+                                    name='register-lastname' 
+                                    placeholder='Last Name'
+                                    value={this.state.lastName}
+                                    onChange={e => this.setState({ lastName: e.target.value })}  
+                                />
                             </div>
                             <div className='register-email-wrapper'>
                                 <span className='glyphicon glyphicon-plus-sign icon'></span>
-                                <input className='register-email' type='text' name='register-email' placeholder='Email' />
+                                <input 
+                                    className='register-email' 
+                                    type='text' 
+                                    name='register-email' 
+                                    placeholder='Email' 
+                                    value={this.state.email}
+                                    onChange={e => this.setState({ email: e.target.value })} 
+                                />
                             </div>
                             <div className='register-password-wrapper'>
                                 <span className='glyphicon glyphicon-plus-sign icon'></span>
-                                <input className='register-password' type='password' name='register-password' placeholder='Password' />
+                                <input 
+                                    className='register-password' 
+                                    type='password' 
+                                    name='register-password' 
+                                    placeholder='Password'
+                                    value={this.state.password}
+                                    onChange={e => this.setState({ password: e.target.value })} 
+                                />
                             </div>
                             <div className='register-state-wrapper'>
                                 <span className='glyphicon glyphicon-plus-sign icon'></span>
-                                <select className='register-state' type='state' name='register-state' placeholder='State' >
+                                <select 
+                                    className='register-state' 
+                                    type='state' 
+                                    name='register-state' 
+                                    placeholder='State' 
+                                    value={this.state.state}
+                                    onChange={e => this.setState({ state: e.target.value })} 
+                                >
                                     <option value='' disabled selected='placeholder'>State</option>
                                     <option value='AL'>Alabama</option>
                                     <option value='AK'>Alaska</option>
@@ -94,7 +170,13 @@ class Register extends Component {
                             </div>
                         </div>
                         <div className='register-button-wrapper'>
-                            <button type='button' className='btn btn-light'>Register</button>
+                            <button 
+                                type='button' 
+                                className='btn btn-light'
+                                onClick={e => {e.preventDefault(); this.onSubmit();}}
+                            >
+                                Register
+                            </button>
                         </div>
                     </form>
                 </div>
