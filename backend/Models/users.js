@@ -21,7 +21,7 @@ var sha224 = function(password, salt){
 };
 
 //copy user
-var User = function(user) {
+var User = function(user){
     this.firstName = user.firstName;
     this.lastName = user.lastName;
     this.email = user.email;
@@ -29,7 +29,7 @@ var User = function(user) {
     this.salt = user.salt;
     this.user_type = user.user_type;
     this.state = user.state;
-};
+}
 
 //create user
 //newUser in controller
@@ -37,17 +37,14 @@ var User = function(user) {
 User.createUser = function(newUser, result) {
     var salt = salter(16);
     var salt, newPass = sha224(newUser.pass, salt);
-    connection.query( "INSERT INTO `ballotBuddy`.`users` VALUES ('"+ 0 +"', '"+ newUser.firstName +"', '"+ newUser.lastName +"', '"+ newUser.email +"', '"+ newPass + "', '"+ salt +"', '" + newUser.user_type +"', '"+ newUser.state +"');" ,
-    function(err, res)
-     {
-        if (err)
-        {
-            result(err, null);
-        }
-        else 
-        {
-            result(null,{"code":200,"response":"Registration successful."});
-        }
+    connection.query("INSERT INTO `ballotBuddy`.`users` (`email`,`firstName`,`lastName`,`pass`,`state`,`user_type`, `salt`) VALUES ('" + newUser.email + "', '" + newUser.firstName + "', '" + newUser.lastName + "', '" + newPass + "', '" + newUser.state + "', '" + newUser.user_type + "', '"+ salt +"');",
+        function(err, res) {
+            if (err){
+                result(err, null);
+            }
+            else {
+                result(null, {"code": 200});
+            }
     });
 };
 
@@ -123,3 +120,5 @@ User.search = function(user, result) {
     });
 
 };
+
+module.exports = User;
