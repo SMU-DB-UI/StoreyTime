@@ -2,14 +2,14 @@ import axios from 'axios';
 
 export class UserRepo {
 
-    url = 'localhost:8000/';
+    url = 'http://localhost:8000/';
     config = {
 
     };
 
     registerUser(user) {
         return new Promise((resolve, reject) => {
-            axios.post(this.url + 'register', {body: user}, this.config)
+            axios.post(this.url + 'register', {body: user})
                 .then(resp => resolve(resp.data))
                 .catch(resp => reject(resp));
         });
@@ -17,7 +17,7 @@ export class UserRepo {
 
     userLogin(user) {
         return new Promise((resolve, reject) => {
-            axios.post(this.url + 'login', { body: user }, this.config)
+            axios.post(this.url + 'login', { body: user })
                 .then(resp => {
                     resolve(resp.data);
                     localStorage.setItem('email', resp.data.email);
