@@ -4,20 +4,20 @@
 var connection = require('./db.js');
 
 //copy user
-var User = function(user) {
+var User = function(user){
     this.firstName = user.firstName;
     this.lastName = user.lastName;
     this.email = user.email;
     this.password = user.password;
     this.user_type = user.user_type;
     this.state = user.state;
-};
+}
 
 //create user
 //newUser in controller
 //after registration, should redirect to setupProfile page to add picture, tags, etc
 User.createUser = function(newUser, result) {
-    connection.query("INSERT INTO `ballotBuddy`.`users` (`email`,`firstName`,`lastName`,`pass`,`state_residence`,`user_type`) VALUES ('" + newUse.email + "', '" + newUse.firstName + "', '" + newUse.lastName + "', '" + newUse.password + "', '" + newUse.state + "', " + newUse.user_type + ");",
+    connection.query("INSERT INTO `ballotBuddy`.`users` (`email`,`firstName`,`lastName`,`pass`,`state_residence`,`user_type`) VALUES ('" + newUser.email + "', '" + newUser.firstName + "', '" + newUser.lastName + "', '" + newUser.password + "', '" + newUser.state + "', " + newUser.user_type + ");",
         function(err, res) {
             if (err){
                 result(err, null);
@@ -64,3 +64,5 @@ User.search = function(user, result) {
 
 
 };
+
+module.exports = User;
