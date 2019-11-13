@@ -17,7 +17,7 @@ var User = function(user){
 //newUser in controller
 //after registration, should redirect to setupProfile page to add picture, tags, etc
 User.createUser = function(newUser, result) {
-    connection.query("INSERT INTO `ballotBuddy`.`users` (`email`,`firstName`,`lastName`,`pass`,`state_residence`,`user_type`) VALUES ('" + newUser.email + "', '" + newUser.firstName + "', '" + newUser.lastName + "', '" + newUser.password + "', '" + newUser.state + "', " + newUser.user_type + ");",
+    connection.query("INSERT INTO `ballotBuddy`.`users` (`email`,`firstName`,`lastName`,`pass`,`state`,`user_type`) VALUES ('" + newUser.email + "', '" + newUser.firstName + "', '" + newUser.lastName + "', '" + newUser.password + "', '" + newUser.state + "', " + newUser.user_type + ");",
         function(err, res) {
             if (err){
                 result(err, null);
