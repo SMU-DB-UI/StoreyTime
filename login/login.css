@@ -1,0 +1,151 @@
+.login-container {
+  background-image: url('../../imgs/bg-01.jpg');
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  position: relative;
+  z-index: 1;
+}
+
+.login-container::before {
+  content: '';
+  display: block;
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.login-title {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  margin: auto;
+  margin-bottom: 2em;
+  max-width: 40vh;
+}
+
+.login-title>h1 {
+  font-size: 3.8em;
+  margin: auto;
+}
+
+.login-box {
+  z-index: 1;
+  min-width: 450px;
+  max-width: 450px;
+  min-height: 650px;
+  max-height: 650px;
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 55px 55px 37px 55px;
+  margin: auto;
+  background: rgb(9, 59, 90);
+  background: -webkit-linear-gradient(180deg, rgb(9, 59, 90), rgb(127, 0, 0));
+  background: -o-linear-gradient(180deg, rgb(9, 59, 90), rgb(127, 0, 0));
+  background: -moz-linear-gradient(180deg, rgb(9, 59, 90), rgb(127, 0, 0));
+  background: linear-gradient(180deg, rgb(9, 59, 90), rgb(127, 0, 0));
+  color: white;
+}
+
+.login-form {
+  width: 100%;
+  min-height: 75%;
+}
+
+.login-img {
+  text-align: center;
+  border-radius: 50%;
+  max-width: 15em;
+  max-height: 15em;
+}
+
+.login-label {
+  font-size: 3em;
+  color: #fff;
+  line-height: 1.2;
+  text-align: center;
+  text-transform: uppercase;
+  display: block;
+}
+
+.login-username-wrapper {
+  width: 100%;
+  position: relative;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.24);
+  margin-bottom: 2em;
+}
+
+.login-password-wrapper {
+  width: 100%;
+  position: relative;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.24);
+  margin-bottom: 1.5em;
+}
+
+.login-username,
+.login-password {
+  font-size: 16px;
+  color: #fff;
+  line-height: 1.2;
+  display: block;
+  width: 100%;
+  height: 45px;
+  background: transparent;
+  padding: 0 5px 0 38px;
+  border-style: none;
+  outline: none;
+  position: relative;
+}
+
+::placeholder {
+  color: white;
+}
+
+.login-button-wrapper {
+  margin-bottom: 2em;
+}
+
+.login-button-wrapper button {
+  font-size: 2em;
+  padding: .4em 1.5em;
+  border-radius: 2em;
+}
+
+.icon {
+  position: absolute;
+  right: 95%;
+  top: .8em;
+  font-size: 2em;
+}
+
+.login-register-wrapper {
+  font-size: 2em;
+  margin-top: 3em;
+  margin-bottom: 2em;
+}
+
+.login-register-wrapper p {
+  margin: 0;
+}
+
+.login-register-wrapper a {
+  text-decoration: underline;
+  color: white;
+}
+
+.login-register-wrapper a:hover {
+  color: white;
+  text-decoration: none;
+}
