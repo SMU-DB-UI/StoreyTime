@@ -269,9 +269,9 @@ Poll.getAllPolls = function getAllPolls(result) {
         result(null, res);
       }
     });
-  };
+};
   
-  User.getPollByID = function getPollByID(poll_id, result) {
+Poll.getPollByID = function getPollByID(poll_id, result) {
     sql.query("Select * FROM Poll WHERE poll_id = ?;", [poll_id], 
     function(err, res){
       if(err) {
