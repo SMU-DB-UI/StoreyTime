@@ -161,7 +161,7 @@ Poll.updateCount2ById = function updateCount2ById(poll_id,count_answer2,result){
         }
     });
 };
-
+//******************************************************************************
 Poll.getAnswer1ById = function getAnswer1ById(poll_id,reulst){
     sql.query("SELECT answer1 FROM POLL WHERE poll_id = ? ;", [poll_id],
     function(err,res){
@@ -190,6 +190,76 @@ Poll.getAnswer2ById = function getAnswer2ById(poll_id,reulst){
     });
 };
 
+Poll.getCountAnswer1 = function getCountAnswer1(poll_id,result){
+    sql.query("SELECT count_answer1 FROM POLL WHERE poll_id = ? ;", [poll_id],
+    function(err,res){
+        if(err) {
+            result({
+                "code":204,
+                "response":"Cannot find this ID in the table."
+            }, null);
+          }else{
+            result(null, res);
+        }
+    });
+};
+
+Poll.getCountAnswer2 = function getCountAnswer2(poll_id,result){
+    sql.query("SELECT count_answer2 FROM POLL WHERE poll_id = ? ;", [poll_id],
+    function(err,res){
+        if(err) {
+            result({
+                "code":204,
+                "response":"Cannot find this ID in the table."
+            }, null);
+          }else{
+            result(null, res);
+        }
+    });
+};
+
+Poll.getCreationDate = function getCreationDate(poll_id,result){
+    sql.query("SELECT date_created FROM POLL WHERE poll_id = ? ;", [poll_id],
+    function(err,res){
+        if(err){
+            result({
+                "code":204,
+                "response" : "Cannot find this ID in the table."
+            },null);
+        }else{
+            result(null,res);
+        }
+    });
+};
+
+Poll.getQuestionById = function getQuestionById(poll_id,result){
+    sql.query("SELECT question FROM POLL WHERE poll_id = ?;", [poll_id],
+    function(err,res){
+        if(err){
+            result({
+                "code":204,
+                "response" : "Cannot find this ID in the table."
+            },null);
+        }else{
+            result(null,res);
+        }
+    });
+};
+
+Poll.getCreatorId = function getCreatorId(poll_id,result){
+    sql.query("SELECT creator_id FROM POLL WHERE poll_id = ?;", [poll_id],
+    function(err,res){
+        if(err){
+            result({
+                "code":204,
+                "response" : "Cannot find this ID in the table."
+            },null);
+        }else{
+            result(null,res);
+        }
+    });
+};
+
 Poll.getAllPolls = function getAllPolls(result) {
     sql.query("SELECT * FROM Poll;", [], 
     function(err, res){
@@ -201,7 +271,7 @@ Poll.getAllPolls = function getAllPolls(result) {
     });
   };
   
-  User.getPollByID = function(poll_id, result) {
+  User.getPollByID = function getPollByID(poll_id, result) {
     sql.query("Select * FROM Poll WHERE poll_id = ?;", [poll_id], 
     function(err, res){
       if(err) {
