@@ -14,6 +14,7 @@ var sha224 = function(password, salt){
     var hash = crypto.createHmac('sha224', salt); 
     hash.update(password);
     var value = hash.digest('hex');
+    //var newValue = utf16.stringify(value);
     return {
         salt:salt,
         passwordHash:value
@@ -29,7 +30,7 @@ var User = function(user){
     this.pass = user.pass;
     this.salt = user.salt;
     this.user_type = user.user_type;
-    this.state = user.state;
+    this.state_residence = user.state_residence;
     this.date_joined = user.date_joined;
     this.inactive = user.inactive;
 }
@@ -38,7 +39,7 @@ var User = function(user){
 User.createUser = function(newUser, result) {
     var salt = salter(16);
     var salt, newPass = sha224(newUser.pass, salt);
-    connection.query("INSERT INTO `ballotBuddy`.`users` (`email`,`firstName`,`lastName`,`pass`,`state`,`user_type`, `salt`, `date_joined`, `inactive`) VALUES ('" + newUser.email + "', '" + newUser.firstName + "', '" + newUser.lastName + "', '" + newPass + "', '" + newUser.state + "', '" + newUser.user_type + "', '"+ salt +"', '"+ newUser.date_joined +"', '"+ 0 +"');",
+    connection.query("INSERT INTO `ballotBuddy`.`users` (`id`, `firstName`,`lastName`,`email`,`pass`,`salt`,`user_type`, `state_residence`, `date_joined`, `inactive`) VALUES ('"+ 0 +"', '" + newUser.firstName + "','" + newUser.lastName + "','" + newUser.email + "','" + newPass.passwordHash + "','"+ salt +"','" + newUser.user_type + "','" + newUser.state_residence + "','"+ newUser.date_joined +"', '"+ 0 +"');",
         function(err, res) {
             if (err){
                 result(err, null);
@@ -51,7 +52,7 @@ User.createUser = function(newUser, result) {
 
 //login user
 User.login = function(user, result) {
-    connection.query("SELECT * from `ballotBuddy`.`users` WHERE email=? AND `id` NOT IN (SELECT `id` from `ballotBuddy`.`profiles` WHERE `inactive`=1)", [user.email], 
+    connection.query("SELECT * from `ballotBuddy`.`users` WHERE email=? AND `id` NOT IN (SELECT `id` from `ballotBuddy`.`users` WHERE `inactive`=1)", [user.email], 
     function(err, res) 
     {
         if(err)
@@ -63,7 +64,7 @@ User.login = function(user, result) {
             if(res.length > 0)
             {
                 var salt, newPass = sha224(user.pass, res[0].salt);
-                if(res[0].pass == newPass)
+                if(res[0].pass == newPass.passwordHash)
                 {
                     //how to start a session object!
                     result({"code":200});

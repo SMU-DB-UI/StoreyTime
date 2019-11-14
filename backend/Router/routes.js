@@ -4,9 +4,13 @@ module.exports = function(app) {
 
     var userController = require('../Controller/userController.js');
     var groupController = require('../Controller/groupsController.js');
+    var dbManager = require('../Controller/dbController.js');
     // var pollController = require('../Controller/pollsController.js');
     //var postController = require('../Controller/postsController.js');
     
+    app.route('/setupdb')
+      .get(dbManager.setupdb);
+
     //USER 
     app.get('/', function(err, result) {
      result.status(200).send("on 0.0.0.0:3000");

@@ -97,3 +97,11 @@ CREATE TABLE IF NOT EXISTS `announcements`
     PRIMARY KEY(`announcement_id`),
     FOREIGN KEY(`creator_id`) REFERENCES `users`(`id`),
     FOREIGN KEY(`group_id`) REFERENCES groups(`group_id`) );
+
+
+
+
+
+
+
+
