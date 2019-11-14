@@ -19,7 +19,7 @@ exports.createUser = function(request, result) {
     }
 };
 
-exports.loginUser = function(request, result) {
+exports.loginUser = function(req, res) {
     if(!req.body.email)
     {
         res.status(400).json({"code":400, "response":"Missing email in body"});
@@ -30,16 +30,16 @@ exports.loginUser = function(request, result) {
     }
     else
     {
-        var LoginUser = new User(request.body);
+        var LoginUser = new User(req.body);
         User.login(LoginUser, function(err, user)
         {
             if(err)
             {
-                result.send(err);
+                res.send(err);
             }
             else
             {
-                result.json(user);
+                res.json(user);
             }
         });
     }
