@@ -1,5 +1,3 @@
-'use strict';
-
 var Group = require('../Models/group.js');
 
 exports.createGroup = function(request, result) {

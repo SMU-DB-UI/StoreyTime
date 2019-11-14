@@ -22,6 +22,7 @@ var sha224 = function(password, salt){
 
 //copy user
 var User = function(user){
+    this.id = user.id;
     this.firstName = user.firstName;
     this.lastName = user.lastName;
     this.email = user.email;
@@ -29,15 +30,15 @@ var User = function(user){
     this.salt = user.salt;
     this.user_type = user.user_type;
     this.state = user.state;
+    this.date_joined = user.date_joined;
+    this.inactive = user.inactive;
 }
 
-//create user
-//newUser in controller
 //after registration, should redirect to setupProfile page to add picture, tags, etc
 User.createUser = function(newUser, result) {
     var salt = salter(16);
     var salt, newPass = sha224(newUser.pass, salt);
-    connection.query("INSERT INTO `ballotBuddy`.`users` (`email`,`firstName`,`lastName`,`pass`,`state`,`user_type`, `salt`) VALUES ('" + newUser.email + "', '" + newUser.firstName + "', '" + newUser.lastName + "', '" + newPass + "', '" + newUser.state + "', '" + newUser.user_type + "', '"+ salt +"');",
+    connection.query("INSERT INTO `ballotBuddy`.`users` (`email`,`firstName`,`lastName`,`pass`,`state`,`user_type`, `salt`, `date_joined`, `inactive`) VALUES ('" + newUser.email + "', '" + newUser.firstName + "', '" + newUser.lastName + "', '" + newPass + "', '" + newUser.state + "', '" + newUser.user_type + "', '"+ salt +"', '"+ newUser.date_joined +"', '"+ 0 +"');",
         function(err, res) {
             if (err){
                 result(err, null);
@@ -64,6 +65,7 @@ User.login = function(user, result) {
                 var salt, newPass = sha224(user.pass, res[0].salt);
                 if(res[0].pass == newPass)
                 {
+                    //how to start a session object!
                     result({"code":200});
                 }
                 else 
@@ -79,18 +81,76 @@ User.login = function(user, result) {
     });
 };
 
-
-//update user
-//
-User.editProfile = function(user, result) {
-    connection.query("UPDATE ");
+User.getUser = function(id, result) {
 
 };
-    // - first name
-    // - last name
-    // - profile picture
-    // - tags
-    // - state
+
+//update user
+//how to do this?
+User.changePassword = function(id, pass, result) {
+    var salt = salter(16);
+    var salt, newPass = sha224(pass, salt);
+    connection.query("UPDATE `ballotBuddy`.`users` SET pass = ? WHERE id = ?", [id, newPass], 
+    function(err, res) 
+    {
+        if(err)
+        {
+            result(err, null);
+        }
+        else 
+        {
+            result(null, {"code":200});
+        }
+
+    });
+};
+
+User.updateFirstName = function(id, firstName, result) {
+    connection.query("UPDATE `ballotBuddy`.`users` SET firstName = ? WHERE id = ?", [id, firstName], 
+    function(err, res)
+    {
+        if(err)
+        {
+            result(err, null);
+        }
+        else
+        {
+            result(null, {"code":200});
+        }
+    });
+};
+
+User.updateLastName = function(id, lastName, result) {
+    connection.query("UPDATE `ballotBuddy`.`users` SET lastName = ? WHERE id = ?", [id, lastName], 
+    function(err, res)
+    {
+        if(err)
+        {
+            result(err, null);
+        }
+        else
+        {
+            result(null, {"code":200});
+        }
+    });
+};
+
+User.updateEmail = function(id, email, result) {
+    connection.query("UPDATE `ballotBuddy`.`users` SET email = ? WHERE id = ?", [id, email], 
+    function(err, res)
+    {
+        if(err)
+        {
+            result(err, null);
+        }
+        else
+        {
+            result(null, {"code":200});
+        }
+    });
+};
+
+
 
 //delete user -- marking them as inactive
 User.deleteProfile = function(user, result) {
@@ -113,7 +173,7 @@ User.deleteProfile = function(user, result) {
 //get user by name -- search basically
 // see what harrison is sending  to me
 User.search = function(user, result) {
-    connection.query("SELECT firstName, lastName FROM `ballotBuddy`.`users` WHERE firstName=? AND ",
+    connection.query("SELECT firstName, lastName FROM `ballotBuddy`.`users` WHERE firstName LIKE",
     function(err, res)
     {
 

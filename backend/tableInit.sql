@@ -11,10 +11,10 @@ CREATE TABLE IF NOT EXISTS users
     salt varchar(16),
     user_type TINYINT, 
     state_residence CHAR, 
-    tag1_following INT(10),
-    profile_pic IMAGE,
+    --tag1_following INT(10),
+    --profile_pic IMAGE,
     date_joined DATE,
-    active TINYINT,
+    inactive TINYINT,
     PRIMARY KEY(id) );
 
 -- minio for picture storage?
@@ -59,7 +59,8 @@ CREATE TABLE IF NOT EXISTS polls
 
 CREATE TABLE IF NOT EXISTS groups 
     (group_id INT(10), 
-    creator_id INT(10),  
+    creator_id INT(10), 
+    group_name VARCHAR(20), 
     PRIMARY KEY(group_id),
     FOREIGN KEY(creator_id) REFERENCES users(id) );
 

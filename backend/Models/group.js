@@ -5,11 +5,12 @@ var connection = require('./db.js');
 var Group = function(group) {
     this.group_id = group.group_id;
     this.creator_id = group.creator_id;
+    this.group_name = group.group_name;
     this.member_count = group.member_count;
 };
 
 Group.createGroup = function(newGroup, result) {
-    connection.query("INSERT INTO `ballotBuddy`.`groups` VALUES ('"+ newGroup.group_id +"','"+ newGroup.creator_id +"','"+ newGroup.member_count +"');",
+    connection.query("INSERT INTO `ballotBuddy`.`groups` (`group_id`, `creator_id`, `group_name`, `member_count`) VALUES ('"+ newGroup.group_id +"','"+ newGroup.creator_id +"','"+ newGroup.group_name +"','"+ newGroup.member_count +"');",
     function(err, res)
     {
         if (err)
@@ -23,6 +24,7 @@ Group.createGroup = function(newGroup, result) {
     });
 };
 
+//this is a combination of search and add
 Group.inviteMembers = function(newMember, joinedGroup, result) {
     connection.query("INSERT INTO `ballotBuddy`.`group_members_bridge` VALUES ('"+ joinedGroup.group_id +"','" + newMember.id +"');",
     function(err, res)
@@ -42,4 +44,4 @@ Group.removeMembers = function() {
 
 };
 
-
+module.exports = Group;
