@@ -45,6 +45,27 @@ exports.loginUser = function(request, result) {
     }
 };
 
+exports.getUser = function(req, res) {
+    if(! req.params.id)
+    {
+        res.status(400).json({"code":400, "response":"Missing ID in request"});
+    }
+    else 
+    {
+        User.getUser(req.params.id, function(err, user) 
+        {
+            if(err)
+            {
+                res.send(err);
+            }
+            else 
+            {
+                res.json(user);
+            }
+        });
+    }
+};
+
 exports.resetPassword = function(req, res) {
     if(!req.params.id)
     {
@@ -148,7 +169,6 @@ exports.changeEmail = function(req, res) {
 
     }
 };
-
 
 
 

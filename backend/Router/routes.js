@@ -5,7 +5,7 @@ module.exports = function(app) {
     var userController = require('../Controller/userController.js');
     var groupController = require('../Controller/groupsController.js');
     // var pollController = require('../Controller/pollsController.js');
-    var postController = require('../Controller/postsController.js');
+    //var postController = require('../Controller/postsController.js');
     
     //USER 
     app.get('/', function(err, result) {
@@ -20,11 +20,11 @@ module.exports = function(app) {
 
     //user home
     app.route('/user/:id')
-      .get();
+      .get(userController.getUser);
 
     //update password
     app.route('/user/update/pasword/:id')
-      .put(userController.updateUser);
+      .put(userController.resetPassword);
 
     //update names
     app.route('/user/update/firstName/:id')

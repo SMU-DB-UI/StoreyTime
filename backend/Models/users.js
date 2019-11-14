@@ -82,7 +82,32 @@ User.login = function(user, result) {
 };
 
 User.getUser = function(id, result) {
-
+    connection.query("SELECT * FROM `ballotBuddy`.`users` WHERE id = ?", [id],
+    function(err, res) {
+        if(err)
+        {
+            result(err, null);
+        }
+        else 
+        {
+            if(res.length > 0)
+            {
+                if(res[0].inactive != 1)
+                {
+                    result({"code":200});
+                }
+                else
+                {
+                    result({"code":204, "response":"Account no longer exists"});
+                }
+            }
+            else
+            {
+                result({"code":204, "response":"User not found"});
+            }
+        }
+    
+    });
 };
 
 //update user
@@ -178,7 +203,6 @@ User.search = function(user, result) {
     {
 
     });
-
 };
 
 module.exports = User;
