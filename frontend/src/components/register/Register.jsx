@@ -59,9 +59,9 @@ class Register extends Component {
                 }
                     <form className='register-form'>
                         <span className='register-label'>Register</span>
+                        <br />
                         <div className='register-input-wrapper'>
                             <div className='register-firstname-wrapper'>
-                                <span className='glyphicon glyphicon-plus-sign icon'></span>
                                 <input 
                                     className='register-firstname' 
                                     type='text' 
@@ -72,7 +72,6 @@ class Register extends Component {
                                 />
                             </div>
                             <div className='register-lastname-wrapper'>
-                                <span className='glyphicon glyphicon-plus-sign icon'></span>
                                 <input 
                                     className='register-lastname' 
                                     type='text' 
@@ -83,7 +82,6 @@ class Register extends Component {
                                 />
                             </div>
                             <div className='register-email-wrapper'>
-                                <span className='glyphicon glyphicon-plus-sign icon'></span>
                                 <input 
                                     className='register-email' 
                                     type='text' 
@@ -94,7 +92,6 @@ class Register extends Component {
                                 />
                             </div>
                             <div className='register-password-wrapper'>
-                                <span className='glyphicon glyphicon-plus-sign icon'></span>
                                 <input 
                                     className='register-password' 
                                     type='password' 
@@ -105,7 +102,6 @@ class Register extends Component {
                                 />
                             </div>
                             <div className='register-state-wrapper'>
-                                <span className='glyphicon glyphicon-plus-sign icon'></span>
                                 <select 
                                     className='register-state' 
                                     type='state' 
