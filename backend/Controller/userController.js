@@ -2,7 +2,7 @@ var User = require('../Models/users.js');
 
 exports.createUser = function(request, result) {
     var newUser = new User(request.body);
-    if (!newUser.email){
+    if (! newUser.email){
         result.status(400).json({ "code":400, "respose": "Invalid inputs." });
     }else{
         User.createUser(newUser, function(err, user){

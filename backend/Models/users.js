@@ -116,7 +116,7 @@ User.getUser = function(id, result) {
 User.changePassword = function(id, pass, result) {
     var salt = salter(16);
     var salt, newPass = sha224(pass, salt);
-    connection.query("UPDATE `ballotBuddy`.`users` SET pass = ? WHERE id = ?", [id, newPass], 
+    connection.query("UPDATE `ballotBuddy`.`users` SET pass = ? WHERE id = ?;", [id, newPass], 
     function(err, res) 
     {
         if(err)
