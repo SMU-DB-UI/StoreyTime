@@ -26,7 +26,7 @@ export class UserRepo {
                     localStorage.setItem('state', resp.data.state);
                     localStorage.setItem('user_type', resp.data.user_type);
                     localStorage.setItem('code', resp.data.code);
-
+                    localStorage.setItem('id', resp.data.id);
                 })
                 .catch(resp => reject(resp));
         });
