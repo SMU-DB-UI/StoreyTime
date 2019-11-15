@@ -9,7 +9,7 @@ export class UserRepo {
 
     registerUser(user) {
         return new Promise((resolve, reject) => {
-            axios.post(this.url + 'register', {body: user})
+            axios.post(this.url + 'register', user)
                 .then(resp => resolve(resp.data))
                 .catch(resp => reject(resp));
         });
@@ -17,16 +17,16 @@ export class UserRepo {
 
     userLogin(user) {
         return new Promise((resolve, reject) => {
-            axios.post(this.url + 'login', { body: user })
+            axios.post(this.url + 'login', user)
                 .then(resp => {
                     resolve(resp.data);
                     localStorage.setItem('email', resp.data.email);
                     localStorage.setItem('firstName', resp.data.firstName);
                     localStorage.setItem('lastName', resp.data.lastName);
-                    localStorage.setItem('state', resp.data.state);
+                    localStorage.setItem('state', resp.data.state_residence);
                     localStorage.setItem('user_type', resp.data.user_type);
                     localStorage.setItem('code', resp.data.code);
-
+                    localStorage.setItem('id', resp.data.id);
                 })
                 .catch(resp => reject(resp));
         });

@@ -18,7 +18,7 @@ class Login extends React.Component {
   onSubmit() {
     let user = {
       email: this.state.email,
-      password: this.state.password
+      pass: this.state.password
     }
 
     this.userRepo.userLogin(user)

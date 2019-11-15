@@ -13,7 +13,7 @@ const Navbar = props => (
             </ul>
         </div>
         <div className='nav-right'>
-            <h3><a href="https://vote.gov/">Log out</a></h3>
+            <h3><a href="#" onClick={() => {localStorage.clear(); window.location.href = '/login'; }}>Log out</a></h3>
             <button><h3>Profile</h3></button>
         </div>
     </header>

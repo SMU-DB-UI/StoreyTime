@@ -14,7 +14,7 @@ class Register extends Component {
             email: '',
             password: '',
             state: '',
-            user_type: '',
+            user_type: 0,
             isRegistered: false
         }
     }
@@ -22,10 +22,10 @@ class Register extends Component {
     async onSubmit() {
         var user = {
           email: this.state.email,
-          password: this.state.password,
+          pass: this.state.password,
           firstName: this.state.firstName,
           lastName: this.state.lastName,
-          state: this.state.state,
+          state_residence: this.state.state,
           user_type: this.state.user_type
         }
 
