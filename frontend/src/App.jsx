@@ -13,12 +13,13 @@ function App() {
           <Switch>
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
-            <Route path="/" component={Home} />
+            <Route path="/" component={Login} />
+            <Route path="/home" component={Home}/>
           </Switch>
         </BrowserRouter>
       </div>
     </div>
-  );
+  );  
 }
 
 export default App;
