@@ -81,11 +81,11 @@ exports.resetPassword = function(req, res) {
         {
             if(err)
             {
-                result.send(err);
+                res.send(err);
             }
             else 
             {
-                result.json(user);
+                res.json(user);
             }
         });
     }
@@ -106,11 +106,11 @@ exports.changeFirstName = function(req, res) {
         {
             if(err)
             {
-                result.send(err);
+                res.send(err);
             }
             else
             {
-                result.json(user);
+                res.json(user);
             }
         })
 
@@ -132,11 +132,11 @@ exports.changeLastName = function(req, res) {
         {
             if(err)
             {
-                result.send(err);
+                res.send(err);
             }
             else
             {
-                result.json(user);
+                res.json(user);
             }
         })
 
@@ -158,11 +158,11 @@ exports.changeEmail = function(req, res) {
         {
             if(err)
             {
-                result.send(err);
+                res.send(err);
             }
             else
             {
-                result.json(user);
+                res.json(user);
             }
 
         });

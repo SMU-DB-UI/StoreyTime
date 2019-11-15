@@ -116,7 +116,7 @@ User.getUser = function(id, result) {
 User.changePassword = function(id, pass, result) {
     var salt = salter(16);
     var salt, newPass = sha224(pass, salt);
-    connection.query("UPDATE `ballotBuddy`.`users` SET pass = ? WHERE id = ?;", [id, newPass], 
+    connection.query("UPDATE `ballotBuddy`.`users` SET pass = ? WHERE id = ?;", [newPass.passwordHash, id], 
     function(err, res) 
     {
         if(err)
@@ -132,7 +132,7 @@ User.changePassword = function(id, pass, result) {
 };
 
 User.updateFirstName = function(id, firstName, result) {
-    connection.query("UPDATE `ballotBuddy`.`users` SET firstName = ? WHERE id = ?", [id, firstName], 
+    connection.query("UPDATE `ballotBuddy`.`users` SET firstName = ? WHERE id = ?", [firstName, id], 
     function(err, res)
     {
         if(err)
@@ -147,7 +147,7 @@ User.updateFirstName = function(id, firstName, result) {
 };
 
 User.updateLastName = function(id, lastName, result) {
-    connection.query("UPDATE `ballotBuddy`.`users` SET lastName = ? WHERE id = ?", [id, lastName], 
+    connection.query("UPDATE `ballotBuddy`.`users` SET lastName = ? WHERE id = ?", [lastName, id], 
     function(err, res)
     {
         if(err)
@@ -162,7 +162,7 @@ User.updateLastName = function(id, lastName, result) {
 };
 
 User.updateEmail = function(id, email, result) {
-    connection.query("UPDATE `ballotBuddy`.`users` SET email = ? WHERE id = ?", [id, email], 
+    connection.query("UPDATE `ballotBuddy`.`users` SET email = ? WHERE id = ?", [email, id], 
     function(err, res)
     {
         if(err)
