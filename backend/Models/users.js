@@ -39,13 +39,13 @@ var User = function(user){
 User.createUser = function(newUser, result) {
     var salt = salter(16);
     var salt, newPass = sha224(newUser.pass, salt);
-    connection.query("INSERT INTO `ballotBuddy`.`users` (`id`, `firstName`,`lastName`,`email`,`pass`,`salt`,`user_type`, `state_residence`, `date_joined`, `inactive`) VALUES ('"+ 0 +"', '" + newUser.firstName + "','" + newUser.lastName + "','" + newUser.email + "','" + newPass.passwordHash + "','"+ salt +"','" + newUser.user_type + "','" + newUser.state_residence + "','"+ newUser.date_joined +"', '"+ 0 +"');",
+    connection.query("INSERT INTO `ballotBuddy`.`users` (`firstName`,`lastName`,`email`,`pass`,`salt`,`user_type`, `state_residence`, `date_joined`, `inactive`) VALUES ('" + newUser.firstName + "','" + newUser.lastName + "','" + newUser.email + "','" + newPass.passwordHash + "','"+ salt +"','" + newUser.user_type + "','" + newUser.state_residence + "','"+ newUser.date_joined +"', '"+ 0 +"');",
         function(err, res) {
             if (err){
                 result(err, null);
             }
             else {
-                result(null, {"code": 200});
+                result(null, {"code":200});
             }
     });
 };
@@ -67,7 +67,7 @@ User.login = function(user, result) {
                 if(res[0].pass == newPass.passwordHash)
                 {
                     //how to start a session object!
-                    result({"code":200});
+                    result(null, {"code":200, "firstName": res[0].firstName, "lastName": res[0].lastName, "email": res[0].email, "id": res[0].id, "user_type": res[0].user_type, "state_residence":res[0].state_residence });
                 }
                 else 
                 {
