@@ -16,10 +16,10 @@ module.exports = function(app) {
      result.status(200).send("on 0.0.0.0:3000");
     });
 
-    app.route('/login')
+    app.route('/login') //DONE
       .post(userController.loginUser);
       
-    app.route('/register')
+    app.route('/register') //DONE 
       .post(userController.createUser);
 
     //user home
@@ -27,18 +27,18 @@ module.exports = function(app) {
       .get(userController.getUser);
 
     //update password
-    app.route('/user/update/pasword/:id')
+    app.route('/user/update/password/:id') //DONE
       .put(userController.resetPassword);
 
     //update names
-    app.route('/user/update/firstName/:id')
+    app.route('/user/update/firstName/:id') //DONE
       .put(userController.changeFirstName);
 
-    app.route('/user/update/lastName/:id')
+    app.route('/user/update/lastName/:id') //DONE
       .put(userController.changeLastName);
 
     //update email
-    app.route('/user/update/email/:id')
+    app.route('/user/update/email/:id') //DONE
       .put(userController.changeEmail);
 
 };
