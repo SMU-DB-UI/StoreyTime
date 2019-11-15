@@ -50,16 +50,12 @@ class Login extends React.Component {
         <div className='login-box'>
           <form className='login-form'>
             {this.state.showError && <div className="danger">Error while logging in.</div>}
-            <div className='login-title'>
               <img className='login-img ' src={Logo} alt='placehold' />
-              <h1>Ballot Buddy</h1>
-            </div>
+            <br />
             <span className='login-label'>Log In</span>
             <br />
-            <br />
             <div className='login-username-wrapper'>
-              <span className='glyphicon glyphicon-user icon'></span>
-              <input 
+            <input 
                 className='login-username' 
                 type='text' 
                 name='login-username' 
@@ -94,7 +90,7 @@ class Login extends React.Component {
           </form>
           <div className='login-register-wrapper'>
             <p>Dont have an account? Register</p>
-            <a href='www.google.com'>Here</a>{/*TODO: Make Link Work*/}
+            <a href='www.google.com'><p>Here</p></a>
           </div>
         </div>
       </div>
