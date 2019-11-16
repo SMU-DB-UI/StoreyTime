@@ -130,7 +130,7 @@ User.changePassword = function(id, pass, result) {
         }
         else 
         {
-            result(null, {"code":200});
+            result(null, {"code":200, "pass": pass});
         }
 
     });
@@ -146,7 +146,7 @@ User.updateFirstName = function(id, firstName, result) {
         }
         else
         {
-            result(null, {"code":200});
+            result(null, {"code":200, "firstName": firstName});
         }
     });
 };
@@ -161,7 +161,7 @@ User.updateLastName = function(id, lastName, result) {
         }
         else
         {
-            result(null, {"code":200});
+            result(null, {"code":200, "lastName": lastName});
         }
     });
 };
@@ -176,7 +176,7 @@ User.updateState = function(id, state_residence, result) {
         }
         else 
         {
-            result(null, {"code":200});
+            result(null, {"code":200, "state_residence": state_residence});
         }
     });
 };
@@ -191,7 +191,7 @@ User.updateEmail = function(id, email, result) {
         }
         else
         {
-            result(null, {"code":200});
+            result(null, {"code":200, "email": email});
         }
     });
 };
