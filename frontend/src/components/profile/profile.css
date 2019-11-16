@@ -1,0 +1,40 @@
+.profile-container {
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-box {
+    min-width: 450px;
+    max-width: 450px;
+    min-height: 650px;
+    max-height: 650px;
+    border-radius: 10px;
+    padding: 15px;
+    background: rgb(9, 59, 90);
+    background: linear-gradient(180deg, rgb(9, 59, 90), rgb(127, 0, 0));
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.profile-box input:-webkit-autofill,
+.profile-box input:-webkit-autofill:hover,
+.profile-box input:-webkit-autofill:focus,
+.profile-box textarea:-webkit-autofill,
+.profile-box textarea:-webkit-autofill:hover,
+.profile-box textarea:-webkit-autofill:focus,
+.profile-box select:-webkit-autofill,
+.profile-box select:-webkit-autofill:hover,
+.profile-box select:-webkit-autofill:focus {
+    border: 0px;
+    -webkit-text-fill-color: black;
+    -webkit-box-shadow: 0px 0px 0px 0px #000;
+    transition: background-color 5000s ease-in-out 0s;
+}

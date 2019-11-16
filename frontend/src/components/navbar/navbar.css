@@ -76,3 +76,15 @@
 .nav-right button > h3 {
     margin: 0;
 }
+
+.nav-container .btn {
+    font-size: 12pt;
+    padding: .4em 1.5em;
+    border-radius: .5em;
+    margin: 0 1em;
+    margin-bottom: .5rem;
+    color: black;
+    border-style: none;
+    color: black;
+    text-transform: none;
+}
