@@ -37,6 +37,9 @@ module.exports = function(app) {
     app.route('/user/update/lastName/:id') //DONE
       .put(userController.changeLastName);
 
+    app.route('/user/update/state_residence/:id')
+      .put(userController.changeStateResidence);
+
     //update email
     app.route('/user/update/email/:id') //DONE
       .put(userController.changeEmail);

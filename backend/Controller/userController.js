@@ -170,5 +170,29 @@ exports.changeEmail = function(req, res) {
     }
 };
 
+exports.changeStateResidence = function(req, res) {
+    if(!req.params.id)
+    {
+        res.status(400).json({"code":400, "response":"Missing ID in request"});
+    }
+    else if(! req.body.state_residence)
+    {
+        res.status(400).json({"code":400, "response":"Missing state of residence in body"});
+    }
+    else
+    {
+        User.updateState(req.params.id, req.body.state_residence, function(err, user)
+        {
+            if(err)
+            {
+                res.send(err);
+            }
+            else
+            {
+                res.json(user);
+            }
+        })
 
+    }
+};
 

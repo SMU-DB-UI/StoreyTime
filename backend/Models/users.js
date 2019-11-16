@@ -166,6 +166,21 @@ User.updateLastName = function(id, lastName, result) {
     });
 };
 
+User.updateState = function(id, state_residence, result) {
+    connection.query("UPDATE `ballotBuddy`.`users` SET state_residence = ? WHERE id = ?", [state_residence, id], 
+    function(err, res)
+    {
+        if(err)
+        {
+            result(err, null);
+        }
+        else 
+        {
+            result(null, {"code":200});
+        }
+    });
+};
+
 User.updateEmail = function(id, email, result) {
     connection.query("UPDATE `ballotBuddy`.`users` SET email = ? WHERE id = ?", [email, id], 
     function(err, res)
