@@ -100,7 +100,7 @@ User.getUser = function(id, result) {
             {
                 if(res[0].inactive != 1)
                 {
-                    result({"code":200});
+                    result({"code":200, "firstName": res[0].firstName, "lastName": res[0].lastName, "email": res[0].email, "id": res[0].id, "user_type": res[0].user_type, "state_residence":res[0].state_residence });
                 }
                 else
                 {
@@ -121,7 +121,7 @@ User.getUser = function(id, result) {
 User.changePassword = function(id, pass, result) {
     var salt = salter(16);
     var salt, newPass = sha224(pass, salt);
-    connection.query("UPDATE `ballotBuddy`.`users` SET pass = ? WHERE id = ?;", [newPass.passwordHash, id], 
+    connection.query("UPDATE `ballotBuddy`.`users` SET pass = ?, salt = ? WHERE id = ?;", [newPass.passwordHash, salt, id], 
     function(err, res) 
     {
         if(err)

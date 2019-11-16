@@ -6,18 +6,63 @@ import { NavLink } from 'react-router-dom'
 
 class Profile extends Component {
 
+    userRepo = new UserRepo();
+
     constructor(props) {
         //TODO: make state pull from database/localstorage and update eveything when done is clicked
         super(props);
         this.state = {
-            firstName: 'Hayden',
-            lastName: 'Center',
-            email: 'haydencenter72@gmail.com',
-            password: 'boberto11',
-            state: 'CA',
-            user_type: 0,
+            firstName: localStorage.getItem('firstName'),
+            lastName: localStorage.getItem('lastName'),
+            email: localStorage.getItem('email'),
+            pass: 'xxxxxxxx',
+            state: localStorage.getItem('state'),
+            user_type: localStorage.getItem('user_type'),
             edit: false
         }
+    }
+
+    async handleSubmit() {
+        this.setState({ edit: false });
+        if (this.state.firstName !== localStorage.getItem('firstName')){
+            await this.userRepo.changeFirstName(this.state.firstName)
+                .then(resp => {
+                    localStorage.setItem('firstName', this.state.firstName);
+                })
+                .catch(resp => {
+                    this.setState({ firstName: localStorage.getItem('firstName') });
+                });
+        }
+
+        if (this.state.lastName !== localStorage.getItem('lastName')){
+            await this.userRepo.changeLastName(this.state.lastName)
+                .then(resp => {
+                    localStorage.setItem('lastName', this.state.lastName);
+                })
+                .catch(resp => {
+                    this.setState({ lastName: localStorage.getItem('lastName') });
+                });
+        }
+
+        if (this.state.email !== localStorage.getItem('email')){
+            await this.userRepo.changeEmail(this.state.email)
+                .then(resp => {
+                    localStorage.setItem('email', this.state.email);
+                })
+                .catch(resp => {
+                    this.setState({ email: localStorage.getItem('email') });
+                });
+        }
+
+        if(this.state.pass !== 'xxxxxxxx'){
+            await this.userRepo.changePassword(this.state.pass)
+                .then()
+                .catch(resp => {
+                    console.log(resp);
+                });
+        }
+        
+        //TODO STATE CHANGE
     }
 
     render() {
@@ -69,8 +114,8 @@ class Profile extends Component {
                                 className='profile-password form-control'
                                 type='password'
                                 name='profile-password'
-                                value={this.state.password}
-                                onChange={e => this.setState({ password: e.target.value })}
+                                value={this.state.pass}
+                                onChange={e => this.setState({ pass: e.target.value })}
                             />
                         </div>
                     </div>
@@ -141,19 +186,19 @@ class Profile extends Component {
                         </div>
                     </div>
                     <div className="col-12">
-                        {this.state.edit == false &&
+                        {this.state.edit === false &&
                             <button
                                 type="button"
                                 className="btn btn-light edit-button"
                                 onClick={() => { this.setState({ edit: true }) }}
                             >Edit</button>
                         }
-                        {this.state.edit == true &&
+                        {this.state.edit === true &&
                             <button
                                 type="button"
                                 className="btn btn-light edit-button"
-                                onClick={() => { this.setState({ edit: false }) }}
-                            >Done</button>
+                                onClick={(e) => { e.preventDefault();  this.handleSubmit(); }}
+                            >Submit</button>
                         }
                         <NavLink to='/home' className="btn btn-light">Done</NavLink>
                     </div>

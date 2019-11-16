@@ -31,4 +31,44 @@ export class UserRepo {
                 .catch(resp => reject(resp));
         });
     }
+
+    changeFirstName(firstName) {
+        return new Promise((res, rej) => {
+            axios.put(this.url + 'user/update/firstName/' + localStorage.getItem('id'), { firstName }, this.config)
+                .then(resp => {
+                    res(resp.data);
+                })
+                .catch(resp => rej(resp));
+        })
+    }
+
+    changeLastName(lastName) {
+        return new Promise((res, rej) => {
+            axios.put(this.url + 'user/update/lastName/' + localStorage.getItem('id'), { lastName }, this.config)
+                .then(resp => {
+                    res(resp.data);
+                })
+                .catch(resp => rej(resp));
+        })
+    }
+
+    changeEmail(email) {
+        return new Promise((res, rej) => {
+            axios.put(this.url + 'user/update/email/' + localStorage.getItem('id'), {email}, this.config)
+                .then(resp => {
+                    res(resp.data);
+                })
+                .catch(resp => rej(resp));
+        })
+    }
+
+    changePassword(pass) {
+        return new Promise((res, rej) => {
+            axios.put(this.url + 'user/update/password/' + localStorage.getItem('id'), {pass}, this.config)
+                .then(resp => {
+                    res(resp.data);
+                })
+                .catch(resp => rej(resp));
+        })
+    }
 }
