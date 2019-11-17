@@ -197,10 +197,9 @@ User.updateEmail = function(id, email, result) {
 };
 
 
-
 //delete user -- marking them as inactive
-User.deleteProfile = function(user, result) {
-    connection.query("UPDATE `ballotBuddy`.`profiles` SET inactive=1 WHERE `profiles`.`id` IN ( SELECT id from `ballotBuddy`.`users` WHERE email = ?)", [user.email], 
+User.deleteProfile = function(id, result) {
+    connection.query("UPDATE `ballotBuddy`.`users` SET inactive=1 WHERE id = ?", [id], 
     function(err, res)
     {
         if(err)
@@ -215,14 +214,30 @@ User.deleteProfile = function(user, result) {
 };
 
 //get all users
-
-//get user by name -- search basically
-// see what harrison is sending  to me
-User.search = function(user, result) {
-    connection.query("SELECT firstName, lastName FROM `ballotBuddy`.`users` WHERE firstName LIKE",
+User.search = function(firstName, lastName, result) {
+    connection.query("SELECT firstName, lastName, user_type, state_residence FROM `ballotBuddy`.`users` WHERE firstName = ? AND lastName = ? AND id NOT IN (SELECT `id` from `ballotBuddy`.`users` WHERE `inactive`=1)", [firstName, lastName], 
     function(err, res)
     {
-
+        if(res.length == 0)
+        {
+            connection.query("SELECT firstName, lastName, user_type, state_residence FROM `ballotBuddy`.`users` WHERE firstName = ? OR lastName = ? AND id NOT IN (SELECT `id` from `ballotBuddy`.`users` WHERE `inactive`=1)", [firstName, lastName], 
+            function(err1, res1)
+            {
+                if(err1)
+                {
+                    result(err, null);
+                }
+                else
+                {
+                    result(null, res1);
+                    //how to send back all ?
+                }
+            });
+        }
+        else
+        {
+            result(null, res);
+        }
     });
 };
 

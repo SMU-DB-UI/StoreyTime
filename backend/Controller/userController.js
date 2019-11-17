@@ -173,7 +173,7 @@ exports.changeEmail = function(req, res) {
 exports.changeStateResidence = function(req, res) {
     if(!req.params.id)
     {
-        res.status(400).json({"code":400, "response":"Missing ID in request"});
+        res.status(400).json({"code":400, "response":"Missing ID in request parameters"});
     }
     else if(! req.body.state_residence)
     {
@@ -193,6 +193,62 @@ exports.changeStateResidence = function(req, res) {
             }
         })
 
+    }
+};
+
+exports.deleteProfile = function(req, res) {
+    if(! req.params.id)
+    {
+        res.status(400).json({"code":400, "response":"Missing id in parameters"});
+    }
+    else
+    {
+        User.deleteProfile(req.params.id, function(err, user)
+        {
+            if(err)
+            {
+                res.send(err);
+            }
+            else
+            {
+                res.json(user);
+            }
+        });
+    }
+};
+
+exports.searchUsers = function(req, res) {
+    if(! req.body.firstName)
+    {
+        res.status(400).json({"code":400, "response":"Missing name in body"});
+    }
+    else if(!req.body.lastName)
+    {
+        User.search(req.body.firstName, "", function(err, users)
+        {
+            if(err)
+            {
+                res.send(err);
+            }
+            else
+            {
+                res.json(users);
+            }
+        });
+    }
+    else
+    {
+        User.search(req.body.firstName, req.body.lastName, function(err, users)
+        {
+            if(err)
+            {
+                res.send(err);
+            }
+            else
+            {
+                res.json(users);
+            }
+        });
     }
 };
 

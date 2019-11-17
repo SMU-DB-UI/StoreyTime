@@ -6,12 +6,12 @@ module.exports = function(app) {
     var groupController = require('../Controller/groupsController.js');
     var dbManager = require('../Controller/dbController.js');
     // var pollController = require('../Controller/pollsController.js');
-    //var postController = require('../Controller/postsController.js');
+    var postController = require('../Controller/postsController.js');
     
     app.route('/setupdb')
       .get(dbManager.setupdb);
 
-    //USER 
+    //USERS ROUTES
     app.get('/', function(err, result) {
      result.status(200).send("on 0.0.0.0:3000");
     });
@@ -43,5 +43,17 @@ module.exports = function(app) {
     //update email
     app.route('/user/update/email/:id') //DONE
       .put(userController.changeEmail);
+
+    app.route('/user/update/deleteProfile/:id')
+      .put(userController.deleteProfile);
+
+    app.route('/user/search')
+      .post(userController.searchUsers);
+
+
+    //POSTS routes
+    app.route('/user/newPost/:id')
+      .post(postController.createPost);
+
 
 };
