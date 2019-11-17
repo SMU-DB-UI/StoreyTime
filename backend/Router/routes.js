@@ -55,5 +55,7 @@ module.exports = function(app) {
     app.route('/user/newPost/:id')
       .post(postController.createPost);
 
+    app.route('/user/newPost/:post_id/addTags/:id')
+      .put(postController.addTags);
 
 };
