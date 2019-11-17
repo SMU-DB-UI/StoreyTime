@@ -102,6 +102,7 @@ select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
     border: 0px;
     -webkit-text-fill-color: white;
+    box-shadow: 0px 0px 0px 0px #000;
     -webkit-box-shadow: 0px 0px 0px 0px #000;
     transition: background-color 5000s ease-in-out 0s;
 }
