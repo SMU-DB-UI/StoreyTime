@@ -162,7 +162,7 @@ Poll.updateCount2ById = function updateCount2ById(poll_id,count_answer2,result){
 };
 //******************************************************************************
 Poll.getAnswer1ById = function getAnswer1ById(poll_id,reulst){
-    sql.query("SELECT answer1 FROM POLL WHERE poll_id = ? ;", [poll_id],
+    sql.query("SELECT answer1 FROM `ballotBuddy`.`polls` WHERE poll_id = ? ;", [poll_id],
     function(err,res){
         if(err) {
             result({
@@ -176,7 +176,7 @@ Poll.getAnswer1ById = function getAnswer1ById(poll_id,reulst){
 };
 
 Poll.getAnswer2ById = function getAnswer2ById(poll_id,reulst){
-    sql.query("SELECT answer2 FROM POLL WHERE poll_id = ? ;", [poll_id],
+    sql.query("SELECT answer2 FROM `ballotBuddy`.`polls` WHERE poll_id = ? ;", [poll_id],
     function(err,res){
         if(err) {
             result({
@@ -190,7 +190,7 @@ Poll.getAnswer2ById = function getAnswer2ById(poll_id,reulst){
 };
 
 Poll.getCountAnswer1 = function getCountAnswer1(poll_id,result){
-    sql.query("SELECT count_answer1 FROM POLL WHERE poll_id = ? ;", [poll_id],
+    sql.query("SELECT count_answer1 FROM `ballotBuddy`.`polls` WHERE poll_id = ? ;", [poll_id],
     function(err,res){
         if(err) {
             result({
@@ -204,7 +204,7 @@ Poll.getCountAnswer1 = function getCountAnswer1(poll_id,result){
 };
 
 Poll.getCountAnswer2 = function getCountAnswer2(poll_id,result){
-    sql.query("SELECT count_answer2 FROM POLL WHERE poll_id = ? ;", [poll_id],
+    sql.query("SELECT count_answer2 FROM `ballotBuddy`.`polls` WHERE poll_id = ? ;", [poll_id],
     function(err,res){
         if(err) {
             result({
@@ -218,7 +218,7 @@ Poll.getCountAnswer2 = function getCountAnswer2(poll_id,result){
 };
 
 Poll.getCreationDate = function getCreationDate(poll_id,result){
-    sql.query("SELECT date_created FROM POLL WHERE poll_id = ? ;", [poll_id],
+    sql.query("SELECT date_created FROM `ballotBuddy`.`polls` WHERE poll_id = ? ;", [poll_id],
     function(err,res){
         if(err){
             result({
@@ -232,7 +232,7 @@ Poll.getCreationDate = function getCreationDate(poll_id,result){
 };
 
 Poll.getQuestionById = function getQuestionById(poll_id,result){
-    sql.query("SELECT question FROM POLL WHERE poll_id = ?;", [poll_id],
+    sql.query("SELECT question FROM `ballotBuddy`.`polls` WHERE poll_id = ?;", [poll_id],
     function(err,res){
         if(err){
             result({
@@ -246,7 +246,7 @@ Poll.getQuestionById = function getQuestionById(poll_id,result){
 };
 
 Poll.getCreatorId = function getCreatorId(poll_id,result){
-    sql.query("SELECT creator_id FROM POLL WHERE poll_id = ?;", [poll_id],
+    sql.query("SELECT creator_id FROM `ballotBuddy`.`polls` WHERE poll_id = ?;", [poll_id],
     function(err,res){
         if(err){
             result({
@@ -260,7 +260,7 @@ Poll.getCreatorId = function getCreatorId(poll_id,result){
 };
 
 Poll.getAllPolls = function getAllPolls(result) {
-    sql.query("SELECT * FROM Poll;", [], 
+    sql.query("SELECT * FROM `ballotBuddy`.`polls`;", [], 
     function(err, res){
       if(err) {
         result(err, null);
@@ -271,7 +271,7 @@ Poll.getAllPolls = function getAllPolls(result) {
 };
   
 Poll.getPollByID = function getPollByID(poll_id, result) {
-    sql.query("Select * FROM Poll WHERE poll_id = ?;", [poll_id], 
+    sql.query("Select * FROM `ballotBuddy`.`polls` WHERE poll_id = ?;", [poll_id], 
     function(err, res){
       if(err) {
         result(err, null);

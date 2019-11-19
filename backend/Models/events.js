@@ -76,3 +76,19 @@ Event.updateEventDesc = function updateEventDesc(event_id,newDesc,result){
         }
     });
 };
+
+//==========================Get Information===========================
+
+Event.getEventDesc = function getEventDesc(event_id,result){
+    sql.query("SELECT event_desc FROM `ballotBuddy`.`events` WHERE event_id = ?;",[event_id],
+    function(err,res){
+        if(err){
+            result({
+                "code":204,
+                "response" : "Cannot find event description based on input evnet ID."
+            },null);
+        }else{
+            result(null,res);
+        }
+    });
+};
