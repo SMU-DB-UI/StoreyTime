@@ -41,7 +41,7 @@ User.createUser = function(newUser, result) {
     var year = d.getFullYear();
     var month = d.getMonth();
     var day = d.getDate();
-    var date = year+ '/' + month + '/' + day;
+    var date = year+ '-' + month + '-' + day;
     var salt = salter(16);
     var salt, newPass = sha224(newUser.pass, salt);
     connection.query("INSERT INTO `ballotBuddy`.`users` (`firstName`,`lastName`,`email`,`pass`,`salt`,`user_type`, `state_residence`, `date_joined`, `inactive`) VALUES ('" + newUser.firstName + "','" + newUser.lastName + "','" + newUser.email + "','" + newPass.passwordHash + "','"+ salt +"','" + newUser.user_type + "','" + newUser.state_residence + "','"+ date +"', '"+ 0 +"');",
@@ -96,7 +96,7 @@ User.getUser = function(id, result) {
         }
         else 
         {
-            if(res.length > 0)
+            if(res.length != 0)
             {
                 if(res[0].inactive != 1)
                 {
@@ -225,7 +225,7 @@ User.search = function(firstName, lastName, result) {
             {
                 if(err1)
                 {
-                    result(err, null);
+                    result(err1, null);
                 }
                 else
                 {

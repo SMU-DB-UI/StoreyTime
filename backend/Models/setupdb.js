@@ -6,7 +6,7 @@ var db = function(db)
     
 }
 
-db.setupDB = function(db, result)
+db.setupDB = function(result)
 {
     connection.query("CREATE TABLE IF NOT EXISTS `users` (`id` INT(10) AUTO_INCREMENT, `firstName` varchar(50), `lastName` varchar(50), `email` varchar(100), `pass` varchar(255), `salt` varchar(16),`user_type` TINYINT, `state_residence` CHAR(2), `date_joined` DATE,`inactive` TINYINT, PRIMARY KEY(`id`) );");
     connection.query("CREATE TABLE IF NOT EXISTS `tags` (`tag_id` INT(10) AUTO_INCREMENT, `tag_word` VARCHAR(50), PRIMARY KEY(`tag_id`) );");
@@ -18,6 +18,34 @@ db.setupDB = function(db, result)
     connection.query("CREATE TABLE IF NOT EXISTS `polls` (`poll_id` INT(10) AUTO_INCREMENT,  `creator_id` INT(10), `question` VARCHAR(150),  `answer1` VARCHAR(50), `answer2` VARCHAR(50), `count_answer1` INT, `count_answer2` INT, `date_created` DATE, PRIMARY KEY(`poll_id`), FOREIGN KEY(`creator_id`) REFERENCES `users`(`id`) );");
     connection.query("CREATE TABLE IF NOT EXISTS `group_members_bridge`(`group_id` INT(10),`member_id` INT(10),PRIMARY KEY(`group_id`, `member_id`),FOREIGN KEY(`group_id`) REFERENCES `groups`(`group_id`), FOREIGN KEY(`member_id`) REFERENCES `users`(`id`) );");
     result(null, {"code":200});
+};
+
+db.insertInfo = function(result)
+{
+    connection.query("INSERT INTO `ballotBuddy`.`tags` (tag_word) VALUES ('" + 'republican' + "');");
+    connection.query("INSERT INTO `ballotBuddy`.`tags` (tag_word) VALUES ('" + 'conservative' + "');");
+    connection.query("INSERT INTO `ballotBuddy`.`tags` (tag_word) VALUES ('" + 'democrat' + "');");
+    connection.query("INSERT INTO `ballotBuddy`.`tags` (tag_word) VALUES ('" + 'liberal' + "');");
+    connection.query("INSERT INTO `ballotBuddy`.`tags` (tag_word) VALUES ('" + 'immigration' + "');");
+    connection.query("INSERT INTO `ballotBuddy`.`tags` (tag_word) VALUES ('" + 'abortion' + "');");
+    connection.query("INSERT INTO `ballotBuddy`.`tags` (tag_word) VALUES ('" + 'climate change' + "');");
+    connection.query("INSERT INTO `ballotBuddy`.`tags` (tag_word) VALUES ('" + 'gun control' + "');");
+    connection.query("INSERT INTO `ballotBuddy`.`tags` (tag_word) VALUES ('" + 'unemployment' + "');");
+    connection.query("INSERT INTO `ballotBuddy`.`tags` (tag_word) VALUES ('" + 'education' + "');");
+    connection.query("INSERT INTO `ballotBuddy`.`tags` (tag_word) VALUES ('" + 'religion' + "');");
+    connection.query("INSERT INTO `ballotBuddy`.`tags` (tag_word) VALUES ('" + 'drug policy' + "');");
+    connection.query("INSERT INTO `ballotBuddy`.`tags` (tag_word) VALUES ('" + 'patriot act' + "');");
+    connection.query("INSERT INTO `ballotBuddy`.`tags` (tag_word) VALUES ('" + 'net neutrality' + "');");
+    connection.query("INSERT INTO `ballotBuddy`.`tags` (tag_word) VALUES ('" + 'social security' + "');");
+    connection.query("INSERT INTO `ballotBuddy`.`tags` (tag_word) VALUES ('" + 'equal pay' + "');");
+    connection.query("INSERT INTO `ballotBuddy`.`tags` (tag_word) VALUES ('" + 'taxes' + "');");
+    connection.query("INSERT INTO `ballotBuddy`.`tags` (tag_word) VALUES ('" + 'welfare' + "');");
+    connection.query("INSERT INTO `ballotBuddy`.`tags` (tag_word) VALUES ('" + 'medicaid' + "');");
+    connection.query("INSERT INTO `ballotBuddy`.`tags` (tag_word) VALUES ('" + 'vaccinations' + "');");
+    connection.query("INSERT INTO `ballotBuddy`.`tags` (tag_word) VALUES ('" + 'terrorism' + "');");
+    connection.query("INSERT INTO `ballotBuddy`.`tags` (tag_word) VALUES ('" + 'racism' + "');");
+    result(null, {"code": 200});
+
 };
 
 // db.setupUsers = function(db, result)
