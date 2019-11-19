@@ -42,7 +42,7 @@ var Poll = function(poll){
 
 
 Poll.createPoll = function(newPoll, result) {
-  sql.query("INSERT INTO `ballotBuddy`.`polls` (`poll_id`,`creator_id`,`question`,`date_created`,`answer1`,`answer2`,`count_answer1`,`count_answer2`) VALUES ('" + newPoll.poll_id + ", " + newPoll.creator_id + ", " + newPoll.question + ", " + newPoll.date_created + ", " + newPoll.answer1 + ", " + newPoll.answer2 + ", " + newPoll.count_answer1 + ", " + newPoll.count_answer2 + ");",
+  sql.query("INSERT INTO `ballotBuddy`.`polls` (`poll_id`,`creator_id`,`question`,`date_created`,`answer1`,`answer2`,`count_answer1`,`count_answer2`) VALUES ('" + newPoll.poll_id + "', '" + newPoll.creator_id + "', '" + newPoll.question + "', '" + newPoll.date_created + "', '" + newPoll.answer1 + "', '" + newPoll.answer2 + "', '" + newPoll.count_answer1 + "', '" + newPoll.count_answer2 + "');",
     function(err, res) {
       if (err){
         result(err, null);
