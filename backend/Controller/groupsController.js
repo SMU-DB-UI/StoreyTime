@@ -16,4 +16,3 @@ exports.createGroup = function(request, result) {
 }
 
 
-export.

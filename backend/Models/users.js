@@ -37,9 +37,14 @@ var User = function(user){
 
 //after registration, should redirect to setupProfile page to add picture, tags, etc
 User.createUser = function(newUser, result) {
+    var d = new Date();
+    var year = d.getFullYear();
+    var month = d.getMonth();
+    var day = d.getDate();
+    var date = year+ '/' + month + '/' + day;
     var salt = salter(16);
     var salt, newPass = sha224(newUser.pass, salt);
-    connection.query("INSERT INTO `ballotBuddy`.`users` (`firstName`,`lastName`,`email`,`pass`,`salt`,`user_type`, `state_residence`, `date_joined`, `inactive`) VALUES ('" + newUser.firstName + "','" + newUser.lastName + "','" + newUser.email + "','" + newPass.passwordHash + "','"+ salt +"','" + newUser.user_type + "','" + newUser.state_residence + "','"+ newUser.date_joined +"', '"+ 0 +"');",
+    connection.query("INSERT INTO `ballotBuddy`.`users` (`firstName`,`lastName`,`email`,`pass`,`salt`,`user_type`, `state_residence`, `date_joined`, `inactive`) VALUES ('" + newUser.firstName + "','" + newUser.lastName + "','" + newUser.email + "','" + newPass.passwordHash + "','"+ salt +"','" + newUser.user_type + "','" + newUser.state_residence + "','"+ date +"', '"+ 0 +"');",
         function(err, res) {
             if (err){
                 result(err, null);
@@ -95,7 +100,7 @@ User.getUser = function(id, result) {
             {
                 if(res[0].inactive != 1)
                 {
-                    result({"code":200});
+                    result({"code":200, "firstName": res[0].firstName, "lastName": res[0].lastName, "email": res[0].email, "id": res[0].id, "user_type": res[0].user_type, "state_residence":res[0].state_residence });
                 }
                 else
                 {
@@ -116,7 +121,7 @@ User.getUser = function(id, result) {
 User.changePassword = function(id, pass, result) {
     var salt = salter(16);
     var salt, newPass = sha224(pass, salt);
-    connection.query("UPDATE `ballotBuddy`.`users` SET pass = ? WHERE id = ?;", [id, newPass], 
+    connection.query("UPDATE `ballotBuddy`.`users` SET pass = ?, salt = ? WHERE id = ?;", [newPass.passwordHash, salt, id], 
     function(err, res) 
     {
         if(err)
@@ -125,14 +130,14 @@ User.changePassword = function(id, pass, result) {
         }
         else 
         {
-            result(null, {"code":200});
+            result(null, {"code":200, "pass": pass});
         }
 
     });
 };
 
 User.updateFirstName = function(id, firstName, result) {
-    connection.query("UPDATE `ballotBuddy`.`users` SET firstName = ? WHERE id = ?", [id, firstName], 
+    connection.query("UPDATE `ballotBuddy`.`users` SET firstName = ? WHERE id = ?", [firstName, id], 
     function(err, res)
     {
         if(err)
@@ -141,13 +146,13 @@ User.updateFirstName = function(id, firstName, result) {
         }
         else
         {
-            result(null, {"code":200});
+            result(null, {"code":200, "firstName": firstName});
         }
     });
 };
 
 User.updateLastName = function(id, lastName, result) {
-    connection.query("UPDATE `ballotBuddy`.`users` SET lastName = ? WHERE id = ?", [id, lastName], 
+    connection.query("UPDATE `ballotBuddy`.`users` SET lastName = ? WHERE id = ?", [lastName, id], 
     function(err, res)
     {
         if(err)
@@ -156,13 +161,28 @@ User.updateLastName = function(id, lastName, result) {
         }
         else
         {
-            result(null, {"code":200});
+            result(null, {"code":200, "lastName": lastName});
+        }
+    });
+};
+
+User.updateState = function(id, state_residence, result) {
+    connection.query("UPDATE `ballotBuddy`.`users` SET state_residence = ? WHERE id = ?", [state_residence, id], 
+    function(err, res)
+    {
+        if(err)
+        {
+            result(err, null);
+        }
+        else 
+        {
+            result(null, {"code":200, "state_residence": state_residence});
         }
     });
 };
 
 User.updateEmail = function(id, email, result) {
-    connection.query("UPDATE `ballotBuddy`.`users` SET email = ? WHERE id = ?", [id, email], 
+    connection.query("UPDATE `ballotBuddy`.`users` SET email = ? WHERE id = ?", [email, id], 
     function(err, res)
     {
         if(err)
@@ -171,16 +191,15 @@ User.updateEmail = function(id, email, result) {
         }
         else
         {
-            result(null, {"code":200});
+            result(null, {"code":200, "email": email});
         }
     });
 };
 
 
-
 //delete user -- marking them as inactive
-User.deleteProfile = function(user, result) {
-    connection.query("UPDATE `ballotBuddy`.`profiles` SET inactive=1 WHERE `profiles`.`id` IN ( SELECT id from `ballotBuddy`.`users` WHERE email = ?)", [user.email], 
+User.deleteProfile = function(id, result) {
+    connection.query("UPDATE `ballotBuddy`.`users` SET inactive=1 WHERE id = ?", [id], 
     function(err, res)
     {
         if(err)
@@ -195,14 +214,30 @@ User.deleteProfile = function(user, result) {
 };
 
 //get all users
-
-//get user by name -- search basically
-// see what harrison is sending  to me
-User.search = function(user, result) {
-    connection.query("SELECT firstName, lastName FROM `ballotBuddy`.`users` WHERE firstName LIKE",
+User.search = function(firstName, lastName, result) {
+    connection.query("SELECT firstName, lastName, user_type, state_residence FROM `ballotBuddy`.`users` WHERE firstName = ? AND lastName = ? AND id NOT IN (SELECT `id` from `ballotBuddy`.`users` WHERE `inactive`=1)", [firstName, lastName], 
     function(err, res)
     {
-
+        if(res.length == 0)
+        {
+            connection.query("SELECT firstName, lastName, user_type, state_residence FROM `ballotBuddy`.`users` WHERE firstName = ? OR lastName = ? AND id NOT IN (SELECT `id` from `ballotBuddy`.`users` WHERE `inactive`=1)", [firstName, lastName], 
+            function(err1, res1)
+            {
+                if(err1)
+                {
+                    result(err, null);
+                }
+                else
+                {
+                    result(null, res1);
+                    //how to send back all ?
+                }
+            });
+        }
+        else
+        {
+            result(null, res);
+        }
     });
 };
 
