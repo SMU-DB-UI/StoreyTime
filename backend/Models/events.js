@@ -40,7 +40,9 @@ Event.createEvent = function(newEvent,result){
     });
 };
 
-//Event creation date will not be changed,
+//Event creation date will not be changed
+//event holder, the group_id, will not be changed
+//event id, can only be deleted
 //the user will be able to modify:
 //      event_date
 //      event_desc
@@ -55,6 +57,21 @@ Event.updateEventTime = function updateEventTime(event_id,newDate,result){
                 "code" : 200,
                 "response" : "Event time update completes.",
                 "event_id" : newDate
+            });
+        }
+    });
+};
+
+Event.updateEventDesc = function updateEventDesc(event_id,newDesc,result){
+    sql.query("UPDATE `ballotBuddy`.`events` SET event_desc = ? WHERE event_id = ?;",[newDesc,event_id],
+    function(err,res){
+        if(err){
+            result(err,null);
+        }else{
+            result(null,{
+                "code" : 200,
+                "response" : "Event description update completes.",
+                "event_id" : newDesc
             });
         }
     });
