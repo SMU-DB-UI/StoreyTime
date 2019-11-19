@@ -52,8 +52,7 @@ Poll.createPoll = function(newPoll, result) {
             "response":"Poll creation was sucessfull."
         });
       }
-    }
-  );
+    });
 };
 
 Poll.updateCreatorByPollId = function updateCreatorByPollId(poll_id,creator_id,result){
