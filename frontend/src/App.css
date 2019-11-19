@@ -1,5 +1,21 @@
 .App {
   text-align: center;
-  height: 100vh;
-  max-height: 100vh;
+  height: 100%;
+  min-height: 100vh;
+  background-image: url('./imgs/bg-01.jpg');
+  background-attachment: fixed;
+  background-position: center;
+}
+
+.AppBackground {
+  text-align: center;
+  height: 100%;
+  min-height: 100vh;
+  background-color: rgba(255, 255, 255, 0.9);
+  background-attachment: fixed;
+  background-position: center;
+}
+
+.container {
+  background-color: rgba(255,255,255,0);
 }

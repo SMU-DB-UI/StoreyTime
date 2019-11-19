@@ -8,7 +8,6 @@ const mysql = require('mysql');
 var path = require('path');
 var crypto = require('crypto'); //hash
 
-
 //set up some configs for express. 
 const config = {
   name: 'backend',
@@ -19,13 +18,14 @@ const config = {
 //create the express.js object
 const app = express();
 
-
 //create a logger object.  Using logger is preferable to simply writing to the console. 
 const logger = log({ console: true, file: false, label: config.name });
 
-app.use(express.urlencoded({ extended: true })); // express body-parser
+app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors({
+  origin: '*'
+}));
 app.use(ExpressAPILogMiddleware(logger, { request: true }));
 
 //connecting the express object to listen on a particular port as defined in the config object. 
