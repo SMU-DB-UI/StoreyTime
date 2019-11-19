@@ -23,7 +23,7 @@ exports.createGroup = function(request, result) {
     }
 };
 
-exports.inviteMembers = funciton(req,res){
+exports.inviteMembers = function(req,res){
     if(!req.params.joinedGroup.group_id){
         res.status(400).json({
             "code":400,
