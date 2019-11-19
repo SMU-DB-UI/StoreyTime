@@ -40,7 +40,7 @@ Group.inviteMembers = function(newMember, joinedGroup, result) {
         }
         else
         {
-            result(null,{"code":200,"response":"Member invited successfully."})
+            result(null,{"code":200,"response":"Member invited successfully.","invited person":newMember.id})
         }
     });
 };
