@@ -92,3 +92,20 @@ Event.getEventDesc = function getEventDesc(event_id,result){
         }
     });
 };
+
+
+Event.getEventDate = function getEventDate(event_id,result){
+    sql.query("SELECT event_date FROM `ballotBuddy`.`events` WHERE event_id = ?;",[event_id],
+    function(err,res){
+        if(err){
+            result({
+                "code":204,
+                "response" : "Cannot find event time based on input evnet ID."
+            },null);
+        }else{
+            result(null,res);
+        }
+    });
+};
+
+module.exports = Event;
