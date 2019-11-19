@@ -48,7 +48,7 @@ Post.createPost = function(creator_id, newPost, result)
 
 Post.addTags = function(post_id, creator_id, tag_words, result)
 {
-    connection.query("SELECT tag_id FROM `ballotBuddy`.`tags` WHERE `tag_word` IN ?", [tag_words], 
+    connection.query("SELECT tag_id FROM `ballotBuddy`.`tags` WHERE `tag_word` IN ('"+ tag_words[0] +"', '"+ tag_words[1] +"', '"+ tag_words[2] +"');", 
     function(err, res)
     {
         if(err)
@@ -57,12 +57,12 @@ Post.addTags = function(post_id, creator_id, tag_words, result)
         }
         else
         {
-            connection.query("UPDATE `ballotBuddy`.`posts` SET tag_id1 = ?  AND tag_id2 = ? AND tag_id3 = ? WHERE post_id = ? AND creator_id = ?", [tag_words[0], tag_words[1], tag_words[2], post_id, creator_id], 
+            connection.query("UPDATE `ballotBuddy`.`posts` SET tag_id1 = ?  AND tag_id2 = ? AND tag_id3 = ? WHERE post_id = ? AND creator_id = ?", [res[0].tag_id, res[1].tag_id, res[2].tag_id, post_id, creator_id], 
             function(err1, res1)
             {
                 if(err1)
                 {
-                    result(err, null);
+                    result(err1, null);
                 }
                 else
                 {

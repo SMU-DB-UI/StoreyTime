@@ -96,7 +96,7 @@ User.getUser = function(id, result) {
         }
         else 
         {
-            if(res.length > 0)
+            if(res.length != 0)
             {
                 if(res[0].inactive != 1)
                 {

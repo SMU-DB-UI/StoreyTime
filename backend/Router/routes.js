@@ -10,6 +10,9 @@ module.exports = function(app) {
     
     app.route('/setupdb')
       .get(dbManager.setupdb);
+    
+    app.route('/createtags')
+      .get(dbManager.setuptags);
 
     //USERS ROUTES
     app.get('/', function(err, result) {
@@ -55,7 +58,7 @@ module.exports = function(app) {
     app.route('/user/newPost/:id')
       .post(postController.createPost);
 
-    app.route('/user/newPost/:post_id/addTags/:id')
+    app.route('/user/newPost/addTags/:id')
       .put(postController.addTags);
 
 };

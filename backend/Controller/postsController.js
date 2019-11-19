@@ -20,9 +20,9 @@ exports.createPost = function(request, result) {
 };
 
 exports.addTags = function(request, result) {
-    if( !request.params.post_id)
+    if( !request.body.post_id)
     {
-        result.status(400).json({"code":400, "response":"Missing post ID in params"});
+        result.status(400).json({"code":400, "response":"Missing post ID in body"});
     }
     else if( !request.params.id)
     {
@@ -30,7 +30,8 @@ exports.addTags = function(request, result) {
     }
     else
     {
-        var words = [request.body.tag_word1, request.body.tag_word2, request.tag_word3];
+        var words = [request.body.tag_word1, request.body.tag_word2, request.body.tag_word3];
+        console.log(words);
         Post.addTags(request.params.post_id, request.params.id, words, function(err, post)
         {
             if(err)
