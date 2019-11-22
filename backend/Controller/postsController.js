@@ -74,3 +74,24 @@ exports.editPost = function(request, result) {
         });
     }
 };
+
+exports.deletePost = function(request, result) {
+    if(! request.body.post_id)
+    {
+        result.status(400).json({"code":400, "response":"Missing post ID in body"});
+    }
+    else
+    {
+        Post.deletePost(request.body.post_id, function(err, post)
+        {
+            if(err)
+            {
+                result.send(err);
+            }
+            else
+            {
+                result.json(post);
+            }
+        });
+    }
+};

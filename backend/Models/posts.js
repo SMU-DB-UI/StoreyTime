@@ -88,4 +88,19 @@ Post.editText = function(post_id, creator_id, newText, result) {
     }); 
 };
 
+Post.deletePost = function(post_id, result) {
+    connection.query("UPDATE `ballotBuddy`.`posts` SET inactive = 1 WHERE post_id = ?", [post_id],
+    function(err, res)
+    {
+        if(err)
+        {
+            result(err, null);
+        }
+        else
+        {
+            result(null, {"code":200});
+        }
+    });
+};
+
 module.exports = Post;

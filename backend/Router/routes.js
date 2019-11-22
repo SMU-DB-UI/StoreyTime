@@ -29,11 +29,10 @@ module.exports = function(app) {
     app.route('/user/:id')
       .get(userController.getUser);
 
-    //update password
+    //user update profile
     app.route('/user/update/password/:id') //DONE
       .put(userController.resetPassword);
 
-    //update names
     app.route('/user/update/firstName/:id') //DONE
       .put(userController.changeFirstName);
 
@@ -43,7 +42,6 @@ module.exports = function(app) {
     app.route('/user/update/state_residence/:id')
       .put(userController.changeStateResidence);
 
-    //update email
     app.route('/user/update/email/:id') //DONE
       .put(userController.changeEmail);
 
@@ -54,7 +52,7 @@ module.exports = function(app) {
       .post(userController.searchUsers);
 
 
-    //POSTS routes
+    //user posts routes
     app.route('/user/newPost/:id')
       .post(postController.createPost);
 
