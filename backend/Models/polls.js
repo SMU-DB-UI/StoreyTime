@@ -2,7 +2,7 @@
 
 var sql = require('./db.js');
 
-
+//poll copy
 var Poll = function(poll){
 
     //poll_id INT(10) PRIMARY KEY,
@@ -18,26 +18,10 @@ var Poll = function(poll){
     //VARCHAR(150) // the titile of polls, what is people voting for
     
     //date_created DATE
-    this.date_created = poll.date_created,
+    this.date_created = poll.date_created
     //DATE // Time of creation
 
-    //answer1 VARCHAR(50), 
-    this.answer1 = poll.answer1,
-    //VARCHAR(150) // detials of answer1
-
-    //answer2 VARCHAR(50), 
-    this.answer2 = poll.answer2,
-    //VARCHAR(150) // detials of answer2
-
-    //count_answer1 INT, 
-    this.count_answer1 = poll.count_answer1,
-    //INT // NUM number of the votes
-
-    //count_answer2 INT, 
-    this.count_answer2 = poll.count_answer2
-     //INT // NUM number of the votes
-
-     //we just have 2 answer， and the quesiton is a T/F question
+    //answers and tags of polls will be recorded in another tables
 };
 
 
