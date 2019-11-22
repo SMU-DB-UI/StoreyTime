@@ -5,7 +5,7 @@ import './pollCard.css';
 class PollCard extends React.Component {
 
     state = {
-        title : "Do you rate chickens?",
+        title : "QUESTION ",
         options: ["Zero Stars", "Three Stars", "# Stars", "56/88"],
         votes: [25, 30, 40, 5],
         totalVotes: 0
