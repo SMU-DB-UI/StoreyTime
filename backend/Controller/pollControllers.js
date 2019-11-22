@@ -4,7 +4,7 @@ var Poll = require('../Models/pollModels');
 
 exports.createPoll = function(req,res){
     var newInput = new Poll(req.body);
-    if(!poll_id || !creator_id || !question || !date_created || !answer1 || !answer2 || !count_answer1 || !count_answer2){
+    if(!newInput.poll_id || !newInput.creator_id || !newInput.question || !newInput.date_created || !newInput.answer1 || !newInput.answer2 || !newInput.count_answer1 || !newInput.count_answer2){
         res.status(400).json({
             "code":400,
             "response": "Insufficient Input."
@@ -179,63 +179,63 @@ exports.updateCount2ById = function updateCount2ById(req,res){
 
 exports.getAnswer1ById = function(req, res) {
     Poll.getAnswer1ById(req.params.poll_id, function(err, poll){
-      if (err){
+      if (err)
         res.send(err);
-      }
-      res.json(poll);
+      else
+        res.json(poll);
     });
   };
 
 exports.getAnswer2ById = function(req, res) {
     Poll.getAnswer2ById(req.params.poll_id, function(err, poll){
-      if (err){
+      if (err)
         res.send(err);
-      }
-      res.json(poll);
+      else
+        res.json(poll);
     });
 };
 
 exports.getCountAnswer1 = function(req, res) {
     Poll.getCountAnswer1(req.params.poll_id, function(err, poll){
-      if (err){
+      if (err)
         res.send(err);
-      }
-      res.json(poll);
+      else
+        res.json(poll);
     });
 };
 
 exports.getCreationDate = function(req, res) {
     Poll.getCreationDate(req.params.poll_id, function(err, poll){
-      if (err){
+      if (err)
         res.send(err);
-      }
-      res.json(poll);
+      else
+        res.json(poll);
     });
 };
 
 exports.getQuestionById = function(req, res) {
     Poll.getQuestionById(req.params.poll_id, function(err, poll){
-      if (err){
+      if (err)
         res.send(err);
-      }
-      res.json(poll);
+      else
+        res.json(poll);
     });
 };
 
 exports.getCreatorId = function(req, res) {
     Poll.getCreatorId(req.params.poll_id, function(err, poll){
-      if (err){
+      if (err)
         res.send(err);
-      }
-      res.json(poll);
+      else
+        res.json(poll);
     });
 };
 
 exports.getAllPolls = function(req, res) {
     Poll.getAllPolls(function(err, poll){
-      if (err){
+      if (err)
         res.send(err);
-      }
-      res.json(poll);
+      else
+        res.json(poll);
     });
 };

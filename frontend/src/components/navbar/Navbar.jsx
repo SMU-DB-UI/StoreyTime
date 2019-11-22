@@ -1,6 +1,7 @@
 import React from 'react';
 import Logo from '../../imgs/logo.png';
 import './navbar.css';
+import { NavLink } from 'react-router-dom'
 
 const Navbar = props => (
     <header className='nav-container'>
@@ -13,8 +14,8 @@ const Navbar = props => (
             </ul>
         </div>
         <div className='nav-right'>
-            <h3><a href="https://vote.gov/">Log out</a></h3>
-            <button><h3>Profile</h3></button>
+            <h3><NavLink to="/login" onClick={() => { localStorage.clear() }}>Log out</NavLink></h3>
+            <NavLink to="/profile" className="btn btn-light"><h3>Profile</h3></NavLink>
         </div>
     </header>
 );
