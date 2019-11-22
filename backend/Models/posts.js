@@ -15,27 +15,60 @@ var Post = function(post) {
 
 Post.createPost = function(creator_id, newPost, result)
 {
-    connection.query("INSERT INTO `ballotBuddy`.`posts` (`creator_id`, `tag_id1`, `tag_id2`, `tag_id3`, `date_created`, `title`, `post_text`) VALUES ('"+ creator_id +"', '"+ newPost.tag_id1 +"', '"+ newPost.tag_id2 +"', '"+ newPost.tag_id3 +"', '"+ newPost.date_created +"', '"+ newPost.title +"', '"+ newPost.post_text +"');",
-    function(err, res)
+    var d = new Date();
+    var year = d.getFullYear();
+    var month = d.getMonth();
+    var day = d.getDate();
+    var date = year+ '-' + month + '-' + day;
+    connection.query("INSERT INTO `ballotBuddy`.`posts` (`creator_id`, `date_created`, `title`, `post_text`) VALUES ('"+ creator_id +"', '"+ date +"', '"+ newPost.title +"', '"+ newPost.post_text +"');",
+    function(err1, res1)
     {
-        if(err)
+        if(err1)
         {
-           result(err, null);
+            result(err1, null);
         }
         else
         {
             connection.query("SELECT MAX(`post_id`) FROM `ballotBuddy`.`posts` WHERE `creator_id` = ?", [creator_id],
-            function(err, res1)
+            function(err2, res2)
             {
-                if(res1.length > 0 )
+                if(res2.length > 0 )
                 {
-                    result(null, {"code":200, "post_id": res1[0].post_id, "creator_id": creator_id});
+                    console.log(res2);
+                    result(null, {"code":200, "post_id": res2[0].post_id, "creator_id": creator_id});
                 }
                 else
                 {
-                    result(err, null);
+                    result(err2, null);
                 }
             });  
+        }
+    });
+};
+
+Post.addTags = function(post_id, creator_id, tag_words, result)
+{
+    connection.query("SELECT tag_id FROM `ballotBuddy`.`tags` WHERE `tag_word` = ? OR `tag_word` = ? OR `tag_word`=? ", [tag_words[0], tag_words[1], tag_words[2] ], 
+    function(err, res)
+    {
+        if(err)
+        {
+            result(err, null);
+        }
+        else
+        {
+            connection.query("UPDATE `ballotBuddy`.`posts` SET tag_id1 = ?, tag_id2 = ?, tag_id3 = ? WHERE post_id = ? AND creator_id = ?", [res[0].tag_id, res[1].tag_id, res[2].tag_id, post_id, creator_id], 
+            function(err1, res1)
+            {
+                if(err1)
+                {
+                    result(err1, null);
+                }
+                else
+                {
+                    result(null, {"code":200, "post_id": post_id, "id": creator_id});
+                }
+            });
         }
     });
 };
@@ -46,13 +79,28 @@ Post.editText = function(post_id, creator_id, newText, result) {
     {
         if(err)
         {
-            res.send(err, null);
+            result(err, null);
         }
         else
         {
-            res.send(null, {"code":200, "post_id":post_id, "post_text": newText});
+            result(null, {"code":200, "post_id":post_id, "creator_id": creator_id, "post_text": newText});
         }
     }); 
+};
+
+Post.deletePost = function(post_id, result) {
+    connection.query("UPDATE `ballotBuddy`.`posts` SET inactive = 1 WHERE post_id = ?", [post_id],
+    function(err, res)
+    {
+        if(err)
+        {
+            result(err, null);
+        }
+        else
+        {
+            result(null, {"code":200});
+        }
+    });
 };
 
 module.exports = Post;
