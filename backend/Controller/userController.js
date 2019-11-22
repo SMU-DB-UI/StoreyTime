@@ -19,150 +19,150 @@ exports.createUser = function(request, result) {
     }
 };
 
-exports.loginUser = function(req, res) {
-    if(!req.body.email)
+exports.loginUser = function(request, result) {
+    if(!request.body.email)
     {
-        res.status(400).json({"code":400, "response":"Missing email in body"});
+        result.status(400).json({"code":400, "response":"Missing email in body"});
     }
-    else if(! req.body.pass)
+    else if(! request.body.pass)
     {
-        res.status(400).json({"code":400, "response":"Missing password in body"});
+        result.status(400).json({"code":400, "response":"Missing password in body"});
     }
     else
     {
-        var LoginUser = new User(req.body);
+        var LoginUser = new User(request.body);
         User.login(LoginUser, function(err, user)
         {
             if(err)
             {
-                res.send(err);
+                result.send(err);
             }
             else
             {
-                res.json(user);
+                result.json(user);
             }
         });
     }
 };
 
-exports.getUser = function(req, res) {
-    if(! req.params.id)
+exports.getUser = function(request, result) {
+    if(! request.params.id)
     {
-        res.status(400).json({"code":400, "response":"Missing ID in request"});
+        result.status(400).json({"code":400, "response":"Missing ID in request"});
     }
     else 
     {
-        User.getUser(req.params.id, function(err, user) 
+        User.getUser(request.params.id, function(err, user) 
         {
             if(err)
             {
-                res.send(err);
+                result.send(err);
             }
             else 
             {
-                res.json(user);
+                result.json(user);
             }
         });
     }
 };
 
-exports.resetPassword = function(req, res) {
-    if(!req.params.id)
+exports.resetPassword = function(request, result) {
+    if(!request.params.id)
     {
-        res.status(400).json({"code":400, "response":"Missing ID in request"});
+        result.status(400).json({"code":400, "response":"Missing ID in request"});
     }
-    else if(! req.body.pass)
+    else if(! request.body.pass)
     {
-        res.status(400).json({"code":400, "response":"Missing password in body"});
+        result.status(400).json({"code":400, "response":"Missing password in body"});
     }
     else 
     {
-        User.changePassword(req.params.id, req.body.pass, function(err, user)
+        User.changePassword(request.params.id, request.body.pass, function(err, user)
         {
             if(err)
             {
-                res.send(err);
+                result.send(err);
             }
             else 
             {
-                res.json(user);
+                result.json(user);
             }
         });
     }
 };
 
-exports.changeFirstName = function(req, res) {
-    if(!req.params.id)
+exports.changeFirstName = function(request, result) {
+    if(!request.params.id)
     {
-        res.status(400).json({"code":400, "response":"Missing ID in request"});
+        result.status(400).json({"code":400, "response":"Missing ID in request"});
     }
-    else if(! req.body.firstName)
+    else if(! request.body.firstName)
     {
-        res.status(400).json({"code":400, "response":"Missing first name in body"});
+        result.status(400).json({"code":400, "response":"Missing first name in body"});
     }
     else
     {
-        User.updateFirstName(req.params.id, req.body.firstName, function(err, user)
+        User.updateFirstName(request.params.id, request.body.firstName, function(err, user)
         {
             if(err)
             {
-                res.send(err);
+                result.send(err);
             }
             else
             {
-                res.json(user);
+                result.json(user);
             }
         })
 
     }
 };
 
-exports.changeLastName = function(req, res) {
-    if(!req.params.id)
+exports.changeLastName = function(request, result) {
+    if(!request.params.id)
     {
-        res.status(400).json({"code":400, "response":"Missing ID in request"});
+        result.status(400).json({"code":400, "response":"Missing ID in request"});
     }
-    else if(! req.body.lastName)
+    else if(! request.body.lastName)
     {
-        res.status(400).json({"code":400, "response":"Missing last name in body"});
+        result.status(400).json({"code":400, "response":"Missing last name in body"});
     }
     else
     {
-        User.updateLastName(req.params.id, req.body.lastName, function(err, user)
+        User.updateLastName(request.params.id, request.body.lastName, function(err, user)
         {
             if(err)
             {
-                res.send(err);
+                result.send(err);
             }
             else
             {
-                res.json(user);
+                result.json(user);
             }
         })
 
     }
 };
 
-exports.changeEmail = function(req, res) {
-    if(! req.params.id)
+exports.changeEmail = function(request, result) {
+    if(! request.params.id)
     {
-        res.status(400).json({"code":400, "response":"Missing ID in request"});
+        result.status(400).json({"code":400, "response":"Missing ID in request"});
     }
-    else if(! req.body.email)
+    else if(! request.body.email)
     {
-        res.status(400).json({"code":400, "response":"Missing email in body"});
+        result.status(400).json({"code":400, "response":"Missing email in body"});
     }
     else
     {
-        User.updateEmail(req.params.id, req.body.email, function(err, user)
+        User.updateEmail(request.params.id, request.body.email, function(err, user)
         {
             if(err)
             {
-                res.send(err);
+                result.send(err);
             }
             else
             {
-                res.json(user);
+                result.json(user);
             }
 
         });
@@ -170,85 +170,85 @@ exports.changeEmail = function(req, res) {
     }
 };
 
-exports.changeStateResidence = function(req, res) {
-    if(!req.params.id)
+exports.changeStateResidence = function(request, result) {
+    if(!request.params.id)
     {
-        res.status(400).json({"code":400, "response":"Missing ID in request parameters"});
+        result.status(400).json({"code":400, "response":"Missing ID in request parameters"});
     }
-    else if(! req.body.state_residence)
+    else if(! request.body.state_residence)
     {
-        res.status(400).json({"code":400, "response":"Missing state of residence in body"});
-    }
-    else
-    {
-        User.updateState(req.params.id, req.body.state_residence, function(err, user)
-        {
-            if(err)
-            {
-                res.send(err);
-            }
-            else
-            {
-                res.json(user);
-            }
-        })
-
-    }
-};
-
-exports.deleteProfile = function(req, res) {
-    if(! req.params.id)
-    {
-        res.status(400).json({"code":400, "response":"Missing id in parameters"});
+        result.status(400).json({"code":400, "response":"Missing state of residence in body"});
     }
     else
     {
-        User.deleteProfile(req.params.id, function(err, user)
+        User.updateState(request.params.id, request.body.state_residence, function(err, user)
         {
             if(err)
             {
-                res.send(err);
+                result.send(err);
             }
             else
             {
-                res.json(user);
+                result.json(user);
             }
         });
     }
 };
 
-exports.searchUsers = function(req, res) {
-    if(! req.body.firstName)
+exports.deleteProfile = function(request, result) {
+    if(! request.params.id)
     {
-        res.status(400).json({"code":400, "response":"Missing name in body"});
+        result.status(400).json({"code":400, "response":"Missing id in parameters"});
     }
-    else if(!req.body.lastName)
+    else
     {
-        User.search(req.body.firstName, "", function(err, users)
+        User.deleteProfile(request.params.id, function(err, user)
         {
             if(err)
             {
-                res.send(err);
+                result.send(err);
             }
             else
             {
-                res.json(users);
+                result.json(user);
+            }
+        });
+    }
+};
+
+exports.searchUsers = function(request, result) {
+    if(! request.body.firstName)
+    {
+        result.status(400).json({"code":400, "response":"Missing name in body"});
+    }
+    else if(!request.body.lastName)
+    {
+        User.search(request.body.firstName, "", function(err, users)
+        {
+            if(err)
+            {
+                result.send(err);
+            }
+            else
+            {
+                result.json(users);
             }
         });
     }
     else
     {
-        User.search(req.body.firstName, req.body.lastName, function(err, users)
+        User.search(request.body.firstName, request.body.lastName, function(err, users)
         {
             if(err)
             {
-                res.send(err);
+                result.send(err);
             }
             else
             {
-                res.json(users);
+                result.json(users);
             }
         });
     }
 };
+
 
