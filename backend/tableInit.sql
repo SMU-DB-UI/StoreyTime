@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS `posts`
     `date_created` DATE, 
     `title` VARCHAR(100), 
     `post_text` VARCHAR(280), 
+    `deleted` TINYINT,
     PRIMARY KEY(`post_id`),
     FOREIGN KEY(`creator_id`) REFERENCES `users`(`id`) );
 
@@ -58,6 +59,7 @@ CREATE TABLE IF NOT EXISTS `groups`
     (`group_id` INT(10), 
     `creator_id` INT(10), 
     `group_name` VARCHAR(20), 
+    `deleted` TINYINT,
     PRIMARY KEY(`group_id`),
     FOREIGN KEY(`creator_id`) REFERENCES `users`(`id`) );
 
@@ -75,6 +77,7 @@ CREATE TABLE IF NOT EXISTS `events`
     `date_created` DATE, 
     `event_date` DATE, 
     `event_desc` VARCHAR(200),
+    `deleted` TINYINT,
     PRIMARY KEY(`event_id`),
     FOREIGN KEY(`group_id`) REFERENCES `groups`(`group_id`) );
 
@@ -84,6 +87,7 @@ CREATE TABLE IF NOT EXISTS `comments`
     `post_id` INT(10), 
     `comment_text` VARCHAR(280), 
     `date_created` DATE,
+    `deleted` TINYINT,
     PRIMARY KEY(`comment_id`),
     FOREIGN KEY(`creator_id`) REFERENCES `users`(`id`),
     FOREIGN KEY(`post_id`) REFERENCES `posts`(`post_id`) );
@@ -94,6 +98,7 @@ CREATE TABLE IF NOT EXISTS `announcements`
     `group_id` INT(10), 
     `announcement_text` VARCHAR(280), 
     `date_created` DATE, 
+    `deleted` TINYINT,
     PRIMARY KEY(`announcement_id`),
     FOREIGN KEY(`creator_id`) REFERENCES `users`(`id`),
     FOREIGN KEY(`group_id`) REFERENCES `groups`(`group_id`) );
