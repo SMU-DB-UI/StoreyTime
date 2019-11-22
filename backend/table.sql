@@ -110,6 +110,7 @@ CREATE TABLE IF NOT EXISTS `groups_admins` (
     `group_id` INT(10),
     `admin_id` INT(10),
     `current` TINYINT,
+    `date_added` DATE,
     PRIMARY KEY(`group_id`, `admin_id`),
     FOREIGN KEY(`group_id`) REFERENCES `groups`(`group_id`),
     FOREIGN KEY(`admin_id`) REFERENCES `users`(`id`) 
