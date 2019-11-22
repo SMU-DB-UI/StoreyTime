@@ -59,7 +59,7 @@ Group.removeMembersFromGroup = function(member_id,group_id,result) {
             result(err, null);
           }else{
             result(null,{
-                "code":201,
+                "code":200,
                 "response":"Member deletion completed."
             });
           }
@@ -67,19 +67,17 @@ Group.removeMembersFromGroup = function(member_id,group_id,result) {
 };
 
 Group.removeGroup = function(group_id,result) {
-    sql.query("DELETE FROM `ballotBuddy`.`group_members_bridge` WHERE group_id = ?", [group_id],
+    sql.query("UPDATE `ballotBuddy`.`groups` SET `inactive` = 1 WHERE group_id = ?", [group_id],
     function(err,res){
         if (err){
             result(err, null);
           }else{
             result(null,{
-                "code":201,
+                "code":200,
                 "response":"Group deletion completed."
             });
           }
     });
 };
-
-module.exports = Group;
 
 module.exports = Group;
