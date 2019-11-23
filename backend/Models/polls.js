@@ -1,8 +1,9 @@
 'use strict';
 
+
 var sql = require('./db.js');
 
-
+//copy constructor poll
 var Poll = function(poll){
 
     //poll_id INT(10) PRIMARY KEY,
@@ -27,7 +28,7 @@ var Poll = function(poll){
     //answers and tags of polls will be recorded in another tables
 };
 
-
+//copy constructor poll_answer
 var PollAnswer = function(answer){
 
     //INT(10) PRIMARY KEY : id of the polls
@@ -40,7 +41,7 @@ var PollAnswer = function(answer){
     this.answer_count = answer.answer_count
 };
 
-
+//copy constructor tags_poll
 var PollTag = function(tag){
 
     //INT(10) PRIMARY KEY : id of the tags
@@ -112,7 +113,7 @@ Poll.updateQuestionById = function updateQuestionById(creator_id, poll_id, quest
 };
 
 
-//redo the answer related updating funcitons
+//delte all the answers related updating funcitons
 
 
 
