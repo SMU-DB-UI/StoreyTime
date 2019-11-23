@@ -42,67 +42,66 @@ var Poll = function(poll){
 
 
 Poll.createPoll = function(newPoll, result) {
-  sql.query("INSERT INTO `ballotBuddy`.`polls` (`poll_id`,`creator_id`,`question`,`date_created`,`answer1`,`answer2`,`count_answer1`,`count_answer2`) VALUES ('" + newPoll.poll_id + "', '" + newPoll.creator_id + "', '" + newPoll.question + "', '" + newPoll.date_created + "', '" + newPoll.answer1 + "', '" + newPoll.answer2 + "', '" + newPoll.count_answer1 + "', '" + newPoll.count_answer2 + "');",
+  sql.query("INSERT INTO `ballotBuddy`.`polls` (`creater_id`,`question`,`date_created`,`answer1`,`answer2`,`count_answer1`,`count_answer2`) VALUES ('" + newPoll.creator_id + "', '" + newPoll.question + "', '" + newPoll.date_created + "', '" + newPoll.answer1 + "', '" + newPoll.answer2 + "', '" + newPoll.count_answer1 + "', '" + newPoll.count_answer2 + "');",
     function(err, res) {
       if (err){
         result(err, null);
       }else{
         result(null,{
-            "code":201,
-            "response":"Poll creation was sucessfull."
+            "code":200 
         });
       }
     });
 };
 
-Poll.updateCreatorByPollId = function updateCreatorByPollId(poll_id,creator_id,result){
-    sql.query("UPDATE `ballotBuddy`.`polls` SET creator_id=? WHERE poll_id = ?;", [creator_id,poll_id],
+// Poll.updateCreatorByPollId = function updateCreatorByPollId(poll_id,creator_id,result){
+//     sql.query("UPDATE `ballotBuddy`.`polls` SET creator_id=? WHERE poll_id = ?;", [creator_id, poll_id],
+//     function(err,res){
+//         if(err){
+//             result(err,null);
+//         }else{
+//             result(null,{
+//                 "code":200,
+//                 "response":"Update complete.",
+//                 "creator_id":creator_id
+//             });
+//         }
+//     });
+// };
+
+Poll.updateQuestionById = function updateQuestionById(creator_id, poll_id, question, result){
+    sql.query("UPDATE `ballotBuddy`.`polls` SET question = ? WHERE poll_id = ? AND creator_id = ?",[question, poll_id, creator_id],
     function(err,res){
         if(err){
             result(err,null);
         }else{
             result(null,{
                 "code":200,
-                "response":"Update complete.",
-                "creator_id":creator_id
+                "question":question,
+                "poll_id": poll_id
             });
         }
     });
 };
 
-Poll.updateQuestionById = function updateQuestionById(poll_id,question,result){
-    sql.query("UPDATE `ballotBuddy`.`polls` SET qustion = ? WHERE poll_id = ?",[question,poll_id],
-    function(err,res){
-        if(err){
-            result(err,null);
-        }else{
-            result(null,{
-                "code":200,
-                "response":"Update compete",
-                "question":question
-            });
-        }
-    });
-};
+// Poll.updateCreationDateById = function updateCreationDateById(poll_id,date_created,result){
+//     sql.query("UPDATE `ballotBuddy`.`polls` SET date_created = ? WHERE poll_id = ?", [date_created,poll_id],
+//     function(err,res){
+//         if(err){
+//             result(err,null);
+//         }else{
+//             result(null,{
+//                 "code":200,
+//                 "response":"Update compete",
+//                 "date_created":date_created 
+//             });
+//         }
+//     });
 
-Poll.updateCreationDateById = function updateCreationDateById(poll_id,date_created,result){
-    sql.query("UPDATE `ballotBuddy`.`polls` SET date_created = ? WHERE poll_id = ?", [date_created,poll_id],
-    function(err,res){
-        if(err){
-            result(err,null);
-        }else{
-            result(null,{
-                "code":200,
-                "response":"Update compete",
-                "date_created":date_created 
-            });
-        }
-    });
+// };
 
-};
-
-Poll.updateAnswer1ById = function updateAnswer1ById(poll_id,answer1,result){
-    sql.query("UPDATE `ballotBuddy`.`polls` SET answer1 = ? WHERE poll_id = ? ", [answer1,poll_id],
+Poll.updateAnswer1ById = function updateAnswer1ById(creator_id, poll_id,answer1,result){
+    sql.query("UPDATE `ballotBuddy`.`polls` SET answer1 = ? WHERE poll_id = ? AND creator_id = ?", [answer1, poll_id, creator_id],
     function(err,res){
         if(err){
             result(err,null);
@@ -116,8 +115,8 @@ Poll.updateAnswer1ById = function updateAnswer1ById(poll_id,answer1,result){
     });
 };
 
-Poll.updateAnswer2ById = function updateAnswer2ById(poll_id,answer2,result){
-    sql.query("UPDATE `ballotBuddy`.`polls` SET answer2 = ? WHERE poll_id = ? ", [answer2,poll_id],
+Poll.updateAnswer2ById = function updateAnswer2ById(creator_id, poll_id,answer2,result){
+    sql.query("UPDATE `ballotBuddy`.`polls` SET answer2 = ? WHERE poll_id = ? AND creator_id = ?", [answer2,poll_id, creator_id],
     function(err,res){
         if(err){
             result(err,null);

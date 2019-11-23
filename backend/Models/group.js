@@ -36,8 +36,8 @@ Group.createGroup = function(newGroup, result) {
 };
 
 //this is a combination of search and add
-Group.inviteMembers = function(newMember, joinedGroup, result) {
-    connection.query("INSERT INTO `ballotBuddy`.`group_members_bridge` VALUES ('"+ joinedGroup.group_id +"','" + newMember.id +"');",
+Group.findMembers = function(firstName, lastName, result) {
+    connection.query("SELECT id from `ballotBuddy`.`users` WHERE `firstName` = ? AND `lastName` = ?", [firstName, lastName], 
     function(err, res)
     {
         if(err)
@@ -46,40 +46,60 @@ Group.inviteMembers = function(newMember, joinedGroup, result) {
         }
         else
         {
+            result(null, {"code":200, res});
+        }
+    });
+};
 
+Group.inviteMembers = function(member_id, group_id, result)
+{
+    connection.query("INSERT INTO `ballotBuddy`.`groups_members_bridge` (`group_id`, `member_id`, `inactive`) VALUES ('"+ group_id +"', '"+ member_id +"', '"+ 0 +"' );",
+    function(err, res)
+    {
+        if(err)
+        {
+            result(err, null);
+        }
+        else
+        {
+            result(null, {"code":200, "group_id": group_id});
         }
     });
 };
 
 
 Group.removeMembersFromGroup = function(member_id,group_id,result) {
-    sql.query("DELETE FROM `ballotBuddy`.`group_members_bridge` WHERE member_id = ? AND group_id = ?", [member_id,group_id],
+    sql.query("UPDATE `ballotBuddy`.`group_members_bridge` SET `inactive` = 1 WHERE member_id = ? AND group_id = ?", [member_id,group_id],
     function(err,res){
         if (err){
             result(err, null);
           }else{
             result(null,{
-                "code":201,
-                "response":"Member deletion completed."
+                "code":200
             });
           }
     });
 };
 
-Group.removeGroup = function(group_id,result) {
-    sql.query("DELETE FROM `ballotBuddy`.`group_members_bridge` WHERE group_id = ?", [group_id],
+Group.deleteGroup = function(group_id,result) {
+    sql.query("UPDATE `ballotBuddy`.`groups` SET `inactive` = 1 WHERE group_id = ?", [group_id],
     function(err,res){
         if (err){
             result(err, null);
           }else{
             result(null,{
-                "code":201,
-                "response":"Group deletion completed."
+                "code":200
             });
           }
     });
 };
 
-module.exports = Group;
+Group.selectNewAdmin = function(group_id, member_id, result) {
+
+};
+
+Group.setNewAdmin = function(group_id, member_id, result) {
+
+};
 
 module.exports = Group;
