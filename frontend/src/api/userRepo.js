@@ -32,6 +32,14 @@ export class UserRepo {
         });
     }
 
+    getUser(id) {
+        return new Promise((resolve, reject) => {
+            axios.get(this.url + 'user/' + id)
+                .then(resp => resolve(resp.data))
+                .catch(resp => reject(resp.data));
+        });
+    }
+
     changeFirstName(firstName) {
         return new Promise((res, rej) => {
             axios.put(this.url + 'user/update/firstName/' + localStorage.getItem('id'), { firstName }, this.config)
