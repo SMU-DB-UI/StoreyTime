@@ -41,7 +41,7 @@ services:
     image: node:12
     restart: always
     working_dir: /usr/src/app
-    command: bash -c "yarn install && yarn start"
+    command: bash -c "npm install && npm start"
     volumes:
       - ./frontend:/usr/src/app
     depends_on:
