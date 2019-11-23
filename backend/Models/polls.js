@@ -63,6 +63,31 @@ Poll.createPoll = function(newPoll, result) {
     });
 };
 
+//adding new options of answers and linked with polls based on poll_id
+PollAnswer.addAnswer = function(newAnswer, result){
+    sql.query("INSERT INTO `ballotBuddy`.`polls_answers` (`poll_id`,`answer_text`,`answer_count`) VALUES ('"+ newAnswer.poll_id + "','" + newAnswer.answer_text + "','" + newAnswer.answer_count + "');",
+    function(err,res){
+        if(err)
+            result(err,null);
+        else
+            result(null,{"code":200});
+    });
+};
+//adding new tags to the polls based on poll_id
+
+PollTag.addTag = function(newTag,result){
+    sql.query("INSERT INTO `ballotBuddy`.`polls_answers` (`poll_id`,`tag_id`) VALUE ('"+ newTag.tag_id + "','" + newTag.poll_id + "');",
+    function(err,res){
+        if(err)
+            result(err,null);
+        else    
+            result(null,{
+                "code" : 200
+            });
+
+    });
+};
+
 
 //update the question text in certain tuple which has certain poll
 Poll.updateQuestionById = function updateQuestionById(creator_id, poll_id, question, result){
