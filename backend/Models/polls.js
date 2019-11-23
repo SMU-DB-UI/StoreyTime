@@ -70,7 +70,9 @@ PollAnswer.addAnswer = function(newAnswer, result){
         if(err)
             result(err,null);
         else
-            result(null,{"code":200});
+            result(null,{
+                "code":200
+            });
     });
 };
 //adding new tags to the polls based on poll_id
