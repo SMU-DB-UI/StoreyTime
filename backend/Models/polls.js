@@ -27,6 +27,7 @@ var Poll = function(poll){
     //answers and tags of polls will be recorded in another tables
 };
 
+
 var PollAnswer = function(answer){
 
     //INT(10) PRIMARY KEY : id of the polls
@@ -38,6 +39,7 @@ var PollAnswer = function(answer){
     //INT : count of vote
     this.answer_count = answer.answer_count
 };
+
 
 var PollTag = function(tag){
 
@@ -63,6 +65,7 @@ Poll.createPoll = function(newPoll, result) {
     });
 };
 
+
 //adding new options of answers and linked with polls based on poll_id
 PollAnswer.addAnswer = function(newAnswer, result){
     sql.query("INSERT INTO `ballotBuddy`.`polls_answers` (`poll_id`,`answer_text`,`answer_count`) VALUES ('"+ newAnswer.poll_id + "','" + newAnswer.answer_text + "','" + newAnswer.answer_count + "');",
@@ -75,8 +78,9 @@ PollAnswer.addAnswer = function(newAnswer, result){
             });
     });
 };
-//adding new tags to the polls based on poll_id
 
+
+//adding new tags to the polls based on poll_id
 PollTag.addTag = function(newTag,result){
     sql.query("INSERT INTO `ballotBuddy`.`polls_answers` (`poll_id`,`tag_id`) VALUE ('"+ newTag.tag_id + "','" + newTag.poll_id + "');",
     function(err,res){
@@ -107,6 +111,7 @@ Poll.updateQuestionById = function updateQuestionById(creator_id, poll_id, quest
     });
 };
 
+
 //redo the answer related updating funcitons
 
 
@@ -115,61 +120,7 @@ Poll.updateQuestionById = function updateQuestionById(creator_id, poll_id, quest
 
 
 //******************************************************************************
-Poll.getAnswer1ById = function getAnswer1ById(poll_id,reulst){
-    sql.query("SELECT answer1 FROM POLL WHERE poll_id = ? ;", [poll_id],
-    function(err,res){
-        if(err) {
-            result({
-                "code":204,
-                "response":"Cannot find this ID in the table."
-            }, null);
-          }else{
-            result(null, res);
-        }
-    });
-};
 
-Poll.getAnswer2ById = function getAnswer2ById(poll_id,reulst){
-    sql.query("SELECT answer2 FROM POLL WHERE poll_id = ? ;", [poll_id],
-    function(err,res){
-        if(err) {
-            result({
-                "code":204,
-                "response":"Cannot find this ID in the table."
-            }, null);
-          }else{
-            result(null, res);
-        }
-    });
-};
-
-Poll.getCountAnswer1 = function getCountAnswer1(poll_id,result){
-    sql.query("SELECT count_answer1 FROM POLL WHERE poll_id = ? ;", [poll_id],
-    function(err,res){
-        if(err) {
-            result({
-                "code":204,
-                "response":"Cannot find this ID in the table."
-            }, null);
-          }else{
-            result(null, res);
-        }
-    });
-};
-
-Poll.getCountAnswer2 = function getCountAnswer2(poll_id,result){
-    sql.query("SELECT count_answer2 FROM POLL WHERE poll_id = ? ;", [poll_id],
-    function(err,res){
-        if(err) {
-            result({
-                "code":204,
-                "response":"Cannot find this ID in the table."
-            }, null);
-          }else{
-            result(null, res);
-        }
-    });
-};
 
 Poll.getCreationDate = function getCreationDate(poll_id,result){
     sql.query("SELECT date_created FROM POLL WHERE poll_id = ? ;", [poll_id],
@@ -185,6 +136,7 @@ Poll.getCreationDate = function getCreationDate(poll_id,result){
     });
 };
 
+
 Poll.getQuestionById = function getQuestionById(poll_id,result){
     sql.query("SELECT question FROM POLL WHERE poll_id = ?;", [poll_id],
     function(err,res){
@@ -198,6 +150,7 @@ Poll.getQuestionById = function getQuestionById(poll_id,result){
         }
     });
 };
+
 
 Poll.getCreatorId = function getCreatorId(poll_id,result){
     sql.query("SELECT creator_id FROM POLL WHERE poll_id = ?;", [poll_id],
@@ -213,6 +166,7 @@ Poll.getCreatorId = function getCreatorId(poll_id,result){
     });
 };
 
+
 Poll.getAllPolls = function getAllPolls(result) {
     sql.query("SELECT * FROM Poll;", [], 
     function(err, res){
@@ -224,6 +178,7 @@ Poll.getAllPolls = function getAllPolls(result) {
     });
 };
   
+
 Poll.getPollByID = function getPollByID(poll_id, result) {
     sql.query("Select * FROM Poll WHERE poll_id = ?;", [poll_id], 
     function(err, res){
@@ -234,7 +189,4 @@ Poll.getPollByID = function getPollByID(poll_id, result) {
       }
     });
   };
-
-
-
 module.exports = Poll;
