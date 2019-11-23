@@ -1,23 +1,36 @@
 import React from 'react';
-import Logo from '../../imgs/logo.png';
+// import Logo from '../../imgs/logo.png';
 import './navbar.css';
 import { NavLink } from 'react-router-dom'
 
 const Navbar = props => (
-    <header className='nav-container'>
-        <div className='nav-left'>
-            <img src={Logo} alt='' />
-            <ul className='nav-links'>
-                <li><h3><a href="https://vote.gov/">Candidates</a></h3></li>
-                <li><h3><a href="https://vote.gov/">Polls</a></h3></li>
-                <li><h3><a href="https://vote.gov/">Voter Registration</a></h3></li>
+    <nav className='navbar navbar-expand navbar-dark' id="navbar">
+    {/* <nav className='navbar navbar-expand-md navbar-dark' id="navbar"> */}
+        <NavLink to="/" className="navbar-brand">BallotBuddy</NavLink>
+
+        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#ballotBuddyNav"
+            aria-controls="ballotBuddyNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"></span>
+        </button>
+
+        {/* <div className="collapse navbar-collapse" id="ballotBuddyNav"> */}
+        <div className="collapse navbar-collapse" id="ballotBuddyNav">
+
+            <ul className="navbar-nav mr-auto">
+                <li className="nav-item">
+                    <a className="nav-link" href="https://vote.gov/">Voter Registration</a>
+                </li>
+            </ul>
+            <ul className="navbar-nav ml-auto">
+                <li className="nav-item">
+                    <NavLink to="/login" className="nav-link" onClick={() => { localStorage.clear() }}>Log out</NavLink>
+                </li>
+                <li className="nav-item">
+                    <NavLink to="/profile" className="nav-link">Profile</NavLink>
+                </li>
             </ul>
         </div>
-        <div className='nav-right'>
-            <h3><NavLink to="/login" onClick={() => { localStorage.clear() }}>Log out</NavLink></h3>
-            <NavLink to="/profile" className="btn btn-light"><h3>Profile</h3></NavLink>
-        </div>
-    </header>
+    </nav>
 );
 
 export default Navbar;
