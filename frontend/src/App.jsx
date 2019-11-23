@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import Login from './components/login/Login';
 import Home from './components/home/Home'
+import Polls from './components/polls/Polls'
 import Register from './components/register/Register'
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
