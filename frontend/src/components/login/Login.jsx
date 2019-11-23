@@ -2,7 +2,7 @@ import React from 'react';
 import './login.css';
 import Logo from '../../imgs/logo.png';
 import { UserRepo } from '../../api';
-import { Redirect } from 'react-router-dom';
+import { Redirect, NavLink } from 'react-router-dom';
 
 class Login extends React.Component {
 
@@ -18,14 +18,14 @@ class Login extends React.Component {
   onSubmit() {
     let user = {
       email: this.state.email,
-      password: this.state.password
+      pass: this.state.password
     }
 
     this.userRepo.userLogin(user)
       .then(() => {
-        if(localStorage.getItem('code') === '200'){
+        if (localStorage.getItem('code') === '200') {
           this.setState({ redirect: '/home' })
-        }else{
+        } else {
           this.setState({ showError: true })
         }
       })
@@ -35,53 +35,53 @@ class Login extends React.Component {
       });
 
     this.setState(pState => {
-      pState.email='';
-      pState.password='';
+      pState.email = '';
+      pState.password = '';
       return pState;
     });
   }
 
   render() {
     if (this.state.redirect) {
-      return <Redirect to={{pathname: this.state.redirect}} />
+      return <Redirect to={{ pathname: this.state.redirect }} />
     }
     return (
       <div className='login-container'>
         <div className='login-box'>
           <form className='login-form'>
             {this.state.showError && <div className="danger">Error while logging in.</div>}
-            <div className='login-title'>
-              <img className='login-img ' src={Logo} alt='placehold' />
-              <h1>Ballot Buddy</h1>
-            </div>
-            <span className='login-label'>Log In</span>
-            <br />
-            <br />
+            <div className="spacer"></div>
+            <img className='login-img' src={Logo} alt='placeholder' ></img>
+            <h1 className='login-label'>Log In</h1>
+            <div className="spacer"></div>
             <div className='login-username-wrapper'>
-              <span className='glyphicon glyphicon-user icon'></span>
-              <input 
-                className='login-username' 
-                type='text' 
-                name='login-username' 
-                placeholder='Email' 
+              <i className="fas fa-plus-square"></i>
+              <input
+                className='login-username'
+                type='text'
+                name='login-username'
+                placeholder='Email'
                 value={this.state.email}
                 onChange={e => this.setState({ email: e.target.value })}
               />
             </div>
+            <div className="spacer"></div>
             <div className='login-password-wrapper'>
+              <i className="fas fa-plus-square"></i>
               <span className='glyphicon glyphicon-lock icon'></span>
-              <input 
-                className='login-password' 
-                type='password' 
-                name='login-password' 
-                placeholder='Password' 
+              <input
+                className='login-password'
+                type='password'
+                name='login-password'
+                placeholder='Password'
                 value={this.state.password}
                 onChange={e => this.setState({ password: e.target.value })}
               />
             </div>
+            <div className="spacer"></div>
             <div className='login-button-wrapper'>
-              <button 
-                type='button' 
+              <button
+                type='button'
                 className='btn btn-light'
                 onClick={e => {
                   e.preventDefault();
@@ -91,11 +91,11 @@ class Login extends React.Component {
                 Login
               </button>
             </div>
+            <div className='login-register-wrapper'>
+              <p>Dont have an account? Register</p>
+              <NavLink to="/register">here</NavLink>
+            </div>
           </form>
-          <div className='login-register-wrapper'>
-            <p>Dont have an account? Register</p>
-            <a href='www.google.com'>Here</a>{/*TODO: Make Link Work*/}
-          </div>
         </div>
       </div>
     );
