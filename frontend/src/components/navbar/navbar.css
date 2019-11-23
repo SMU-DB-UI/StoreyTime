@@ -6,7 +6,7 @@
 
 .nav-container {
     background-color: rgb(9, 59, 90);
-    height: 6em;
+    height: 4em;
     display: flex;
     align-items: center;
     color: white;
@@ -37,54 +37,22 @@
     padding-left: .5vw;
 }
 
-.nav-container a {
+.nav-container a:hover {
+    color: rgb(255, 255, 255);
+}
+
+.nav-left img#logo {
+    height: 3em;
+}
+
+.nav-container .btn-link {
     color: white;
 }
 
-.nav-container a:hover {
-    color: rgb(245, 215, 215);
-    
-    text-decoration: none;
-}
-
-.nav-left,
-.nav-right {
-    display: flex;
-    height: inherit;
-    padding: 0;
-    align-items: center;
-}
-
-.nav-left img {
-    height: 4em;
-}
-
-.nav-right button {
-    font-size: 12pt;
-    padding: .4em 1.5em;
-    border-radius: .5em;
-    margin: 0 1em;
-    margin-bottom: .5rem;
+.nav-container .btn-light:hover {
     color: black;
-    border-style: none;
 }
 
-.nav-right button:hover {
-    background-color: rgb(245, 215, 215);
-}
-
-.nav-right button > h3 {
-    margin: 0;
-}
-
-.nav-container .btn {
-    font-size: 12pt;
-    padding: .4em 1.5em;
-    border-radius: .5em;
-    margin: 0 1em;
-    margin-bottom: .5rem;
-    color: black;
-    border-style: none;
-    color: black;
-    text-transform: none;
+#navbar {
+    background-color: rgb(9, 59, 90);
 }
