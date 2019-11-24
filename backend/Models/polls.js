@@ -23,7 +23,7 @@ var Poll = function(poll){
     //DATE // Time of creation
 
     //TINYINT : declaration of whether this poll is soft deleted
-    this.inactive = poll.tag
+    this.inactive = poll.inactive
 
     //answers and tags of polls will be recorded in another tables
 };
@@ -66,12 +66,26 @@ Poll.createPoll = function(newPoll, result) {
     });
 };
 
-Poll.deletePoll = function(poll_id){};
+//Soft delete a poll
+Poll.deletePoll = function(poll_id,result){
+    sql.query("UPDATE `ballotBuddy`.`polls` SET inactive = 1 WHERE poll_id = ?;",[poll_id],
+    function(err,res){
+        if(err)
+            result(err,null);
+        else
+            result(null,{
+                "code" : 200,
+                "response" : "Poll deleted.",
+                "poll_id" : poll_id
+            });
+
+    });
+};
 
 //adding new options of answers and linked with polls based on poll_id
 PollAnswer.addAnswer = function(newAnswer, result){
     sql.query("INSERT INTO `ballotBuddy`.`polls_answers` (`poll_id`,`answer_text`,`answer_count`) VALUES ('"+ newAnswer.poll_id + "','" + newAnswer.answer_text + "','" + newAnswer.answer_count + "');",
-    function(err,res){
+    function(err,res){ 
         if(err)
             result(err,null);
         else
@@ -99,7 +113,7 @@ PollTag.addTag = function(newTag,result){
 
 //update the question text in certain tuple which has certain poll
 Poll.updateQuestionById = function updateQuestionById(creator_id, poll_id, question, result){
-    sql.query("UPDATE `ballotBuddy`.`polls` SET question = ? WHERE poll_id = ? AND creator_id = ? AND `inactive` = 0 ;",[question, poll_id, creator_id],
+    sql.query("UPDATE `ballotBuddy`.`polls` SET question = ? WHERE poll_id = ? AND creator_id = ? AND inactive = 0 ;",[question, poll_id, creator_id],
     function(err,res){
         if(err){
             result(err,null);
@@ -115,7 +129,7 @@ Poll.updateQuestionById = function updateQuestionById(creator_id, poll_id, quest
 
 
 //delte all the answers related updating funcitons
-PollAnswer.deleteAll = function(poll_id,result){
+PollAnswer.deleteAllAnswer = function(poll_id,result){
     sql.query("DELETE FROM `ballotBuddy`.`polls_answers` WHERE poll_id = ?; ", [poll_id],
     function(err,res){
         if(err)
@@ -130,7 +144,21 @@ PollAnswer.deleteAll = function(poll_id,result){
 };
 
 //delete certain option by poll_id and answer text
-PollAnswer.
+PollAnswer.deleteOneAnswer = function(poll_id,answer_text,result){
+    sql.query("DELETE FROM `ballotBuddy`.`polls_answers` WHERE poll_id = ? AND answer_text = ?;",[poll_id,answer_text],
+    function(err,res){
+        if(err)
+            result(err,null);
+        else
+            result(null,{
+                "code" : 200,
+                "response" : "Answer deleted",
+                "poll_id" : poll_id,
+                "answer_text" : answer_text
+            });    
+
+    });
+};
 
 //update text of answer based on the poll_id and answer_text
 PollAnswer.modifyAnswer = function(poll_id,answer_text,result){
