@@ -9,17 +9,19 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 function App() {
   return (
     <div className='App'>
-      <BrowserRouter>
-        <Switch>
-          <Route exact path="/" component={Login} />
-          <Route path="/login" component={Login} />
-          <Route path="/register" component={Register} />
-          <Route path="/home" component={Home} />
-          <Route component={Login} />
-        </Switch>
-      </BrowserRouter>
-    </div>
-  );  
+      <div className='AppBackground'>
+        <BrowserRouter>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/login" component={Login} />
+            <Route path="/register" component={Register} />
+            <Route path="/home" component={Home} />
+            <Route component={Login} />
+          </Switch>
+        </BrowserRouter>
+      </div >
+    </div >
+  );
 }
 
 export default App;

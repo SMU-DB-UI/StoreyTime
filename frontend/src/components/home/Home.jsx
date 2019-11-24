@@ -1,7 +1,7 @@
 import React from 'react';
 import Navbar from '../navbar/Navbar'
 import PostCard from '../postCard/PostCard'
-//import PostCard from '../postCard/PostCard
+import PollCard from '../pollCard/PollCard'
 import './home.css';
 
 class Home extends React.Component {
@@ -21,8 +21,9 @@ class Home extends React.Component {
             {
                 tags: ['Parties', 'President', 'Alignment'],
                 question: 'Democrat or Republican?',
-                answers: ['Democrat', 'Republican'],
-                votes: [51, 49],
+                answers: ['Democrat', 'Republican', 'Other'],
+                votes: [42, 40, 18],
+                totalVotes: 100, //find a way to compute this before putting it in
                 user: 'Hayden Center',
                 userId: 0,
                 date: '11/21/2019',
@@ -56,7 +57,7 @@ class Home extends React.Component {
                                             <div className="row">
                                                 <div className="col-12">
                                                     {feed.isPoll === false && (<PostCard post={feed} />)}
-                                                    {/* {feed.isPoll === true && (<PollCard poll={feed} />)} */}
+                                                    {feed.isPoll === true && (<PollCard poll={feed} />)}
                                                 </div>
                                             </div>
                                         </>)}

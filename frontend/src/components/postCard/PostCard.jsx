@@ -13,9 +13,9 @@ const PostCard = props => (
                         <p className='text-muted'>{props.post.user} - {props.post.date}</p>
                     </div>
                 </div>
-                <div className='text-left'>
-                    <p>{props.post.text}</p>
-                </div>
+            </div>
+            <div className='card-text text-left'>
+                <p>{props.post.text}</p>
             </div>
         </div>
     </div>
