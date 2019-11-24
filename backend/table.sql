@@ -1,3 +1,4 @@
+USE `ballotBuddy`;
 
 CREATE TABLE IF NOT EXISTS `users` (
     `id` INT(10) AUTO_INCREMENT,
