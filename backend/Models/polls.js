@@ -66,6 +66,7 @@ Poll.createPoll = function(newPoll, result) {
     });
 };
 
+Poll.deletePoll = function(poll_id){};
 
 //adding new options of answers and linked with polls based on poll_id
 PollAnswer.addAnswer = function(newAnswer, result){
@@ -98,7 +99,7 @@ PollTag.addTag = function(newTag,result){
 
 //update the question text in certain tuple which has certain poll
 Poll.updateQuestionById = function updateQuestionById(creator_id, poll_id, question, result){
-    sql.query("UPDATE `ballotBuddy`.`polls` SET question = ? WHERE poll_id = ? AND creator_id = ?",[question, poll_id, creator_id],
+    sql.query("UPDATE `ballotBuddy`.`polls` SET question = ? WHERE poll_id = ? AND creator_id = ? AND `inactive` = 0 ;",[question, poll_id, creator_id],
     function(err,res){
         if(err){
             result(err,null);
@@ -114,7 +115,37 @@ Poll.updateQuestionById = function updateQuestionById(creator_id, poll_id, quest
 
 
 //delte all the answers related updating funcitons
+PollAnswer.deleteAll = function(poll_id,result){
+    sql.query("DELETE FROM `ballotBuddy`.`polls_answers` WHERE poll_id = ?; ", [poll_id],
+    function(err,res){
+        if(err)
+            result(err,null);
+        else
+            result(null,{
+                "code" : 200,
+                "response" : "All options of this poll is deleted.",//delete this line if it's necessary
+                "poll_id" : poll_id
+            });
+    });
+};
 
+//delete certain option by poll_id and answer text
+PollAnswer.
+
+//update text of answer based on the poll_id and answer_text
+PollAnswer.modifyAnswer = function(poll_id,answer_text,result){
+    sql.query("UPDATE `ballotBuddy`.`polls_answers` SET answer_text = ? WHERE poll_id = ?;",[poll_id,answer_text],
+    function(err,res){
+        if(err)
+            result(err,null);
+        else
+            result(null,{
+                "code" : 200,
+                "poll_id" : poll_id,
+                "answer_text" : answer_text
+            });
+    });
+};
 
 
 
