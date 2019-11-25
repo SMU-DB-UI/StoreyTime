@@ -15,11 +15,12 @@ var Post = function(post) {
 
 Post.createPost = function(creator_id, newPost, result)
 {
-    var d = new Date();
+    var d = new Date;
     var year = d.getFullYear();
     var month = d.getMonth();
     var day = d.getDate();
-    var date = year+ '-' + month + '-' + day;
+    var time = d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+    var date = year+ '-' + month + '-' + day + ' ' + time;
     connection.query("INSERT INTO `ballotBuddy`.`posts` (`creator_id`, `date_created`, `title`, `post_text`) VALUES ('"+ creator_id +"', '"+ date +"', '"+ newPost.title +"', '"+ newPost.post_text +"');",
     function(err1, res1)
     {
@@ -46,18 +47,20 @@ Post.createPost = function(creator_id, newPost, result)
     });
 };
 
-Post.addTags = function(post_id, creator_id, tag_words, result)
+Post.addTags = function(post_id, creator_id, tag_word, result)
 {
-    connection.query("SELECT tag_id FROM `ballotBuddy`.`tags` WHERE `tag_word` = ? OR `tag_word` = ? OR `tag_word`=? ", [tag_words[0], tag_words[1], tag_words[2] ], 
+    console.log(tag_word);
+    connection.query("SELECT tag_id FROM `ballotBuddy`.`tags` WHERE tag_word = ?", [tag_word], 
     function(err, res)
     {
+        console.log(res);
         if(err)
         {
             result(err, null);
         }
         else
         {
-            connection.query("UPDATE `ballotBuddy`.`posts` SET tag_id1 = ?, tag_id2 = ?, tag_id3 = ? WHERE post_id = ? AND creator_id = ?", [res[0].tag_id, res[1].tag_id, res[2].tag_id, post_id, creator_id], 
+            connection.query("INSERT INTO `ballotBuddy`.`tags_posts` (`tag_id`, `post_id`) VALUES ( '"+ res[0].tag_id +"', '"+ post_id +"');", 
             function(err1, res1)
             {
                 if(err1)
