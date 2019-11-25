@@ -53,7 +53,7 @@ var PollTag = function(tag){
 };
 
 //insert new tuple into the table
-Poll.createPoll = function(newPoll, result) {
+Poll.createPoll = function(creator_id,newPoll, result) {
     //get datetime
     var t = new Date;
     var yearTime = t.getFullYear();
@@ -62,15 +62,24 @@ Poll.createPoll = function(newPoll, result) {
     var time = t.getHours() + ':' + t.getMinutes() + ':' + t.getSeconds();
     var dateTime = yearTime + '-' + monthTime + '-' + day + ' ' + time;  
 
-  sql.query("INSERT INTO `ballotBuddy`.`polls` (`creater_id`,`question`,`date_created`,`inactive`) VALUES ('" + newPoll.creator_id + "', '" + newPoll.question + "', '" + newPoll.date_created + "', '" + newPoll.inactive + "');",
+  sql.query("INSERT INTO `ballotBuddy`.`polls` (`creater_id`,`question`,`date_created`) VALUES ('" + creator_id + "', '" + newPoll.question + "', '" + dateTime +  "');",
     function(err, res) {
-      if (err){
+    if (err){
         result(err, null);
-      }else{
-        result(null,{
-            "code":200 
-        });
-      }
+    }else{
+          sql.query("SELECT MAX(poll_id) FROM `ballotBuddy`.`polls` WHERE `creator_id`  = ?;",[creator_id],
+          function(err1,rew1){
+              if(res2.length > 0){
+                  result(null,{
+                      "code" : 200, 
+                      "poll_id" : res2[0].poll_id,
+                      "creator_id" : creator_id
+                  })
+              }else{
+                  result(err2,null);
+              }
+          }); 
+    }
     });
 };
 
