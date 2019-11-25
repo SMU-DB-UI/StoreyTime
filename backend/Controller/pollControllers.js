@@ -4,7 +4,7 @@ var Poll = require('../Models/pollModels');
 
 exports.createPoll = function(req,res){
     var newInput = new Poll(req.body);
-    if(!newInput.poll_id || !newInput.creator_id || !newInput.question || !newInput.date_created ){
+    if(!newInput.poll_id || !newInput.creator_id || !newInput.question || !newInput.date_created || !newInput.answer1 || !newInput.answer2 || !newInput.count_answer1 || !newInput.count_answer2){
         res.status(400).json({
             "code":400,
             "response": "Insufficient Input."

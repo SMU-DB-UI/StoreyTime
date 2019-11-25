@@ -28,11 +28,14 @@ exports.addTags = function(request, result) {
     {
         result.status(400).json({"code":400, "response":"Missing user ID in params"});
     }
+    else if(! request.body.tag_word)
+    {
+        result.status(400).json({"code":400, "response": "Missing tag word in body"});
+    }
     else
     {
-        var words = [request.body.tag_word1, request.body.tag_word2, request.body.tag_word3];
-        console.log(words);
-        Post.addTags(request.body.post_id, request.params.id, words, function(err, post)
+        // var words = [request.body.tag_word1, request.body.tag_word2, request.body.tag_word3];
+        Post.addTags(request.body.post_id, request.params.id, request.body.tag_word, function(err, post)
         {
             if(err)
             {
