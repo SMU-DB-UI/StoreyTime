@@ -62,4 +62,7 @@ module.exports = function(app) {
     app.route('/user/editPost/:id')
       .put(postController.editPost);
 
+    app.route('/user/deletePost/:id')
+      .put(postController.deletePost);
+
 };
