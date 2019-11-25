@@ -49,8 +49,7 @@ Post.createPost = function(creator_id, newPost, result)
 
 Post.addTags = function(post_id, creator_id, tag_word, result)
 {
-    console.log(tag_word);
-    connection.query("SELECT tag_id FROM `ballotBuddy`.`tags` WHERE tag_word = ?", [tag_word], 
+    connection.query("SELECT tag_id FROM `ballotBuddy`.`tags` WHERE tag_word = ?;", [tag_word] , 
     function(err, res)
     {
         console.log(res);
@@ -91,8 +90,8 @@ Post.editText = function(post_id, creator_id, newText, result) {
     }); 
 };
 
-Post.deletePost = function(post_id, result) {
-    connection.query("UPDATE `ballotBuddy`.`posts` SET inactive = 1 WHERE post_id = ?", [post_id],
+Post.deletePost = function(creator_id, post_id, result) {
+    connection.query("UPDATE `ballotBuddy`.`posts` SET inactive = 1 WHERE post_id = ? AND creator_id = ?", [post_id, creator_id],
     function(err, res)
     {
         if(err)
