@@ -1,8 +1,10 @@
+  
 'use strict';
+
 
 var sql = require('./db.js');
 
-
+//copy constructor poll
 var Poll = function(poll){
 
     //poll_id INT(10) PRIMARY KEY,
@@ -11,7 +13,7 @@ var Poll = function(poll){
     
     // creator_id INT(10), 
     this.creator_id = poll.creator_id,
-    //INT(10) //id of the creater
+    //INT(10) //id of the creator
     
     //question VARCHAR(150),
     this.question = poll.question,
@@ -21,28 +23,46 @@ var Poll = function(poll){
     this.date_created = poll.date_created,
     //DATE // Time of creation
 
-    //answer1 VARCHAR(50), 
-    this.answer1 = poll.answer1,
-    //VARCHAR(150) // detials of answer1
+    //TINYINT : declaration of whether this poll is soft deleted
+    this.inactive = poll.inactive
 
-    //answer2 VARCHAR(50), 
-    this.answer2 = poll.answer2,
-    //VARCHAR(150) // detials of answer2
-
-    //count_answer1 INT, 
-    this.count_answer1 = poll.count_answer1,
-    //INT // NUM number of the votes
-
-    //count_answer2 INT, 
-    this.count_answer2 = poll.count_answer2
-     //INT // NUM number of the votes
-
-     //we just have 2 answer， and the quesiton is a T/F question
+    //answers and tags of polls will be recorded in another tables
 };
 
+//copy constructor poll_answer
+var PollAnswer = function(answer){
 
+    //INT(10) PRIMARY KEY : id of the polls
+    this.poll_id = answer.poll_id,
+
+    //VARCHAR(150) PRIMARY KEY : text of this very answer
+    this.answer_text = answer.answer_text,
+
+    //INT : count of vote
+    this.answer_count = answer.answer_count
+};
+
+//copy constructor tags_poll
+var PollTag = function(tag){
+
+    //INT(10) PRIMARY KEY : id of the tags
+    this.tag_id = tag.tag_id,
+
+    //INT(10) PRIMARY KEY : id of the polls
+    this.poll_id = answer.poll_id
+};
+
+//insert new tuple into the table
 Poll.createPoll = function(newPoll, result) {
-  sql.query("INSERT INTO `ballotBuddy`.`polls` (`creater_id`,`question`,`date_created`,`answer1`,`answer2`,`count_answer1`,`count_answer2`) VALUES ('" + newPoll.creator_id + "', '" + newPoll.question + "', '" + newPoll.date_created + "', '" + newPoll.answer1 + "', '" + newPoll.answer2 + "', '" + newPoll.count_answer1 + "', '" + newPoll.count_answer2 + "');",
+    //get datetime
+    var t = new Date;
+    var yearTime = t.getFullYear();
+    var monthTime = t.getMonth();
+    var dayTime = t.getDate();
+    var time = t.getHours() + ':' + t.getMinutes() + ':' + t.getSeconds();
+    var dateTime = yearTime + '-' + monthTime + '-' + day + ' ' + time;  
+
+  sql.query("INSERT INTO `ballotBuddy`.`polls` (`creater_id`,`question`,`date_created`,`inactive`) VALUES ('" + newPoll.creator_id + "', '" + newPoll.question + "', '" + newPoll.date_created + "', '" + newPoll.inactive + "');",
     function(err, res) {
       if (err){
         result(err, null);
