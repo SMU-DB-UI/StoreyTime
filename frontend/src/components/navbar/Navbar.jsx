@@ -4,19 +4,13 @@ import './navbar.css';
 import { NavLink } from 'react-router-dom'
 
 const Navbar = props => (
-    <nav className='navbar navbar-expand navbar-dark' id="navbar">
-    {/* <nav className='navbar navbar-expand-md navbar-dark' id="navbar"> */}
+    <nav className='navbar navbar-expand-md navbar-dark' id="navbar">
         <NavLink to="/" className="navbar-brand">BallotBuddy</NavLink>
-
-        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#ballotBuddyNav"
-            aria-controls="ballotBuddyNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#ballotBuddyNav" aria-controls="ballotBuddyNav" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
         </button>
-
-        {/* <div className="collapse navbar-collapse" id="ballotBuddyNav"> */}
         <div className="collapse navbar-collapse" id="ballotBuddyNav">
-
-            <ul className="navbar-nav mr-auto">
+            <ul className="navbar-nav">
                 <li className="nav-item">
                     <a className="nav-link" href="https://vote.gov/">Voter Registration</a>
                 </li>

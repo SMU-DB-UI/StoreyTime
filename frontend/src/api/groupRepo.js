@@ -20,6 +20,6 @@ export class GroupRepo {
             axios.post(this.url + 'user/createGroup/findMembers', {firstName, lastName})
                 .then(resp => resolve(resp.data))
                 .catch(resp => reject(resp.data));
-        })
+        });
     }
 }
