@@ -1,6 +1,6 @@
 'use strict';
 
-var Poll = require('../Models/pollModels');
+var Poll = require('../Models/polls.js');
 
 exports.createPoll = function(req,res){
     var newInput = new Poll(req.body);
@@ -43,49 +43,49 @@ exports.updateQuestionById = function updateQuestionById(req,res){
     }
 };
 
-exports.updateCreatorByPollId = function updateCreatorByPollId(req,res){
-    if(!req.params.poll_id){
-        res.status(400).json({
-            "code":400,
-            "response":"Missing Poll ID in API Request."
-        });
-    }else if(!req.body.creator_id){
-        res.status(400).json({
-            "code":400,
-            "response":"Missing creator id in API Request Body."
-        });
-    }else{
-        Poll.updateCreatorByPollId(req.params.poll_id, req.body.creator_id, function(err,poll){
-            if(err){
-                res.send(err);
-            }else{
-                res.json(poll);
-            }
-        });
-    }
-};
+// exports.updateCreatorByPollId = function updateCreatorByPollId(req,res){
+//     if(!req.params.poll_id){
+//         res.status(400).json({
+//             "code":400,
+//             "response":"Missing Poll ID in API Request."
+//         });
+//     }else if(!req.body.creator_id){
+//         res.status(400).json({
+//             "code":400,
+//             "response":"Missing creator id in API Request Body."
+//         });
+//     }else{
+//         Poll.updateCreatorByPollId(req.params.poll_id, req.body.creator_id, function(err,poll){
+//             if(err){
+//                 res.send(err);
+//             }else{
+//                 res.json(poll);
+//             }
+//         });
+//     }
+// };
 
-exports.updateCreationDateById = function updateCreationDateById(req,res){
-    if(!req.params.poll_id){
-        res.status(400).json({
-            "code":400,
-            "response":"Missing Poll ID in API Request."
-        });
-    }else if(!req.body.date_created){
-        res.status(400).json({
-            "code":400,
-            "response":"Missing creation date in API Request Body."
-        });
-    }else{
-        Poll.updateCreationDateById(req.params.poll_id, req.body.date_created, function(err,poll){
-            if(err){
-                res.send(err);
-            }else{
-                res.json(poll);
-            }
-        });
-    }
-};
+// exports.updateCreationDateById = function updateCreationDateById(req,res){
+//     if(!req.params.poll_id){
+//         res.status(400).json({
+//             "code":400,
+//             "response":"Missing Poll ID in API Request."
+//         });
+//     }else if(!req.body.date_created){
+//         res.status(400).json({
+//             "code":400,
+//             "response":"Missing creation date in API Request Body."
+//         });
+//     }else{
+//         Poll.updateCreationDateById(req.params.poll_id, req.body.date_created, function(err,poll){
+//             if(err){
+//                 res.send(err);
+//             }else{
+//                 res.json(poll);
+//             }
+//         });
+//     }
+// };
 
 exports.updateAnswer1ById = function updateAnswer1ById(req,res){
     if(!req.params.poll_id){
