@@ -113,7 +113,10 @@ Poll.addOption = function(poll_id, answer_text, result){
         if(err)
             result(err,null);
         else{
-
+            result(null,{
+                "code" : 200,
+                "poll_id" : poll_id,
+            });
         }
     });
 };
