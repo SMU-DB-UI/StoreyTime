@@ -96,10 +96,12 @@ Poll.addTag = function(post_id,creator_id,tag_word,result){
 
 }
 
+
+
+
+module.exports = Poll;
+
 /*Commond out the old code. There are too many unuseable end points
-
-
-
 
 // Poll.updateCreatorByPollId = function updateCreatorByPollId(poll_id,creator_id,result){
 //     sql.query("UPDATE `ballotBuddy`.`polls` SET creator_id=? WHERE poll_id = ?;", [creator_id, poll_id],
@@ -327,6 +329,3 @@ Poll.getPollByID = function getPollByID(poll_id, result) {
     });
   };
 */
-
-
-module.exports = Poll;
