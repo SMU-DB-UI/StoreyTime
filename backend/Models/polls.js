@@ -66,8 +66,8 @@ Poll.createPoll = function(creator_id,newPoll, result) {
     if (err){
         result(err, null);
     }else{
-          sql.query("SELECT MAX(poll_id) FROM `ballotBuddy`.`polls` WHERE `creator_id`  = ?;",[creator_id],
-          function(err1,rew1){
+        sql.query("SELECT MAX(poll_id) FROM `ballotBuddy`.`polls` WHERE `creator_id`  = ?;",[creator_id],
+        function(err1,rew1){
               console.log(res1);
               if(res2.length > 0){
                   result(null,{
@@ -78,7 +78,7 @@ Poll.createPoll = function(creator_id,newPoll, result) {
               }else{
                   result(err2,null);
               }
-          }); 
+        }); 
     }
     });
 };
@@ -116,12 +116,30 @@ Poll.addOption = function(poll_id, answer_text, result){
             result(null,{
                 "code" : 200,
                 "poll_id" : poll_id,
+                "response" : "New option added successfully."
             });
         }
     });
 };
 
+//update counting of a certain answer, locating by poll_id and answer_text
+//This function will match up poll_id and answer_text in polls_answer table,
+//which poll_id and answer_text are unique in the table, and update the answer_count
+Poll.updateAnswerCount = function(poll_id,answer_text,answer_count,result){
+    sql.query("UPDATE `ballotBuddy`.`polls_answers` SET answer_count = ? WHERE poll_id = ? AND answer_text = ?;",[answer_count,poll_id,answer_text],
+    function(err,res){
+        if(err)
+            result(err,null);
+        else    
+            result(null,{
+                "code" : 200,
+                "poll_id" : poll_id,
+                "answer_text" : answer_text,
+                "answer_count" : answer_count
+            });
+    });
 
+};
 
 //soft delete a certain poll
 Poll.deletePoll = function(poll_id,result){
@@ -131,7 +149,7 @@ Poll.deletePoll = function(poll_id,result){
             result(err,null);
         else 
             result(null,{
-                "code" : 200
+                "code" : 200,
             });
     });
 };
