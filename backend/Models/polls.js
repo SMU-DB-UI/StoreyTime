@@ -84,22 +84,34 @@ Poll.createPoll = function(creator_id,newPoll, result) {
 };
 
 //adding a new tag to certain poll
-Poll.addTag = function(post_id,creator_id,tag_word,result){
+Poll.addTag = function(poll_id, creator_id, tag_word, result){
     sql.query("SELECT tag_id FROM `ballotBuddy`.`tags` WHERE tag_word = ?;", [tag_word],
     function(err,res){
         if(err)
             result(err,null);
         else{
-            sql.query()
+            sql.query("INSERT INTO `ballotBuddy`.`tags_polls` (`tag_id`, `poll_id`) VALUES ( '" + res[0].tag_id + "', '" + poll_id + "');", 
+            function(err1,res1){
+                if(err1)
+                    result(err1,null);
+                else{
+                    result(null,{
+                        "code" : 200,
+                        "poll_id" : poll_id,
+                        "user_id" : creator_id
+                    });
+                }
+            });
         }
     });
+};
 
-}
-
-
+//adding a new option for the answer
 
 
 module.exports = Poll;
+
+
 
 /*Commond out the old code. There are too many unuseable end points
 
