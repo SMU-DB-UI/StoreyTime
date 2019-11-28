@@ -68,10 +68,11 @@ Poll.createPoll = function(creator_id,newPoll, result) {
     }else{
           sql.query("SELECT MAX(poll_id) FROM `ballotBuddy`.`polls` WHERE `creator_id`  = ?;",[creator_id],
           function(err1,rew1){
+              console.log(res1);
               if(res2.length > 0){
                   result(null,{
                       "code" : 200, 
-                      "poll_id" : res2[0].poll_id,
+                      "poll_id" : res1[0].poll_id,
                       "creator_id" : creator_id
                   })
               }else{
@@ -81,6 +82,24 @@ Poll.createPoll = function(creator_id,newPoll, result) {
     }
     });
 };
+
+//adding a new tag to certain poll
+Poll.addTag = function(post_id,creator_id,tag_word,result){
+    sql.query("SELECT tag_id FROM `ballotBuddy`.`tags` WHERE tag_word = ?;", [tag_word],
+    function(err,res){
+        if(err)
+            result(err,null);
+        else{
+            sql.query()
+        }
+    });
+
+}
+
+/*Commond out the old code. There are too many unuseable end points
+
+
+
 
 // Poll.updateCreatorByPollId = function updateCreatorByPollId(poll_id,creator_id,result){
 //     sql.query("UPDATE `ballotBuddy`.`polls` SET creator_id=? WHERE poll_id = ?;", [creator_id, poll_id],
@@ -307,7 +326,7 @@ Poll.getPollByID = function getPollByID(poll_id, result) {
       }
     });
   };
-
+*/
 
 
 module.exports = Poll;

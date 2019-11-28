@@ -7,6 +7,7 @@ module.exports = function(app) {
     var dbManager = require('../Controller/dbController.js');
     // var pollController = require('../Controller/pollsController.js');
     var postController = require('../Controller/postsController.js');
+    var pollController = require('../Controller/pollControllers.js');
     
     app.route('/setupdb')
       .get(dbManager.setupdb);
@@ -62,4 +63,8 @@ module.exports = function(app) {
     app.route('/user/editPost/:id')
       .put(postController.editPost);
 
+
+    //user polls routes
+    app.route('/user/newPoll/:user_id')
+      .post(poll)
 };
