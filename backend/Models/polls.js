@@ -138,7 +138,6 @@ Poll.updateAnswerCount = function(poll_id,answer_text,answer_count,result){
                 "answer_count" : answer_count
             });
     });
-
 };
 
 //soft delete a certain poll
