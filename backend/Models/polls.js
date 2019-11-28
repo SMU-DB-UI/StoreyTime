@@ -107,7 +107,31 @@ Poll.addTag = function(poll_id, creator_id, tag_word, result){
 };
 
 //adding a new option for the answer
+Poll.addOption = function(poll_id, answer_text, result){
+    sql.query("INSERT INTO `ballotBuddy`.`polls_answers` (`poll_id`,`answer_text`,`answer_count`) VALUES ('" + poll_id + "', '" + answer_text + "', 1);",
+    function(err,res){
+        if(err)
+            result(err,null);
+        else{
 
+        }
+    });
+};
+
+
+
+//soft delete a certain poll
+Poll.deletePoll = function(poll_id,result){
+    sql.query("UPDATE `ballotBuddy`.`polls` SET inactive = 1 WHERE poll_id = ?", [poll_id],
+    function(err,res){
+        if(err)
+            result(err,null);
+        else 
+            result(null,{
+                "code" : 200
+            });
+    });
+};
 
 module.exports = Poll;
 

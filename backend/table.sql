@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `polls` (
     `date_created` DATETIME,
     `inactive` TINYINT,
     PRIMARY KEY(`poll_id`),
-    FOREIGN KEY(creator_id) REFERENCES `users`(`id`) 
+    FOREIGN KEY(`creator_id`) REFERENCES `users`(`id`) 
 );
 
 CREATE TABLE IF NOT EXISTS `polls_answers` (
