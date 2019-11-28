@@ -69,7 +69,7 @@ Group.inviteMembers = function(member_id, group_id, result)
 
 
 Group.removeMembersFromGroup = function(member_id,group_id,result) {
-    connection.query("UPDATE `ballotBuddy`.`group_members_bridge` SET `removed` = 1 WHERE member_id = ? AND group_id = ?", [member_id,group_id],
+    connection.query("UPDATE `ballotBuddy`.`groups_members_bridge` SET `inactive` = 1 WHERE member_id = ? AND group_id = ?", [member_id,group_id],
     function(err,res){
         if (err){
             result(err, null);
@@ -96,7 +96,7 @@ Group.deleteGroup = function(group_id,result) {
 
 
 Group.selectNewAdmin = function(group_id, firstName, lastName, result) {
-    connection.query("SELECT id, firstName, lastName from `ballotBuddy`.`groups_members_bridge` NATURAL JOIN (SELECT * FROM `ballotBuddy`.`users`) ON `groups_members_bridge`.`member_id`=`users`.`id` WHERE firstName = ? AND lastName = ? AND group_id = ?", [firstName, lastName, group_id],
+    connection.query("SELECT id, firstName, lastName from `ballotBuddy`.`users` WHERE id IN (SELECT member_id FROM groups_members_bridge WHERE group_id = ? AND inactive = 0) AND firstName = ? AND lastName = ?", [group_id, firstName, lastName],
     function(err, res)
     {
         if(err)
@@ -116,7 +116,7 @@ Group.setNewAdmin = function(group_id, member_id, result) {
     var month = d.getMonth();
     var day = d.getDate();
     var date = year+ '-' + month + '-' + day;
-    connection.query("UPDATE `ballotBuddy`.`groups_admins` SET current = 0 WHERE group_id = ? AND admin_id = ?", [group_id, member_id],
+    connection.query("UPDATE `ballotBuddy`.`groups_admins` SET current = 0 WHERE group_id = ?", [group_id],
     function(err, res)
     {
         if(err)

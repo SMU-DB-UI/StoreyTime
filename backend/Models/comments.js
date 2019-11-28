@@ -29,7 +29,7 @@ Comment.createComment = function(newComment, result)
         }
         else
         {
-            connection.query("SELECT MAX(`comment_id`) FROM `ballotBuddy`.`posts` WHERE `creator_id` = ? AND post_id = ?", [newComment.creator_id, newComment.post_id],
+            connection.query("SELECT MAX(`comment_id`) FROM `ballotBuddy`.`comments` WHERE `creator_id` = ? AND post_id = ?", [newComment.creator_id, newComment.post_id],
             function(err1, res1)
             {
                 if(err1)
@@ -63,7 +63,7 @@ Comment.editComment = function(comment_id, comment_text, result)
 
 Comment.deleteComment = function(comment_id, creator_id, result)
 {
-    connection.query("UPDATE `ballotBuddy`.`comments` SET inactive=1 WHERE comment_id = ? AND creator_id = ?", [comment_id, creator_id],
+    connection.query("UPDATE `ballotBuddy`.`comments` SET `inactive` = 1 WHERE comment_id = ? AND creator_id = ?", [comment_id, creator_id],
     function(err, res)
     {
         if(err)

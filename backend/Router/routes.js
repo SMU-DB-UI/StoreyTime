@@ -66,34 +66,39 @@ module.exports = function(app) {
       .put(postController.deletePost);
 
 // =========== comments routes ================ //
-    app.route('/user/home/newComment/:post_id')
+    app.route('/user/home/newComment/:post_id') //DONE
       .post(commentController.createComment);
 
-    app.route('/user/home/editComment/:comment_id')
+    app.route('/user/home/editComment/:comment_id') //DONE
       .put(commentController.editComment);
 
-    app.route('/user/home/deleteComment/:comment_id')
+    app.route('/user/home/deleteComment/:comment_id') //DONE
       .put(commentController.deleteComment);
 
 // ========== polls routes =============== //
     app.route('/user/newPoll/:id')
       .post(pollController.createPoll);
 
-// ========== groups posts routes ============ //
+// ========== groups routes ============ //
     app.route('/user/groups/createNewGroup/:id') //DONE
       .post(groupController.createGroup);
 
     app.route('/user/groups/searchForNewMembers') //DONE
-      .post(groupController.findMembers);
+      .get(groupController.findMembers);
 
     app.route('/user/group/addNewMembers/:group_id') //DONE
       .post(groupController.inviteMembers);
 
-    app.route('/user/group/removeMember/:group_id')
+    app.route('/user/group/removeMember/:group_id') //DONE
       .put(groupController.removeUserFromGroup);
-    
-    app.route('/user/group/deleteGroup/:group_id')
-      .put(groupController.deleteGroup);
 
+    app.route('/user/group/selectNewAdmin/:group_id') //DONE
+      .get(groupController.selectNewAdmin);
+
+    app.route('/user/group/setNewAdmin/:group_id') //DONE
+      .post(groupController.setNewAdmin);
+    
+    app.route('/user/group/deleteGroup/:group_id') //DONE
+      .put(groupController.deleteGroup);
 
 };

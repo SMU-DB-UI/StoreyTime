@@ -52,7 +52,6 @@ Post.addTags = function(post_id, creator_id, tag_word, result)
     connection.query("SELECT tag_id FROM `ballotBuddy`.`tags` WHERE tag_word = ?;", [tag_word] , 
     function(err, res)
     {
-        console.log(res);
         if(err)
         {
             result(err, null);
