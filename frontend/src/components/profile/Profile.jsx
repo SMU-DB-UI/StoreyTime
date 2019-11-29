@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './profile.css';
 import { UserRepo } from '../../api';
-import { NavLink } from 'react-router-dom'
+import { NavLink, Redirect } from 'react-router-dom';
 
 
 class Profile extends Component {
@@ -66,6 +66,9 @@ class Profile extends Component {
     }
 
     render() {
+        if (!localStorage.getItem('id')){
+            return <Redirect to="/login" />
+        }
         return (
             <div className="profile-container">
                 <div className="profile-box container">

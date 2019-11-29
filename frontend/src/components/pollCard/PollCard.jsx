@@ -38,7 +38,7 @@ const PollCard = props => (
                     </div>
                 </div>
                 {props.poll.votes.map((voteCount, index) => (
-                    <div className="text-left">
+                    <div className="text-left" key={index}>
                         <br />
                         <label className="text-left">{props.poll.answers[index]}</label>
                         <div className="progress">
