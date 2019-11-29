@@ -36,7 +36,7 @@ Post.createPost = function(creator_id, newPost, result)
                 if(res2.length > 0 )
                 {
                     console.log(res2);
-                    result(null, {"code":200, "post_id": res2[0].post_id, "creator_id": creator_id});
+                    result(null, {"code":200, "post_id": res2[0], "creator_id": creator_id});
                 }
                 else
                 {
@@ -52,7 +52,6 @@ Post.addTags = function(post_id, creator_id, tag_word, result)
     connection.query("SELECT tag_id FROM `ballotBuddy`.`tags` WHERE tag_word = ?;", [tag_word] , 
     function(err, res)
     {
-        console.log(res);
         if(err)
         {
             result(err, null);
