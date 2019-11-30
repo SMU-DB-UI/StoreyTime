@@ -1,11 +1,10 @@
 import React from 'react';
-// import Logo from '../../imgs/logo.png';
 import './navbar.css';
 import { NavLink } from 'react-router-dom'
 
 const Navbar = props => (
     <nav className='navbar navbar-expand-md navbar-dark' id="navbar">
-        <NavLink to="/" className="navbar-brand">BallotBuddy</NavLink>
+        <NavLink to="/home" className="navbar-brand">BallotBuddy</NavLink>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#ballotBuddyNav" aria-controls="ballotBuddyNav" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
         </button>
@@ -13,6 +12,12 @@ const Navbar = props => (
             <ul className="navbar-nav">
                 <li className="nav-item">
                     <a className="nav-link" href="https://vote.gov/">Voter Registration</a>
+                </li>
+                <li className="nav-item">
+                    <a className="nav-link" href="/">My Groups</a>
+                </li>
+                <li className="nav-item">
+                    <a className="nav-link" href="/">Candidates</a>
                 </li>
             </ul>
             <ul className="navbar-nav ml-auto">

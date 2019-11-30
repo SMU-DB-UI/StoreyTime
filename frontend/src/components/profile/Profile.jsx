@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './profile.css';
 import { UserRepo } from '../../api';
 import { NavLink, Redirect } from 'react-router-dom';
+import Navbar from '../navbar/Navbar';
 
 
 class Profile extends Component {
@@ -78,6 +79,8 @@ class Profile extends Component {
             return <Redirect to="/login" />
         }
         return (
+            <>
+            <Navbar />
             <div className="profile-container">
                 <div className="profile-box container">
                     <h1>User Profile</h1>
@@ -215,6 +218,7 @@ class Profile extends Component {
                     </div>
                 </div>
             </div>
+            </>
         )
     }
 }
