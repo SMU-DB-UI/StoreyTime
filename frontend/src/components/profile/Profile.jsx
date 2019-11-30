@@ -62,7 +62,15 @@ class Profile extends Component {
                 });
         }
         
-        //TODO STATE CHANGE
+        if(this.state.state !== localStorage.getItem('state')){
+            await this.userRepo.changeState(this.state.state)
+                .then(resp => {
+                    localStorage.setItem('state', this.state.state);
+                })
+                .catch(resp => {
+                    this.setState({ state: localStorage.getItem('state') });
+                });
+        }
     }
 
     render() {

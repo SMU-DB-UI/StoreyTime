@@ -9,23 +9,24 @@ class Home extends React.Component {
 
     state = {
         feed: [
-            // {
-            //     tags: ['Guns', 'School', 'Children'],
-            //     title: 'Give All Children Guns',
-            //     text: 'Just like we teach them reading and writing, necessary skills. We would teach shooting and firearm competency. It wouldn’t matter if a child’s parents weren’t good at it. We’d find them a mentor. It wouldn’t matter if they didn’t want to learn. We would make it necessary to advance to the next grade.',
-            //     user: 'Hayden Center',
-            //     userId: 0,
-            //     date: '11/21/2019',
-            //     dateTime: new Date(),
-            //     isPoll: false
-            // },
             {
-                post_id: 0,
+                id: 0,
+                tags: ['Guns', 'School', 'Children'],
+                title: 'Give All Children Guns',
+                text: 'Just like we teach them reading and writing, necessary skills. We would teach shooting and firearm competency. It wouldn’t matter if a child’s parents weren’t good at it. We’d find them a mentor. It wouldn’t matter if they didn’t want to learn. We would make it necessary to advance to the next grade.',
+                user: 'Hayden Center',
+                userId: 0,
+                date: '11/21/2019',
+                dateTime: new Date(),
+                isPoll: false
+            },
+            {
+                id: 1,
                 tags: ['Parties', 'President', 'Alignment'],
                 question: 'Democrat or Republican?',
                 answers: ['Democrat', 'Republican', 'Other'],
                 votes: [42, 40, 18],
-                totalVotes: 100, //find a way to compute this before putting it in
+                totalVotes: 100, //find a way to compute this before putting in
                 user: 'Hayden Center',
                 userId: 0,
                 date: '11/21/2019',
@@ -58,7 +59,7 @@ class Home extends React.Component {
                                         </div>
                                     </div>
                                     {this.state.feed.map(feed =>
-                                        <div className="post-item" key={feed.post_id}><br />
+                                        <div className="post-item" key={feed.id}><br />
                                             <div className="row">
                                                 <div className="col-12">
                                                     {feed.isPoll === false && (<PostCard post={feed} key={feed.post_id} />)}

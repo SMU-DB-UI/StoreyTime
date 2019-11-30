@@ -79,4 +79,12 @@ export class UserRepo {
                 .catch(resp => rej(resp));
         })
     }
+
+    changeState(state_residence) {
+        return new Promise((res, rej) => {
+            axios.put(this.url + 'user/update/state_residence/' + localStorage.getItem('id'), {state_residence}, this.config)
+                .then(resp => res(resp.data))
+                .catch(resp => rej(resp));
+        })
+    }
 }
