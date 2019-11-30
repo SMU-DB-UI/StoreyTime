@@ -16,3 +16,8 @@
     flex-grow: 1;
 
 }
+
+.post-modal {
+    display: flex;
+    flex-direction: column;
+}

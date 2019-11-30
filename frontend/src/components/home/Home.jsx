@@ -54,52 +54,71 @@ class Home extends React.Component {
                                             <form className="form-inline feed-top">
                                                 <input className="form-control" type="text" placeholder="Search"
                                                     aria-label="Search" />
-                                                <button type="button" class="btn" data-toggle="modal" data-target="#postModal">
+                                                <button type="button" className="btn" data-toggle="modal" data-target="#postModal">
                                                     New Post
                                                 </button>
-                                                <button type="button" class="btn" data-toggle="modal" data-target="#pollModal">
-                                                    New Post
+                                                <button type="button" className="btn" data-toggle="modal" data-target="#pollModal">
+                                                    New Poll
                                                 </button>
-
-                                                <div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                                    <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLongTitle">New Post</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        TODO: POST BODY
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-primary">Submit Post</button>
-                                                    </div>
-                                                    </div>
-                                                </div>
-                                                </div>
-
-                                                <div class="modal fade" id="pollModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                                    <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLongTitle">New Poll</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        TODO: POLL BODY
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-primary">Submit Poll</button>
-                                                    </div>
-                                                    </div>
-                                                </div>
-                                                </div>
-
                                             </form>
+
+
+                                            <div className="modal fade" id="postModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                <div className="modal-dialog modal-dialog-centered" role="document">
+                                                    <div className="modal-content">
+                                                    <div className="modal-header">
+                                                        <h5 className="modal-title" id="exampleModalLongTitle">New Post</h5>
+                                                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div className="modal-body text-left">
+                                                        <form className="post-modal">
+                                                            <label htmlFor="post-title" className="text-left">Title</label>
+                                                            <div className="form-group">
+                                                                <input type="text" className="form-control" id="post-title" placeholder="Post title" />
+                                                            </div>
+                                                            <br/>
+                                                            <label htmlFor="post-body">Body</label>
+                                                            <div className="form-group">
+                                                                <textarea className="form-control w-100" id="post-body" rows="3" placeholder="Post body"></textarea>
+                                                            </div>
+                                                            TODO: tags
+                                                        </form>
+                                                    </div>
+                                                    <div className="modal-footer">
+                                                        <button type="button" className="btn btn-primary" data-dismiss="modal">Submit Post</button>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                                </div>
+
+                                                <div className="modal fade" id="pollModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                <div className="modal-dialog modal-dialog-centered" role="document">
+                                                    <div className="modal-content">
+                                                    <div className="modal-header">
+                                                        <h5 className="modal-title" id="exampleModalLongTitle">New Poll</h5>
+                                                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div className="modal-body text-left">
+                                                        <form className="poll-modal">
+                                                            <label htmlFor="post-title" className="text-left">Title</label>
+                                                            <div className="form-group">
+                                                                <input type="text" className="form-control" id="poll-title" placeholder="Poll title" />
+                                                            </div>
+                                                            TODO: poll options
+                                                        </form>
+                                                    </div>
+                                                    <div className="modal-footer">
+                                                        <button type="button" className="btn btn-primary" data-dismiss="modal">Submit Poll</button>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                                </div>
+
+
                                         </div>
                                     </div>
                                     {this.state.feed.map(feed =>
