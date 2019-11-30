@@ -2,29 +2,6 @@ import React from 'react';
 import './pollCard.css';
 
 const PollCard = props => (
-
-    // state = {
-    //     votes: [25, 30, 40, 5],
-    //     totalVotes: 0
-    // };
-
-    // sumVotes() {
-    //     var sum = 0;
-    //     for (var i = 0; i < this.state.votes.length; i++) {
-    //         sum += this.state.votes[i]
-    //     }
-    //     return sum;
-    // }
-
-    // componentWillMount() {
-    //     this.setState(pState => {
-    //         pState.totalVotes = this.sumVotes();
-    //         return pState;
-    //     });
-    // }
-
-    // render() {
-    //     return (
     <>
         <br />
         <div className='card'>
@@ -55,7 +32,5 @@ const PollCard = props => (
         </div>
     </>
 )
-//     }
-// }
 
 export default PollCard;
