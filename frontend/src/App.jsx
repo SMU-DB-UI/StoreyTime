@@ -4,6 +4,8 @@ import Login from './components/login/Login';
 import Home from './components/home/Home';
 import Register from './components/register/Register';
 import Profile from './components/profile/Profile';
+import GroupHomepage from './components/groups/GroupHomepage';
+import Candidates from './components/candidates/Candidates';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 function App() {
@@ -17,6 +19,8 @@ function App() {
             <Route path="/register" component={Register} />
             <Route path="/home" component={Home} />
             <Route path="/profile" component={Profile} />
+            <Route path="/groups" component={GroupHomepage} />
+            <Route path="/candidates" component={Candidates} />
             <Route component={Login} />
           </Switch>
         </BrowserRouter>

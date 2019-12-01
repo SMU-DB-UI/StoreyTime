@@ -14,10 +14,10 @@ const Navbar = props => (
                     <a className="nav-link" href="https://vote.gov/">Voter Registration</a>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link" href="/">My Groups</a>
+                    <a className="nav-link" href="/groups">My Groups</a>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link" href="/">Candidates</a>
+                    <a className="nav-link" href="/candidates">Candidates</a>
                 </li>
             </ul>
             <ul className="navbar-nav ml-auto">
