@@ -67,6 +67,20 @@ exports.followTag = function(request, result)
     }
 };
 
+exports.getPoliticians = function(request, result) {
+    User.getPoliticians(function(err, user)
+    {
+        if(err)
+        {
+            result.send(err);
+        }
+        else
+        {
+            result.json(user);
+        }
+    });
+};
+
 exports.getUser = function(request, result) {
     if(! request.params.id)
     {

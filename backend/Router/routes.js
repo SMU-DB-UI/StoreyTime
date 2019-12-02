@@ -32,6 +32,9 @@ module.exports = function(app) {
     app.route('/postsHome/:id') //DONE
       .get(userController.getPostsFeed);
 
+    app.route('/getPoliticians')
+      .get(userController.getPoliticians);
+
     app.route('/user/followTag/:id') //DONE
       .post(userController.followTag);
 
