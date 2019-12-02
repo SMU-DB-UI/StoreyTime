@@ -14,7 +14,10 @@
     display: inline-block;
     vertical-align: middle;
     flex-grow: 1;
+}
 
+.feed-top select {
+    flex-grow: 1;
 }
 
 .post-modal {

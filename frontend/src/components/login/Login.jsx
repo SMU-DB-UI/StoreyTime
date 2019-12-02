@@ -47,7 +47,7 @@ class Login extends React.Component {
     }
     return (
       <div className='login-container'>
-        <div className='login-box'>
+        <div className='login-box container' id="login-box">
           <form className='login-form'>
             {this.state.showError && <div className="danger">Error while logging in.</div>}
             <div className="spacer"></div>

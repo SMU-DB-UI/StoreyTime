@@ -9,10 +9,8 @@
     align-items: center;
 }
 
-.register-box {
-    min-width: 450px;
+#register-box {
     max-width: 450px;
-    min-height: 650px;
     max-height: 650px;
     border-radius: 10px;
     padding: 55px;

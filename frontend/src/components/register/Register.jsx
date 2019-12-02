@@ -51,13 +51,12 @@ class Register extends Component {
     render() {
         return (
             <div className='register-container'>
-                <div className='register-box'>
-                    {this.state.isRegistered && <div className="info">
-                        Account successfully created! Please login with your new credentials
-                        <a href="/login">Here!</a>
-                    </div>
-                    }
+                <div className='register-box container' id="register-box">
                     <form className='register-form'>
+                        {this.state.isRegistered && <div className="info">
+                            Account successfully created! Please login with your new credentials <a href="/login">here!</a>
+                        </div>
+                        }
                         <h1 className='register-label'>Register</h1>
                         <div className='register-firstname-wrapper'>
                             <i className="fas fa-plus-square"></i>

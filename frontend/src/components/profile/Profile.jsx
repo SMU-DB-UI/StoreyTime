@@ -82,7 +82,7 @@ class Profile extends Component {
             <>
             <Navbar />
             <div className="profile-container">
-                <div className="profile-box container">
+                <div className="profile-box container" id="profile-box">
                     <h1>User Profile</h1>
                     <div className="col-12 text-left">
                         <label htmlFor="profile-firstname">First Name</label>
