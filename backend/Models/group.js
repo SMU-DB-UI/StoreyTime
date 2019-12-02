@@ -28,7 +28,7 @@ Group.createGroup = function(creator_id, newGroup, result) {
                 }
                 else 
                 {
-                    result(null, {"code":200, "group_id": res1[0].group_id, "creator_id": newGroup.creator_id});
+                    result(null, {"code":200, "group_id": res1[0]['MAX(group_id)'], "creator_id": newGroup.creator_id});
                 }
             });
         }

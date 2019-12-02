@@ -3,11 +3,13 @@
 module.exports = function(app) {
 
     var userController = require('../Controller/userController.js');
+    var politicianController = require('../Controller/politicianController.js');
     var groupController = require('../Controller/groupsController.js');
     var dbManager = require('../Controller/dbController.js');
     var pollController = require('../Controller/pollController.js');
     var postController = require('../Controller/postsController.js');
     var commentController = require('../Controller/commentsController.js');
+    var eventController = require('../Controller/eventsController.js');
     
 // ========== set-up endpoints ========== //
     app.route('/setupdb')
@@ -15,10 +17,6 @@ module.exports = function(app) {
     
     app.route('/createtags')
       .get(dbManager.setuptags);
-
-    app.get('/', function(err, result) {
-      result.status(200).send("on 0.0.0.0:3000");
-     });
 
 // =========== user ============== //
 
@@ -30,6 +28,12 @@ module.exports = function(app) {
 
     app.route('/user/:id') //DONE
       .get(userController.getUser);
+
+    app.route('/postsHome/:id') //DONE
+      .get(userController.getPostsFeed);
+
+    app.route('/user/followTag/:id') //DONE
+      .post(userController.followTag);
 
     app.route('/user/update/password/:id') //DONE
       .put(userController.resetPassword);
@@ -51,6 +55,22 @@ module.exports = function(app) {
 
     app.route('/user/search') //DONE
       .post(userController.searchUsers);
+
+// =========== politician routes ============== //
+    app.route('/register/politician') //DONE
+      .post(politicianController.createPolitician);
+
+    app.route('/user/politician/updateOfficePhone/:id') //DONE
+      .put(politicianController.updatePhone);
+
+    app.route('/user/politician/updateOfficeEmail/:id') //DONE
+      .put(politicianController.updateEmail);
+
+    app.route('/user/politician/updatePoliticianType/:id') //DONE
+      .put(politicianController.updatePoliticianType);
+
+    app.route('/user/politician/setAsInactive/:id') //DONE
+      .put(politicianController.setInactive);
 
 // =========== posts routes ================ //
     app.route('/user/newPost/:id') //DONE
@@ -100,5 +120,18 @@ module.exports = function(app) {
     
     app.route('/user/group/deleteGroup/:group_id') //DONE
       .put(groupController.deleteGroup);
+
+// ============ events routes ============= //
+    app.route('/user/group/createEvent/:group_id')
+      .post(eventController.createEvent);
+
+    app.route('user/group/events/:event_id')
+      .get(eventController.getEvent);
+
+    app.route('user/group/events/editDate/:event_id')
+      .put(eventController.updateEventTime);
+
+    app.route('user/group/events/editDesc/:event_id')
+      .put(eventController.updateEventDesc);
 
 };
