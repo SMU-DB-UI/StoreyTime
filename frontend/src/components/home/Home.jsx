@@ -76,11 +76,20 @@ class Home extends React.Component {
     }
 
     resetNewPost() {
-        this.setState(this.state.newPost = {
-            title: '',
-            body: '',
-            availableTags: [],
-            tags: []
+        // this.setState(this.state.newPost = {
+        //     title: '',
+        //     body: '',
+        //     availableTags: [],
+        //     tags: []
+        // })
+        this.setState({
+            newPost:
+            {
+                title: '',
+                body: '',
+                availableTags: [],
+                tags: []
+            }
         })
     }
 
@@ -174,7 +183,7 @@ class Home extends React.Component {
                                                             </form>
                                                         </div>
                                                         <div className="modal-footer">
-                                                            <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={() => {this.resetTags(); this.resetNewPost()}}>Submit Post</button>
+                                                            <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={() => { this.resetNewPost(); this.resetTags() }}>Submit Post</button>
                                                         </div>
                                                     </div>
                                                 </div>
