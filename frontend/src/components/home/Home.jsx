@@ -38,9 +38,16 @@ class Home extends React.Component {
             title: '',
             body: '',
             availableTags: [],
-            tags: []
+            tags: [],
+            nextTag: ''
         },
-        nextTag: ''
+        newPoll: {
+            question: '',
+            answers: [],
+            availableTags: [],
+            tags: [],
+            nextTag: ''
+        }
     }
 
     tags = [
@@ -67,7 +74,7 @@ class Home extends React.Component {
         'Racism'
     ]
 
-    resetTags() {
+    resetPostTags() {
         this.setState(prevState => {
             for (var i = 0; i < this.tags.length; i++) {
                 prevState.newPost.availableTags.push(this.tags[i])
@@ -75,13 +82,15 @@ class Home extends React.Component {
         })
     }
 
+    resetPollTags() {
+        this.setState(prevState => {
+            for (var i = 0; i < this.tags.length; i++) {
+                prevState.newPoll.availableTags.push(this.tags[i])
+            }
+        })
+    }
+
     resetNewPost() {
-        // this.setState(this.state.newPost = {
-        //     title: '',
-        //     body: '',
-        //     availableTags: [],
-        //     tags: []
-        // })
         this.setState({
             newPost:
             {
@@ -93,9 +102,22 @@ class Home extends React.Component {
         })
     }
 
+    resetNewPoll() {
+        this.setState({
+            newPoll:
+            {
+                title: '',
+                body: '',
+                availableTags: [],
+                tags: []
+            }
+        })
+    }
+
     componentWillMount() {
         debugger;
-        this.resetTags();
+        this.resetPostTags();
+        this.resetPollTags();
     }
 
     render() {
@@ -160,30 +182,36 @@ class Home extends React.Component {
                                                                     <select className="form-control"
                                                                         id="post-tag-select"
                                                                         placeholder="Add Tag"
-                                                                        value={this.state.nextTag}
-                                                                        onChange={e => this.setState({ nextTag: e.target.value })}
+                                                                        value={this.state.newPost.nextTag}
+                                                                        onChange={e => {
+                                                                            var val = e.target.value; this.setState(prevState => {
+                                                                                prevState.newPost.nextTag = val;
+                                                                                return prevState;
+                                                                            })
+                                                                        }
+                                                                        }
                                                                         selected=''>
                                                                         <option value='' disabled>Add Tag</option>
                                                                         {this.state.newPost.availableTags.map((tag, index) =>
                                                                             <option value={tag} key={index}>{tag}</option>)}
                                                                     </select>
                                                                 </div>
-                                                                {this.state.nextTag &&
+                                                                {this.state.newPost.nextTag &&
                                                                     <button className="form-control" type="button" onClick={() => {
                                                                         this.setState(prevState => {
-                                                                            prevState.newPost.tags.push(this.state.nextTag);
-                                                                            var index = prevState.newPost.availableTags.indexOf(this.state.nextTag);
+                                                                            prevState.newPost.tags.push(this.state.newPost.nextTag);
+                                                                            var index = prevState.newPost.availableTags.indexOf(this.state.newPost.nextTag);
                                                                             if (index > -1) {
                                                                                 prevState.newPost.availableTags.splice(index, 1);
                                                                             }
-                                                                            prevState.nextTag = '';
+                                                                            prevState.newPost.nextTag = '';
                                                                         });
                                                                         this.forceUpdate()
                                                                     }}>Add Tag</button>}
                                                             </form>
                                                         </div>
                                                         <div className="modal-footer">
-                                                            <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={() => { this.resetNewPost(); this.resetTags() }}>Submit Post</button>
+                                                            <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={() => { this.resetNewPost(); this.resetPostTags() }}>Submit Post</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -200,15 +228,52 @@ class Home extends React.Component {
                                                         </div>
                                                         <div className="modal-body text-left">
                                                             <form className="poll-modal">
-                                                                <label htmlFor="post-title" className="text-left">Title</label>
+                                                                <label htmlFor="poll-title" className="text-left">Title</label>
                                                                 <div className="form-group">
                                                                     <input type="text" className="form-control" id="poll-title" placeholder="Poll title" />
                                                                 </div>
-                                                                TODO: poll options
+                                                                <label htmlFor="poll-tags">Tags</label>
+                                                                {this.state.newPoll.tags.length !== 0 &&
+                                                                    <div className="form-group">
+                                                                        <ul className="list-group">
+                                                                            {this.state.newPoll.tags.map((tag, index) => <li className="list-group-item" key={index}>{tag}</li>)}
+                                                                        </ul>
+                                                                    </div>
+                                                                }
+                                                                <div className="form-group">
+                                                                    <select className="form-control"
+                                                                        id="poll-tag-select"
+                                                                        placeholder="Add Tag"
+                                                                        value={this.state.newPoll.nextTag}
+                                                                        onChange={e => {
+                                                                            var val = e.target.value; this.setState(prevState => {
+                                                                                prevState.newPoll.nextTag = val;
+                                                                                return prevState;
+                                                                            })
+                                                                        }
+                                                                        }
+                                                                        selected=''>
+                                                                        <option value='' disabled>Add Tag</option>
+                                                                        {this.state.newPoll.availableTags.map((tag, index) =>
+                                                                            <option value={tag} key={index}>{tag}</option>)}
+                                                                    </select>
+                                                                </div>
+                                                                {this.state.newPoll.nextTag &&
+                                                                    <button className="form-control" type="button" onClick={() => {
+                                                                        this.setState(prevState => {
+                                                                            prevState.newPoll.tags.push(this.state.newPoll.nextTag);
+                                                                            var index = prevState.newPoll.availableTags.indexOf(this.state.newPoll.nextTag);
+                                                                            if (index > -1) {
+                                                                                prevState.newPoll.availableTags.splice(index, 1);
+                                                                            }
+                                                                            prevState.newPoll.nextTag = '';
+                                                                        });
+                                                                        this.forceUpdate()
+                                                                    }}>Add Tag</button>}
                                                         </form>
                                                         </div>
                                                         <div className="modal-footer">
-                                                            <button type="button" className="btn btn-primary" data-dismiss="modal">Submit Poll</button>
+                                                            <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={() => { this.resetNewPoll(); this.resetPollTags() }}>Submit Poll</button>
                                                         </div>
                                                     </div>
                                                 </div>
