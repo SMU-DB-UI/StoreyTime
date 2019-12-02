@@ -14,14 +14,12 @@ var sha224 = function(password, salt){
     var hash = crypto.createHmac('sha224', salt); 
     hash.update(password);
     var value = hash.digest('hex');
-    //var newValue = utf16.stringify(value);
     return {
         salt:salt,
         passwordHash:value
     };
 };
 
-//copy user
 var User = function(user){
     this.id = user.id;
     this.firstName = user.firstName;
@@ -45,12 +43,26 @@ User.createUser = function(newUser, result) {
     var salt = salter(16);
     var salt, newPass = sha224(newUser.pass, salt);
     connection.query("INSERT INTO `ballotBuddy`.`users` (`firstName`,`lastName`,`email`,`pass`,`salt`,`user_type`, `state_residence`, `date_joined`, `inactive`) VALUES ('" + newUser.firstName + "','" + newUser.lastName + "','" + newUser.email + "','" + newPass.passwordHash + "','"+ salt +"','" + newUser.user_type + "','" + newUser.state_residence + "','"+ date +"', '"+ 0 +"');",
-        function(err, res) {
+        function(err, res) 
+        {
             if (err){
                 result(err, null);
             }
-            else {
-                result(null, {"code":200});
+            else 
+            {
+                connection.query("SELECT id FROM `ballotBuddy`.`users` WHERE firstName=? AND lastName=? AND email=? AND salt=?", [newUser.firstName, newUser.lastName, newUser.email, salt],
+                function(err1, res1)
+                {
+                    if(err1)
+                    {
+                        result(err1, null);
+                    }
+                    else
+                    {
+                        result(null, {"code":200, "id":res1[0].id});
+                    }
+
+                });  
             }
     });
 };
@@ -87,6 +99,54 @@ User.login = function(user, result) {
     });
 };
 
+User.followTag = function(id, tag_word, result)
+{
+    connection.query("SELECT * FROM `ballotBuddy`.`tags` WHERE tag_word = ?", [tag_word],
+    function(err, res)
+    {
+        if(err)
+        {
+            result(err, null);
+        }
+        else
+        {
+            connection.query("INSERT INTO `ballotBuddy`.`tags_users_bridge` (users_id, tag_id) VALUES ('"+ id +"', '"+res[0].tag_id +"');",
+            function(err1, res1)
+            {
+                if(err1)
+                {
+                    result(err1, null);
+                }
+                else
+                {
+                    result(null, {"code":200});
+                }
+            });
+        }
+    });
+};
+
+User.getPollsFeed = function(id, result)
+{
+    connection.query("SELECT * from polls");
+};
+
+User.getPostsFeed = function(id, result)
+{
+    connection.query("select firstName, lastName, title, post_text, date_created from `ballotBuddy`.`users` as U join (select * from `ballotBuddy`.`posts` where post_id in (select post_id from `ballotBuddy`.`tags_posts` where tag_id in (select tag_id from `ballotBuddy`.`tags_users_bridge` where users_id=?))) as P on U.id = P.creator_id order by date_created desc;", [id],
+    function(err, res)
+    {
+        if(err)
+        {
+            result(err, null);
+        }
+        else
+        {
+            result(null, res);
+        }
+    });
+};
+
 User.getUser = function(id, result) {
     connection.query("SELECT * FROM `ballotBuddy`.`users` WHERE id = ?", [id],
     function(err, res) {
@@ -116,8 +176,6 @@ User.getUser = function(id, result) {
     });
 };
 
-//update user
-//how to do this?
 User.changePassword = function(id, pass, result) {
     var salt = salter(16);
     var salt, newPass = sha224(pass, salt);

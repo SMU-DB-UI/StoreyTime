@@ -45,6 +45,28 @@ exports.loginUser = function(request, result) {
     }
 };
 
+exports.followTag = function(request, result)
+{
+    if(! request.params.id)
+    {
+        result.status(400).json({"code":400, "response": "Missing ID in params"});
+    }
+    else
+    {
+        User.followTag(request.params.id, request.body.tag_word, function(err, user)
+        {
+            if(err)
+            {
+                result.send(err);
+            }
+            else
+            {
+                result.json(user);
+            }
+        });
+    }
+};
+
 exports.getUser = function(request, result) {
     if(! request.params.id)
     {
@@ -59,6 +81,27 @@ exports.getUser = function(request, result) {
                 result.send(err);
             }
             else 
+            {
+                result.json(user);
+            }
+        });
+    }
+};
+
+exports.getPostsFeed = function(request, result) {
+    if(!request.params.id)
+    {
+        result.status(400).json({"code":400, "response":"Missing ID in request"});
+    }
+    else
+    {
+        User.getPostsFeed(request.params.id, function(err, user)
+        {
+            if(err)
+            {
+                result.send(err);
+            }
+            else
             {
                 result.json(user);
             }

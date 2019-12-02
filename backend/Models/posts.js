@@ -35,8 +35,7 @@ Post.createPost = function(creator_id, newPost, result)
             {
                 if(res2.length > 0 )
                 {
-                    console.log(res2);
-                    result(null, {"code":200, "post_id": res2[0], "creator_id": creator_id});
+                    result(null, {"code":200, "post_id": res2[0]['MAX(`post_id`)'], "creator_id": creator_id});
                 }
                 else
                 {
