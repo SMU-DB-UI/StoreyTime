@@ -99,6 +99,22 @@ User.login = function(user, result) {
     });
 };
 
+User.getPoliticians = function(result)
+{
+    connection.query("SELECT U.firstName, U.lastName, P.politician_type, P.inactive from `ballotBuddy`.`politicians` as P join (SELECT id, firstName, lastName FROM `ballotBuddy`.`users`) as U ON P.user_id = U.id;", 
+    function(err, res)
+    {
+        if(err)
+        {
+            result(err, null);
+        }
+        else
+        {
+            result(null, res);
+        }
+    });
+};
+
 User.followTag = function(id, tag_word, result)
 {
     connection.query("SELECT * FROM `ballotBuddy`.`tags` WHERE tag_word = ?", [tag_word],
