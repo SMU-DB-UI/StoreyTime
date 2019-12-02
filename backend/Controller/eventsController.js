@@ -2,7 +2,7 @@
 
 var Event = require('../Models/events');
 
-exports.creatEvent = function(req,res){
+exports.createEvent = function(req,res){
     var newEvent = new Event(req.body);
     if(!newEvent.event_id || !newEvent.group_id || !newEvent.date_created || !newEvent.event_date || !newEvent.event_desc){
         res.status(400).jason({
@@ -23,15 +23,19 @@ exports.updateEventTime = function(req,res){
     if(!req.params.event_id){
         res.status(400).json({
             "code" : 400,
-            "response" : "Missing event_id as input."
+            "response" : "Missing event_id in params"
         });
-    }else if(!req.body.event_date){
+    }else if(! req.body.creator_id)
+    {
+        res.status(400).json({"code":400, "response":"Missing creator id in body"});
+    }
+    else if(!req.body.event_date){
         res.status(400).json({
             "code" : 400,
-            "response" : "Missing the new event_date as input."
+            "response" : "Missing the event_date in body"
         });
     }else{
-        Event.updateEventTime(req.params.event_id,req.body.event_date,function(err,event){
+        Event.updateEventTime(req.params.event_id, req.body.creator_id, req.body.event_date,function(err,event){
             if(err)
                 res.send(err);
             else
@@ -44,15 +48,19 @@ exports.updateEventDesc = function(req,res){
     if(!req.params.event_id){
         res.status(400).json({
             "code" : 400,
-            "response" : "Missing event_id as input."
+            "response" : "Missing event_id in params"
         });
     }else if(!req.body.event_desc){
         res.status(400).json({
             "code" : 400,
-            "response" : "Missing the new event_desc as input."
+            "response" : "Missing the new event_desc in body"
         });
-    }else{
-        Event.updateEventDesc(req.params.event_id,req.body.event_desc,function(err,event){
+    } else if(! req.body.creator_id)
+    {
+        res.status(400).json({"code":400, "response":"Missing creator id in body"});
+    }
+    else{
+        Event.updateEventDesc(req.params.event_id, req.body.creator_id, req.body.event_desc,function(err,event){
             if(err)
                 res.send(err);
             else
@@ -61,23 +69,20 @@ exports.updateEventDesc = function(req,res){
     }
 };
 
-
-//=================Controllers of Getters
-
-exports.getEventDate = function(req,res){
-    Event.getEventDate(req.params.event_id,function(err,event){
-        if(err)
-            res.send(err);
-        else
-            res.json(poll);        
-    });
-};
-
-exports.getEventDesc = function(req,res){
-    Event.getEventDesc(req.params.event_id,function(err,event){
-        if(err)
-            res.send(err);
-        else
-            res.json(poll);        
-    });
+exports.getEvent = function(req,res){
+    if(!req.params.event_id){
+        res.status(400).json({
+            "code" : 400,
+            "response" : "Missing event_id in params"
+        });
+    }
+    else
+    {
+        Event.getEvent(req.params.event_id,function(err,event){
+            if(err)
+                res.send(err);
+            else
+                res.json(event);        
+        });
+    }
 };
