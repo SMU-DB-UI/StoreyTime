@@ -290,6 +290,7 @@ class Home extends React.Component {
                                                                     <label htmlFor="poll-answers" className="text-left">Options</label>
                                                                     {this.state.newPoll.answers.map((answer, index) =>
                                                                         <input type="text"
+                                                                            key={index}
                                                                             className="form-control mb-2"
                                                                             id={"poll-answer-" + (index + 1)}
                                                                             placeholder={"Option " + (index + 1)}
