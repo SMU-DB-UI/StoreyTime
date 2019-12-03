@@ -89,15 +89,15 @@
     font-size: 16px;
 }
 
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-textarea:-webkit-autofill,
-textarea:-webkit-autofill:hover,
-textarea:-webkit-autofill:focus,
-select:-webkit-autofill,
-select:-webkit-autofill:hover,
-select:-webkit-autofill:focus {
+.register-container input:-webkit-autofill,
+.register-container input:-webkit-autofill:hover,
+.register-container input:-webkit-autofill:focus,
+.register-container textarea:-webkit-autofill,
+.register-container textarea:-webkit-autofill:hover,
+.register-container textarea:-webkit-autofill:focus,
+.register-container select:-webkit-autofill,
+.register-container select:-webkit-autofill:hover,
+.register-container select:-webkit-autofill:focus {
     border: 0px;
     -webkit-text-fill-color: white;
     box-shadow: 0px 0px 0px 0px #000;
