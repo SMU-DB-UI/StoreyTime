@@ -1,3 +1,5 @@
+'use strict';
+
 var Post = require('../Models/posts.js');
 
 exports.createPost = function(request, result) {

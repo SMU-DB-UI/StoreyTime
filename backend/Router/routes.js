@@ -65,6 +65,18 @@ module.exports = function(app) {
 
 
     //user polls routes
-    app.route('/user/newPoll/:user_id')
-      .post(poll)
+    app.route('/user/newPoll/:creator_id')
+      .post(pollController.createPoll);
+    
+    app.route('/user/newPoll/addTags/:creator_id')
+      .put(pollController.addTags);
+    
+    app.route('/user/newPoll/addOption/:poll_id')
+      .put(pollController.addOption);
+
+    app.route('/user/updateAnswerCount/:poll_id')
+      .put(pollController.updateAnswerCount);
+
+      app.route('/user/deletePoll/:poll_id')
+      .put(pollController.deletePoll);
 };
