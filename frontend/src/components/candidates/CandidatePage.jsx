@@ -7,11 +7,27 @@ class CandidatePage extends Component {
         this.state = {  }
     }
     render() { 
-        return ( 
-            <>
-             <Navbar />
-            </>
-        );
+        return (<>
+            <Navbar />
+            <br />
+            <div className='home-container'>
+                <div className="container">
+                    <div className="row">
+                        <div className="col-12">
+                            <div className="card feed">
+                                <div className="card-body">
+                                    <div className="row">
+                                        <div className="col-12">
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </>);
     }
 }
  

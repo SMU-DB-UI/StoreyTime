@@ -385,7 +385,6 @@ class Home extends React.Component {
                                                 </div>
                                             </div>
 
-
                                         </div>
                                     </div>
                                     {this.state.feed.map(feed =>
@@ -411,6 +410,23 @@ class Home extends React.Component {
     componentDidMount() {
         this.resetPostTags();
         this.resetPollTags();
+
+        this.postRepo.getHomePosts()
+        .then(resp => {
+            this.setState(pstate => {
+                pstate.feed.concat(resp);
+                return pstate;
+            });
+            this.pollRepo.getHomePolls()
+            .then(respo => {
+                this.setState(pState => {
+                    pState.feed.concat(respo);
+                    return pState;
+                });
+            })
+            .catch(respo => alert(respo));
+        })
+        .catch(resp => alert(resp));
         alert('do the home routing');
     }
 }

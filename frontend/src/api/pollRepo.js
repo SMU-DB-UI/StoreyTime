@@ -31,5 +31,12 @@ export class PollRepo {
         })
     }
 
+    getHomePolls() {
+        return new Promise((res, rej) => {
+            axios.get(this.url + 'pollsHome/' + localStorage.getItem('id'))
+            .then(resp => res(resp.data))
+            .catch(resp => rej(resp));
+        })
+    }
 
 }

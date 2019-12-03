@@ -10,8 +10,32 @@ class Profile extends Component {
     userRepo = new UserRepo();
 
     constructor(props) {
-        //TODO: make state pull from database/localstorage and update eveything when done is clicked
         super(props);
+
+        this.tags = [
+            "Republican",
+            "Conservative",
+            'Democrat',
+            'Liberal',
+            "Immigration",
+            'Abortion',
+            'Climate Change',
+            'Gun Control',
+            'Unemployment',
+            'Education',
+            'Religion',
+            'Drug Policy',
+            'Patriot Act',
+            'Net Neutrality',
+            'Equal Pay',
+            'Taxes',
+            'Welfare',
+            'Medicaid',
+            'Vaccinationas',
+            'Terrorism',
+            'Racism'
+        ]
+
         this.state = {
             firstName: localStorage.getItem('firstName'),
             lastName: localStorage.getItem('lastName'),
@@ -19,7 +43,8 @@ class Profile extends Component {
             pass: 'xxxxxxxx',
             state: localStorage.getItem('state'),
             user_type: localStorage.getItem('user_type'),
-            edit: false
+            edit: false,
+            followedTags: []
         }
     }
 
@@ -72,6 +97,10 @@ class Profile extends Component {
                     this.setState({ state: localStorage.getItem('state') });
                 });
         }
+    }
+
+    handleTagChange() {
+
     }
 
     render() {
@@ -215,6 +244,48 @@ class Profile extends Component {
                             >Submit</button>
                         }
                         <NavLink to='/home' className="btn btn-light">Done</NavLink>
+                    </div>
+                </div>
+                <div className="tag-selector">
+                    <h2>Select Tags to follow</h2>
+                    <div className="checkbox-container">
+                        {
+                            this.tags.map(tag => 
+                                <div className="form-check form-check-inline" key={tag}>
+                                    <input className="form-check-input" 
+                                        type="checkbox" 
+                                        id={tag} 
+                                        value={tag} 
+                                        onChange={e => {
+                                            var val = console.log(e.target.checked);
+                                            if(!this.state.followedTags.includes(val)){
+                                                this.setState(pstate => { return pstate.followedTags.push(val) });
+                                            }else{
+                                                this.setState(pstate => {
+                                                    pstate.followedTags.splice(pstate.followedTags.indexOf(val), 1);
+                                                    return pstate;
+                                                });
+                                            }
+                                        }}
+                                    />
+                                    <label className="form-check-label" 
+                                        htmlFor={tag}
+                                        value={tag} 
+                                        onChange={e => {
+                                            var val = console.log(tag);
+                                            if(!this.state.followedTags.includes(tag)){
+                                                this.setState(pstate => { return pstate.followedTags.push(tag) });
+                                            }else{
+                                                this.setState(pstate => {
+                                                    pstate.followedTags.splice(pstate.followedTags.indexOf(tag), 1);
+                                                    return pstate;
+                                                });
+                                            }
+                                        }}
+                                    >{tag}</label>
+                                </div>
+                            )
+                        }
                     </div>
                 </div>
             </div>

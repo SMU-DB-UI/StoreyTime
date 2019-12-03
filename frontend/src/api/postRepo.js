@@ -38,4 +38,12 @@ export class PostRepo {
                 .catch(resp => reject(resp));
         });
     }
+
+    getHomePosts() {
+        return new Promise((res, rej) => {
+            axios.get(this.url + 'postsHome/' + localStorage.getItem('id'))
+            .then(resp => res(resp.data))
+            .catch(resp => rej(resp));
+        })
+    }
 }
