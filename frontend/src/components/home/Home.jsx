@@ -92,7 +92,7 @@ class Home extends React.Component {
     submitPost() {
         // let id = -1;
         let newP = {
-            post_title: this.state.newPost.title,
+            title: this.state.newPost.title,
             post_text: this.state.newPost.body
         };
         this.postRepo.createPost(newP)
@@ -107,7 +107,7 @@ class Home extends React.Component {
                 var feedItem = {
                     id: res.post_id,
                     tags: this.state.newPost.tags,
-                    title: newP.post_title,
+                    title: newP.title,
                     text: newP.post_text,
                     user: `${localStorage.getItem('firstName')} ${localStorage.getItem('lastName')}`,
                     userId: localStorage.getItem('id'),

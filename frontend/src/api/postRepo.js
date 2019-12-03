@@ -9,7 +9,7 @@ export class PostRepo {
 
     createPost (post) {
         return new Promise((resolve, reject) => {
-            axios.post(this.url + 'user/newPost/' + localStorage.getItem('id'), {post})
+            axios.post(this.url + 'user/newPost/' + localStorage.getItem('id'), post)
                 .then(resp =>  resolve(resp.data))
                 .catch(resp => reject(resp));
         });
