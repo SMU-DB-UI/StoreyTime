@@ -19,7 +19,7 @@ Group.createGroup = function(creator_id, newGroup, result) {
         }
         else 
         {
-            connection.query("SELECT MAX(group_id) FROM `ballotBuddy`.`groups` WHERE creator_id = ?", [newGroup.creator_id], 
+            connection.query("SELECT MAX(`group_id`) FROM `ballotBuddy`.`groups` WHERE creator_id = ?", [newGroup.creator_id], 
             function(err1, res1)
             {
                 if(err1)
@@ -28,7 +28,7 @@ Group.createGroup = function(creator_id, newGroup, result) {
                 }
                 else 
                 {
-                    result(null, {"code":200, "group_id": res1[0]['MAX(group_id)'], "creator_id": newGroup.creator_id});
+                    result(null, {"code":200, "group_id": res1[0]['MAX(`group_id`)'], "creator_id": newGroup.creator_id});
                 }
             });
         }

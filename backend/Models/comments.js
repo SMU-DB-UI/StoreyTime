@@ -38,7 +38,7 @@ Comment.createComment = function(newComment, result)
                 }
                 else
                 {
-                    result(null, {"code":200, "comment_id": res1[0].comment_id, "creator_id": newComment.creator_id, "post_id": newComment.post_id});
+                    result(null, {"code":200, "comment_id": res1[0]['MAX(`comment_id`)'], "creator_id": newComment.creator_id, "post_id": newComment.post_id});
                 }
             });
         }
