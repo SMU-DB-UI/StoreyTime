@@ -5,6 +5,7 @@ import PollCard from '../pollCard/PollCard'
 import './home.css';
 import { Redirect } from 'react-router-dom';
 import { PostRepo } from '../../api/postRepo';
+import { PollRepo } from '../../api/pollRepo';
 
 class Home extends React.Component {
 
@@ -13,6 +14,8 @@ class Home extends React.Component {
         super(props);
 
         this.postRepo = new PostRepo();
+        this.pollRepo = new PollRepo();
+
         this.state = {
             tags: [
                 "Republican",
@@ -80,6 +83,76 @@ class Home extends React.Component {
         }
     }
 
+    submitPost() {
+        let newP = {
+            title: this.state.newPost.title,
+            post_text: this.state.newPost.body
+        };
+        this.postRepo.createPost(newP)
+        .then(res => {
+            this.state.newPost.tags.forEach(tag => {
+                this.postRepo.addTags(res.post_id, tag)
+                .then(resp => console.log(resp))
+                .catch(resp => console.log(resp));
+            });
+            var feedItem = {
+                id: res.post_id,
+                tags: this.state.newPost.tags,
+                title: newP.title,
+                text: newP.post_text,
+                user: `${localStorage.getItem('firstName')} ${localStorage.getItem('lastName')}`,
+                userId: localStorage.getItem('id'),
+                date: new Date().toDateString(),
+                dateTime: new Date(),
+                isPoll: false
+            };
+            this.setState({
+                feed: [feedItem, ...this.state.feed]
+            });
+            this.resetNewPost();
+            this.resetPostTags();
+        })
+        .catch(res => alert(res));
+    }
+
+    submitPoll() {
+        let newP = { question: this.state.newPoll.question };
+
+        this.pollRepo.createPoll(newP)
+        .then(res => {
+            this.state.newPoll.tags.forEach(tag => {
+                this.pollRepo.addTags(res.poll_id, tag)
+                .then(resp => {
+                    this.state.newPoll.answers.forEach(answer => {
+                        this.pollRepo.addOption(resp.poll_id, answer)
+                        .then(respo => console.log(respo))
+                        .catch(respo => alert(respo));
+                    });
+                    var feedItem = {
+                        id: res.poll_id,
+                        tags: this.state.newPoll.tags,
+                        question: this.state.newPoll.question,
+                        answers: this.state.newPoll.answers,
+                        votes: new Array(this.state.newPoll.answers.length).fill(0),
+                        totalVotes: 0,
+                        user: `${localStorage.getItem('firstName')} ${localStorage.getItem('lastName')}`,
+                        userId: localStorage.getItem('id'),
+                        date: new Date().toDateString(),
+                        dateTime: new Date(),
+                        isPoll: true
+                    };
+                    this.setState({
+                        feed: [feedItem, ...this.state.feed]
+                    });
+                    this.resetNewPoll();
+                    this.resetPollTags();
+                })
+                .catch(resp => alert(resp));
+            });
+        })
+        .catch(res => alert(res));
+    }
+
     resetPostTags() {
         this.setState(prevState => {
             for (var i = 0; i < this.state.tags.length; i++) {
@@ -87,45 +160,6 @@ class Home extends React.Component {
             }
             return prevState;
         })
-    }
-
-    submitPost() {
-        // let id = -1;
-        let newP = {
-            title: this.state.newPost.title,
-            post_text: this.state.newPost.body
-        };
-        this.postRepo.createPost(newP)
-            .then(res => {
-                console.log(res);
-                this.state.newPost.tags.forEach(tag => {
-                    console.log(tag);
-                    this.postRepo.addTags(res.post_id, tag)
-                        .then(resp => (console.log(resp)))
-                        .catch(resp => (console.log(resp)));
-                });
-                var feedItem = {
-                    id: res.post_id,
-                    tags: this.state.newPost.tags,
-                    title: newP.title,
-                    text: newP.post_text,
-                    user: `${localStorage.getItem('firstName')} ${localStorage.getItem('lastName')}`,
-                    userId: localStorage.getItem('id'),
-                    date: new Date().toDateString(),
-                    dateTime: new Date(),
-                    isPoll: false
-                };
-                console.log(feedItem);
-                this.setState({
-                    feed: [feedItem, ...this.state.feed]
-                });
-                this.resetNewPost();
-                this.resetPostTags();
-                debugger;
-            })
-            .catch(res => {
-                alert(res);
-            });
     }
 
     resetPollTags() {
@@ -161,9 +195,6 @@ class Home extends React.Component {
                 nextTag: ''
             }
         })
-    }
-
-    componentWillMount() {
     }
 
     render() {
@@ -380,6 +411,7 @@ class Home extends React.Component {
     componentDidMount() {
         this.resetPostTags();
         this.resetPollTags();
+        alert('do the home routing');
     }
 }
 
