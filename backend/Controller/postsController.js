@@ -40,6 +40,20 @@ exports.getPost = function(request, result) {
     }
 };
 
+exports.getPosts = function(request, result) {
+    Post.getPosts(function(err, post)
+    {
+        if(err)
+        {
+            result.send(err);
+        }
+        else
+        {
+            result.json(post);
+        }
+    });
+};
+
 exports.addTags = function(request, result) {
     if( !request.body.post_id)
     {

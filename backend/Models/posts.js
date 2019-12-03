@@ -75,7 +75,23 @@ Post.addTags = function(post_id, creator_id, tag_word, result)
 
 Post.getPost = function(post_id, result)
 {
-    connection.query("SELECT firstName, lastName, title, post_text, date_created FROM `ballotBuddy`.`users` AS U JOIN (SELECT * FROM `ballotBuddy`.`posts` WHERE post_id=?) AS P ON U.id = P.post_id", [post_id],
+    connection.query("SELECT firstName, lastName, title, post_text, date_created FROM `ballotBuddy`.`users` AS U JOIN (SELECT * FROM `ballotBuddy`.`posts` WHERE post_id=?) AS P ON U.id = P.creator_id", [post_id],
+    function(err, res)
+    {
+        if(err)
+        {
+            result(err, null);
+        }
+        else
+        {
+            result(null, {"code":200, res});
+        }
+    });
+};
+
+Post.getPosts = function(result)
+{
+    connection.query("SELECT firstName, lastName, title, post_text, date_created FROM `ballotBuddy`.`users` AS U JOIN (SELECT * FROM `ballotBuddy`.`posts`) AS P ON U.id = P.creator_id ORDER BY date_created DESC",
     function(err, res)
     {
         if(err)

@@ -79,8 +79,11 @@ module.exports = function(app) {
     app.route('/user/newPost/:id') //DONE
       .post(postController.createPost);
 
-    app.route('/user/getPost/:post_id')
+    app.route('/user/getPost/:post_id') //DONE
       .get(postController.getPost);
+
+    app.route('/getAllPosts')
+      .get(postController.getPosts);
 
     app.route('/user/newPost/addTags/:id') //DONE
       .put(postController.addTags);
