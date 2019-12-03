@@ -10,7 +10,8 @@ var Group = function(group) {
 };
 
 Group.createGroup = function(creator_id, newGroup, result) {
-    connection.query("INSERT INTO `ballotBuddy`.`groups` (`creator_id`, `group_name`, `inactive`) VALUES ('"+ creator_id +"','"+ newGroup.group_name +"','"+ 0 +"');",
+    var name = connection.escape(newGroup.group_name);
+    connection.query("INSERT INTO `ballotBuddy`.`groups` (`creator_id`, `group_name`, `inactive`) VALUES ('"+ creator_id +"','"+ name +"','"+ 0 +"');",
     function(err, res)
     {
         if (err)
