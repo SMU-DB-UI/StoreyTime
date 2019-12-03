@@ -72,7 +72,7 @@ class Home extends React.Component {
             },
             newPoll: {
                 question: '',
-                answers: [],
+                answers: ['', ''],
                 availableTags: [],
                 tags: [],
                 nextTag: ''
@@ -144,7 +144,8 @@ class Home extends React.Component {
                 title: '',
                 body: '',
                 availableTags: [],
-                tags: []
+                tags: [],
+                nextTag: ''
             }
         })
     }
@@ -153,10 +154,11 @@ class Home extends React.Component {
         this.setState({
             newPoll:
             {
-                title: '',
-                body: '',
+                question: '',
+                answers: ['', ''],
                 availableTags: [],
-                tags: []
+                tags: [],
+                nextTag: ''
             }
         })
     }
@@ -283,6 +285,26 @@ class Home extends React.Component {
                                                                 <label htmlFor="poll-title" className="text-left">Title</label>
                                                                 <div className="form-group">
                                                                     <input type="text" className="form-control" id="poll-title" placeholder="Poll title" />
+                                                                </div>
+                                                                <div className="form-group" id="poll-answers">
+                                                                    <label htmlFor="poll-answers" className="text-left">Options</label>
+                                                                    {this.state.newPoll.answers.map((answer, index) =>
+                                                                        <input type="text"
+                                                                            className="form-control mb-2"
+                                                                            id={"poll-answer-" + (index + 1)}
+                                                                            placeholder={"Option " + (index + 1)}
+                                                                            onChange={e => {
+                                                                                var val = e.target.value;
+                                                                                this.setState(prevState => {
+                                                                                    prevState.newPoll.answers[index] = val;
+                                                                                    return prevState;
+                                                                                })
+                                                                            }} />
+                                                                    )}
+                                                                    <button className="form-control" type="button" onClick={() => this.setState(prevState => {
+                                                                        prevState.newPoll.answers.push("");
+                                                                        this.forceUpdate();
+                                                                    })}>Add Option</button>
                                                                 </div>
                                                                 <label htmlFor="poll-tags">Tags</label>
                                                                 {this.state.newPoll.tags.length !== 0 &&
