@@ -123,6 +123,27 @@ exports.getPostsFeed = function(request, result) {
     }
 };
 
+exports.getPollsFeed = function(request, result) {
+    if(!request.params.id)
+    {
+        result.status(400).json({"code":400, "response":"Missing ID in request"});
+    }
+    else
+    {
+        User.getPollsFeed(request.params.id, function(err, user)
+        {
+            if(err)
+            {
+                result.send(err);
+            }
+            else
+            {
+                result.json(user);
+            }
+        });
+    }
+};
+
 exports.resetPassword = function(request, result) {
     if(!request.params.id)
     {

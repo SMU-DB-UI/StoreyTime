@@ -32,6 +32,9 @@ module.exports = function(app) {
     app.route('/postsHome/:id') //DONE
       .get(userController.getPostsFeed);
 
+    app.route('/pollsHome/:id') //DONE
+      .get(userController.getPollsFeed);
+
     app.route('/getPoliticians') //DONE
       .get(userController.getPoliticians);
 
@@ -82,8 +85,11 @@ module.exports = function(app) {
     app.route('/user/getPost/:post_id') //DONE
       .get(postController.getPost);
 
-    app.route('/getAllPosts')
+    app.route('/getAllPosts') //DONE
       .get(postController.getPosts);
+
+    app.route('/user/getPost/getComments/:post_id') //DONE
+      .get(postController.getComments);
 
     app.route('/user/newPost/addTags/:id') //DONE
       .put(postController.addTags);
@@ -95,7 +101,7 @@ module.exports = function(app) {
       .put(postController.deletePost);
 
 // =========== comments routes ================ //
-    app.route('/user/home/newComment/:post_id') //DONE
+    app.route('/user/home/newComment') //DONE
       .post(commentController.createComment);
 
     app.route('/user/home/editComment/:comment_id') //DONE

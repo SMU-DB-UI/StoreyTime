@@ -20,7 +20,8 @@ Comment.createComment = function(newComment, result)
     var day = d.getDate();
     var time = d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
     var date = year+ '-' + month + '-' + day + ' ' + time;
-    connection.query("INSERT INTO `ballotBuddy`.`comments` (`creator_id`, `post_id`, `comment_text`, `date_created`, `inactive`) VALUES ('"+ newComment.creator_id+"', '"+ newComment.post_id +"', '"+ newComment.comment_text+"', '"+ date +"', '"+ 0 +"');", 
+    var comment = connection.escape(newComment.comment_text);
+    connection.query("INSERT INTO `ballotBuddy`.`comments` (`creator_id`, `post_id`, `comment_text`, `date_created`, `inactive`) VALUES ('"+ newComment.creator_id+"', '"+ newComment.post_id +"', '"+ comment +"', '"+ date +"', '"+ 0 +"');", 
     function(err, res)
     {
         if(err)

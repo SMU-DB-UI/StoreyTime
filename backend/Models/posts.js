@@ -21,7 +21,9 @@ Post.createPost = function(creator_id, newPost, result)
     var day = d.getDate();
     var time = d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
     var date = year+ '-' + month + '-' + day + ' ' + time;
-    connection.query("INSERT INTO `ballotBuddy`.`posts` (`creator_id`, `date_created`, `title`, `post_text`, `inactive`) VALUES (?, ?, ?, ?, ?)", [creator_id, date, newPost.title, newPost.post_text, 0],
+    var post_text = connection.escape(newPost.post_text );
+    var title = connection.escape(newPost.title);
+    connection.query("INSERT INTO `ballotBuddy`.`posts` (`creator_id`, `date_created`, `title`, `post_text`, `inactive`) VALUES (?, ?, ?, ?, ?)", [creator_id, date, title, post_text, 0],
     function(err1, res1)
     {
         if(err1)
@@ -91,7 +93,7 @@ Post.getPost = function(post_id, result)
 
 Post.getPosts = function(result)
 {
-    connection.query("SELECT firstName, lastName, title, post_text, date_created FROM `ballotBuddy`.`users` AS U JOIN (SELECT * FROM `ballotBuddy`.`posts`) AS P ON U.id = P.creator_id ORDER BY date_created DESC",
+    connection.query("SELECT firstName, lastName, title, post_text, date_created FROM `ballotBuddy`.`users` AS U JOIN (SELECT * FROM `ballotBuddy`.`posts`) AS P ON U.id = P.creator_id WHERE P.inactive != 1 ORDER BY date_created DESC",
     function(err, res)
     {
         if(err)
@@ -118,6 +120,21 @@ Post.editText = function(post_id, creator_id, newText, result) {
             result(null, {"code":200, "post_id":post_id, "creator_id": creator_id, "post_text": newText});
         }
     }); 
+};
+
+Post.getComments = function(post_id, result) {
+    connection.query("SELECT comment_id, comment_text, firstName, lastName, date_created from `ballotBuddy`.`comments` as C join (select * from users) as U on C.creator_id = U.id WHERE C.inactive != 1 AND C.post_id=?", [post_id],
+    function(err, res)
+    {
+        if(err)
+        {
+            result(err, null);
+        }
+        else
+        {
+            result(null, {"code":200, res});
+        }
+    });
 };
 
 Post.deletePost = function(creator_id, post_id, result) {

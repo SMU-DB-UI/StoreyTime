@@ -112,6 +112,27 @@ exports.editPost = function(request, result) {
     }
 };
 
+exports.getComments = function(request, result) {
+    if(! request.params.post_id)
+    {
+        result.status(400).json({"code":400, "response":"Missing post id in params"});
+    }
+    else
+    {
+        Post.getComments(request.params.post_id, function(err, post)
+        {
+            if(err)
+            {
+                result.send(err);
+            }
+            else
+            {
+                result.json(post);
+            }
+        });
+    }
+};
+
 exports.deletePost = function(request, result) {
     if(! request.params.id)
     {
