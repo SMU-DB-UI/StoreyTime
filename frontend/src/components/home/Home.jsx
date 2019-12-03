@@ -180,12 +180,12 @@ class Home extends React.Component {
                                     <div className="row">
                                         <div className="col-12">
                                             <form className="form-inline feed-top">
-                                                <input className="form-control mr-sm-3" type="text" placeholder="Search"
+                                                <input className="form-control mr-sm-3 mb-sm-0 mb-2" type="text" placeholder="Search"
                                                     aria-label="Search" />
-                                                <button type="button" className="btn mr-3" data-toggle="modal" data-target="#postModal">
+                                                <button type="button" className="form-control mr-sm-3 mb-sm-0 mb-2" data-toggle="modal" data-target="#postModal">
                                                     New Post
                                                 </button>
-                                                <button type="button" className="btn" data-toggle="modal" data-target="#pollModal">
+                                                <button type="button" className="form-control" data-toggle="modal" data-target="#pollModal">
                                                     New Poll
                                                 </button>
                                             </form>
