@@ -149,7 +149,7 @@ User.getPollsFeed = function(id, result)
 
 User.getPostsFeed = function(id, result)
 {
-    connection.query("select firstName, lastName, title, post_text, date_created from `ballotBuddy`.`users` as U join (select * from `ballotBuddy`.`posts` where post_id in (select post_id from `ballotBuddy`.`tags_posts` where tag_id in (select tag_id from `ballotBuddy`.`tags_users_bridge` where users_id=?))) as P on U.id = P.creator_id order by date_created desc;", [id],
+    connection.query("select firstName, lastName, title, post_text, date_created from `ballotBuddy`.`users` as U join (select tag_word from `ballotBuddy`.`tags` as Tags join (select title, post_text, date_created, creator_id from `ballotBuddy`.`posts` as Posty join (select post_id, tag_id from `ballotBuddy`.`tags_posts` where tag_id in (select tag_id from `ballotBuddy`.`tags_users_bridge` where users_id=1)) as Tag on Posty.post_id = Tag.post_id) as Posts on Tags.tag_id = Posts.tag_id) as P on U.id = P.creator_id order by date_created desc;", [id],
     function(err, res)
     {
         if(err)

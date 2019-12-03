@@ -21,7 +21,7 @@ Post.createPost = function(creator_id, newPost, result)
     var day = d.getDate();
     var time = d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
     var date = year+ '-' + month + '-' + day + ' ' + time;
-    connection.query("INSERT INTO `ballotBuddy`.`posts` (`creator_id`, `date_created`, `title`, `post_text`) VALUES ('"+ creator_id +"', '"+ date +"', '"+ newPost.title +"', '"+ newPost.post_text +"');",
+    connection.query("INSERT INTO `ballotBuddy`.`posts` (`creator_id`, `date_created`, `title`, `post_text`, `inactive`) VALUES (?, ?, ?, ?, ?)", [creator_id, date, newPost.title, newPost.post_text, 0],
     function(err1, res1)
     {
         if(err1)
@@ -75,7 +75,7 @@ Post.addTags = function(post_id, creator_id, tag_word, result)
 
 Post.getPost = function(post_id, result)
 {
-    connection.query("SELECT firstName, lastName, title, post_text, date_created FROM `ballotBuddy`.`users` AS U JOIN (SELECT * FROM `ballotBuddy`.`posts` WHERE post_id=?) AS P ON U.id = P.creator_id", [post_id],
+    connection.query("SELECT id, firstName, lastName, title, post_text, date_created FROM `ballotBuddy`.`users` AS U JOIN (SELECT * FROM `ballotBuddy`.`posts` WHERE post_id=?) AS P ON U.id = P.creator_id", [post_id],
     function(err, res)
     {
         if(err)

@@ -12,13 +12,13 @@ var Event = function(event){
     this.event_desc = event.event_desc
 };
 
-Event.createEvent = function(newEvent,result){
+Event.createEvent = function(group_id, newEvent, result){
     var d = new Date;
     var year = d.getFullYear();
     var month = d.getMonth();
     var day = d.getDate();
     var date = year+ '-' + month + '-' + day;
-    sql.query("INSERT INTO `ballotBuddy`.`events` (`group_id`,`date_created`,`event_date`,`event_desc`) VALUES ('" + newEvent.group_id + "','" + date + "','" + newEvent.event_date + "','" + newEvent.event_desc + "');",
+    sql.query("INSERT INTO `ballotBuddy`.`events` (`group_id`,`date_created`,`event_date`,`event_desc`) VALUES ('" + group_id + "','" + date + "','" + newEvent.event_date + "','" + newEvent.event_desc + "');",
     function(err,res)
     {
         if(err){
