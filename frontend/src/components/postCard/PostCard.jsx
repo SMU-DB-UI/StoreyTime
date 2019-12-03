@@ -17,6 +17,11 @@ const PostCard = props => (
             <div className='card-text text-left'>
                 <p>{props.post.text}</p>
             </div>
+            <div className='card-text text-left'>
+                <h5>
+                    {props.post.tags.map((tag, index) => <span className="badge badge-primary mr-3 mt-1" key={index}>{tag}</span>)}
+                </h5>
+            </div>
         </div>
     </div>
 )

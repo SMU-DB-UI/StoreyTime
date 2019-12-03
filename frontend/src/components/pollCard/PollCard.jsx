@@ -14,7 +14,6 @@ const PollCard = props => (
             </div>
             {props.poll.votes.map((voteCount, index) => (
                 <div className="text-left" key={index}>
-                    <br />
                     <label className="text-left">{props.poll.answers[index]}</label>
                     <div className="progress">
                         <div className="progress-bar"
@@ -24,8 +23,14 @@ const PollCard = props => (
                             aria-valuemin="0"
                             aria-valuemax="100"></div>
                     </div>
+                    <br />
                 </div>
             ))}
+            <div className='card-text text-left'>
+                <h5>
+                    {props.poll.tags.map((tag, index) => <span className="badge badge-primary mr-3 mt-1" key={index}>{tag}</span>)}
+                </h5>
+            </div>
         </div>
     </div>
 )
