@@ -12,14 +12,14 @@ exports.createPoll = function(req,res){
     var newPoll = new Poll(req.body);
     Poll.createPoll(req.params.creator_id, newPoll, function(err,poll){
         if(err)
-            result.send(err);
+            res.send(err);
         else    
-            result.json(poll);
+            res.json(poll);
     });
 };
 
 //adding tags end point
-exports.addTags = function(req,res){
+exports.addTag = function(req,res){
     if(!req.body.poll_id){
         res.status(400).json({
             "code" : 400,
@@ -36,7 +36,7 @@ exports.addTags = function(req,res){
             "response" : "Missing tag word in body"
         });
     }else{
-        Poll.addTags(req.body.poll_id, req.params.creator_id,req.body.tag_word,function(err,poll){
+        Poll.addTag(req.body.poll_id, req.params.creator_id,req.body.tag_word,function(err,poll){
             if(err)
                 res.send(err);
             else
@@ -102,8 +102,17 @@ exports.deletePoll = function(req,res){
             "code" : 400,
             "response" : "Missing poll ID in params"
         });
-    }else{
-        Poll.deletePoll(req.params.poll_id, function(err,poll){
+    }
+    else if(! req.body.creator_id)
+    {
+        res.status(400).json({
+            "code" : 400,
+            "response" : "Missing creator ID in body"
+        });
+    }
+    else
+    {
+        Poll.deletePoll(req.params.poll_id, req.body.creator_id, function(err,poll){
             if(err)
                 res.send(err);
             else
