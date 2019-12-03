@@ -144,12 +144,12 @@ User.followTag = function(id, tag_word, result)
 
 User.getPollsFeed = function(id, result)
 {
-    connection.query("SELECT * from polls");
+    connection.query("");
 };
 
 User.getPostsFeed = function(id, result)
 {
-    connection.query("select firstName, lastName, title, post_text, date_created from `ballotBuddy`.`users` as U join (select tag_word from `ballotBuddy`.`tags` as Tags join (select title, post_text, date_created, creator_id from `ballotBuddy`.`posts` as Posty join (select post_id, tag_id from `ballotBuddy`.`tags_posts` where tag_id in (select tag_id from `ballotBuddy`.`tags_users_bridge` where users_id=1)) as Tag on Posty.post_id = Tag.post_id) as Posts on Tags.tag_id = Posts.tag_id) as P on U.id = P.creator_id order by date_created desc;", [id],
+    connection.query("select `firstName`, `lastName`, `title`, `post_text`, `date_created`, `post_id`, group_concat(`tag_word`) from `ballotBuddy`.`users` as U join (select `tag_word`, `post_id`, `creator_id`, `date_created`, `title`, `post_text`, `inactive` from `ballotBuddy`.`tags` as T join (select `tag_id`, `post_id`, `creator_id`, `date_created`, `title`, `post_text`, `inactive` from `ballotBuddy`.`posts` as P join (select `tag_id`, `post_id` as P_ID FROM `ballotBuddy`.`tags_posts` where tag_id in (select `tag_id` from `ballotBuddy`.`tags_users_bridge` where users_id=?)) as Tags on P.post_id=Tags.P_ID) as Post on T.tag_id = Post.tag_id) as OP on U.id = OP.creator_id group by post_id order by date_created desc;", [id],
     function(err, res)
     {
         if(err)
