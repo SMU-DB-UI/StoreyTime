@@ -126,7 +126,6 @@ class Home extends React.Component {
                 .catch(resp => alert(resp));
             });
             this.state.newPoll.answers.forEach(answer => {
-                debugger;
                 this.pollRepo.addOption(res.poll_id, answer)
                 .then(resp => console.log(resp))
                 .catch(resp => alert(resp));
