@@ -19,6 +19,27 @@ exports.createPost = function(request, result) {
     });
 };
 
+exports.getPost = function(request, result) {
+    if(! request.params.post_id)
+    {
+        result.status(400).json({"code":400, "response":"Missing post ID in params"});
+    }
+    else
+    {
+        Post.getPost(request.params.post_id, function(err, post)
+        {
+            if(err)
+            {
+                result.send(err);
+            }
+            else
+            {
+                result.json(post);
+            }
+        });
+    }
+};
+
 exports.addTags = function(request, result) {
     if( !request.body.post_id)
     {

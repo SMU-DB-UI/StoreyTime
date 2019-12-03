@@ -73,6 +73,22 @@ Post.addTags = function(post_id, creator_id, tag_word, result)
     });
 };
 
+Post.getPost = function(post_id, result)
+{
+    connection.query("SELECT firstName, lastName, title, post_text, date_created FROM `ballotBuddy`.`users` AS U JOIN (SELECT * FROM `ballotBuddy`.`posts` WHERE post_id=?) AS P ON U.id = P.post_id", [post_id],
+    function(err, res)
+    {
+        if(err)
+        {
+            result(err, null);
+        }
+        else
+        {
+            result(null, {"code":200, res});
+        }
+    });
+};
+
 Post.editText = function(post_id, creator_id, newText, result) {
     connection.query("UPDATE `ballotBuddy`.`posts` SET post_text = ? WHERE post_id = ? AND creator_id = ?", [newText, post_id, creator_id], 
     function(err, res)

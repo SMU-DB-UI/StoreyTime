@@ -32,7 +32,7 @@ module.exports = function(app) {
     app.route('/postsHome/:id') //DONE
       .get(userController.getPostsFeed);
 
-    app.route('/getPoliticians')
+    app.route('/getPoliticians') //DONE
       .get(userController.getPoliticians);
 
     app.route('/user/followTag/:id') //DONE
@@ -78,6 +78,9 @@ module.exports = function(app) {
 // =========== posts routes ================ //
     app.route('/user/newPost/:id') //DONE
       .post(postController.createPost);
+
+    app.route('/user/getPost/:post_id')
+      .get(postController.getPost);
 
     app.route('/user/newPost/addTags/:id') //DONE
       .put(postController.addTags);
