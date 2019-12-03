@@ -22,46 +22,45 @@ var Poll = function(poll){
     //answers and tags of polls will be recorded in another tables
 };
 //copy constructor poll_answer
-var PollAnswer = function(answer){
-    //INT(10) PRIMARY KEY : id of the polls
-    this.poll_id = answer.poll_id,
-    //VARCHAR(150) PRIMARY KEY : text of this very answer
-    this.answer_text = answer.answer_text,
-    //INT : count of vote
-    this.answer_count = answer.answer_count
-};
-//copy constructor tags_poll
-var PollTag = function(tag){
-    //INT(10) PRIMARY KEY : id of the tags
-    this.tag_id = tag.tag_id,
-    //INT(10) PRIMARY KEY : id of the polls
-    this.poll_id = answer.poll_id
-};
+// var PollAnswer = function(answer){
+//     //INT(10) PRIMARY KEY : id of the polls
+//     this.poll_id = answer.poll_id,
+//     //VARCHAR(150) PRIMARY KEY : text of this very answer
+//     this.answer_text = answer.answer_text,
+//     //INT : count of vote
+//     this.answer_count = answer.answer_count
+// };
+// //copy constructor tags_poll
+// var PollTag = function(tag){
+//     //INT(10) PRIMARY KEY : id of the tags
+//     this.tag_id = tag.tag_id,
+//     //INT(10) PRIMARY KEY : id of the polls
+//     this.poll_id = answer.poll_id
+// };
 //insert new tuple into the table
 Poll.createPoll = function(creator_id,newPoll, result) {
     //get datetime
     var t = new Date;
     var yearTime = t.getFullYear();
     var monthTime = t.getMonth();
-    var dayTime = t.getDate();
+    var day = t.getDate();
     var time = t.getHours() + ':' + t.getMinutes() + ':' + t.getSeconds();
     var dateTime = yearTime + '-' + monthTime + '-' + day + ' ' + time;  
-  sql.query("INSERT INTO `ballotBuddy`.`polls` (`creater_id`,`question`,`date_created`) VALUES ('" + creator_id + "', '" + newPoll.question + "', '" + dateTime +  "');",
+  sql.query("INSERT INTO `ballotBuddy`.`polls` (`creator_id`,`question`,`date_created`) VALUES ('" + creator_id + "', '" + newPoll.question + "', '" + dateTime +  "');",
     function(err, res) {
     if (err){
         result(err, null);
     }else{
-        sql.query("SELECT MAX(poll_id) FROM `ballotBuddy`.`polls` WHERE `creator_id`  = ?;",[creator_id],
-        function(err1,rew1){
-              console.log(res1);
-              if(res2.length > 0){
-                  result(null,{
-                      "code" : 200, 
-                      "poll_id" : res1[0]['MAX(poll_id)'],
-                      "creator_id" : creator_id
-                  })
-              }else{
-                  result(err2,null);
+        sql.query("SELECT MAX(`poll_id`) FROM `ballotBuddy`.`polls` WHERE `creator_id`  = ?;",[creator_id],
+        function(err1,res1)
+        {
+              if(res1.length > 0)
+              {
+                  result(null,{"code" : 200, "poll_id" : res1[0]['MAX(poll_id)'],"creator_id" : creator_id });
+              }
+              else
+              {
+                  result(err1,null);
               }
         }); 
     }
@@ -91,15 +90,14 @@ Poll.addTag = function(poll_id, creator_id, tag_word, result){
 };
 //adding a new option for the answer
 Poll.addOption = function(poll_id, answer_text, result){
-    sql.query("INSERT INTO `ballotBuddy`.`polls_answers` (`poll_id`,`answer_text`,`answer_count`) VALUES ('" + poll_id + "', '" + answer_text + "', 1);",
+    sql.query("INSERT INTO `ballotBuddy`.`polls_answers` (`poll_id`,`answer_text`,`answer_count`) VALUES ('" + poll_id + "', '" + answer_text + "', '"+0+"');",
     function(err,res){
         if(err)
             result(err,null);
         else{
             result(null,{
                 "code" : 200,
-                "poll_id" : poll_id,
-                "response" : "New option added successfully."
+                "poll_id" : poll_id
             });
         }
     });
@@ -123,8 +121,8 @@ Poll.updateAnswerCount = function(poll_id,answer_text,answer_count,result){
 
 };
 
-Poll.deletePoll = function(poll_id,result){
-    sql.query("UPDATE `ballotBuddy`.`polls` SET inactive = 1 WHERE poll_id = ?", [poll_id],
+Poll.deletePoll = function(poll_id, creator_id, result){
+    sql.query("UPDATE `ballotBuddy`.`polls` SET inactive = 1 WHERE poll_id = ? AND creator_id = ?", [poll_id, creator_id],
     function(err,res){
         if(err)
             result(err,null);

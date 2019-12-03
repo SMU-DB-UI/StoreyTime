@@ -105,19 +105,19 @@ module.exports = function(app) {
       .put(commentController.deleteComment);
 
 // ========== polls routes =============== //
-    app.route('/user/newPoll/:creator_id')
+    app.route('/user/newPoll/:creator_id') //DONE
       .post(pollController.createPoll);
 
-    app.route('/user/newPoll/addTags/:creator_id')
-      .put(pollController.addTags);
+    app.route('/user/newPoll/addTag/:creator_id') //DONE
+      .put(pollController.addTag);
 
-    app.route('/user/newPoll/addOption/:poll_id')
+    app.route('/user/newPoll/addOption/:poll_id') //DONE
       .put(pollController.addOption);
 
-    app.route('/user/updateAnswerCount/:poll_id')
+    app.route('/user/updateAnswerCount/:poll_id') //DONE
       .put(pollController.updateAnswerCount);
 
-    app.route('/user/deletePoll/:poll_id')
+    app.route('/user/deletePoll/:poll_id') //DONE
       .put(pollController.deletePoll);
 
 // ========== groups routes ============ //
