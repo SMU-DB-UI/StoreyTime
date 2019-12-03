@@ -1,39 +1,10 @@
-.profile-container {
-    width: 100%;
-    height: calc(100% - 4em);
-    min-height: calc(100vh - 4em);
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+.profile-container a:hover {
+    text-decoration: none;
+    color:#495057;
 }
 
-#profile-box {
-    max-width: 450px;
-    max-height: 650px;
-    border-radius: 10px;
-    padding: 15px;
-    background: rgb(9, 59, 90);
-    background: linear-gradient(180deg, rgb(9, 59, 90), rgb(127, 0, 0));
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-}
-
-.profile-box input:-webkit-autofill,
-.profile-box input:-webkit-autofill:hover,
-.profile-box input:-webkit-autofill:focus,
-.profile-box textarea:-webkit-autofill,
-.profile-box textarea:-webkit-autofill:hover,
-.profile-box textarea:-webkit-autofill:focus,
-.profile-box select:-webkit-autofill,
-.profile-box select:-webkit-autofill:hover,
-.profile-box select:-webkit-autofill:focus {
-    border: 0px;
-    -webkit-text-fill-color: black;
-    box-shadow: 0px 0px 0px 0px #000;
-    -webkit-box-shadow: 0px 0px 0px 0px #000;
-    transition: background-color 5000s ease-in-out 0s;
+.profile-container input:-internal-autofill-selected {
+    background-color: #e9ecef !important;
+    background-image: none !important;
+    color: rgb(0, 0, 0) !important;
 }

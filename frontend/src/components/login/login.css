@@ -93,3 +93,19 @@
   color: white;
   text-decoration: none;
 }
+
+.login-container input:-webkit-autofill,
+.login-container input:-webkit-autofill:hover,
+.login-container input:-webkit-autofill:focus,
+.login-container textarea:-webkit-autofill,
+.login-container textarea:-webkit-autofill:hover,
+.login-container textarea:-webkit-autofill:focus,
+.login-container select:-webkit-autofill,
+.login-container select:-webkit-autofill:hover,
+.login-container select:-webkit-autofill:focus {
+    border: 0px;
+    -webkit-text-fill-color: white;
+    box-shadow: 0px 0px 0px 0px #000;
+    -webkit-box-shadow: 0px 0px 0px 0px #000;
+    transition: background-color 5000s ease-in-out 0s;
+}
