@@ -340,7 +340,7 @@ class Home extends React.Component {
                                                                     )}
                                                                     <button className="form-control" type="button" onClick={() => this.setState(prevState => {
                                                                         prevState.newPoll.answers.push("");
-                                                                        this.forceUpdate();
+                                                                        return prevState;
                                                                     })}>Add Option</button>
                                                                 </div>
                                                                 <label htmlFor="poll-tags">Tags</label>
@@ -432,7 +432,6 @@ class Home extends React.Component {
             .catch(respo => alert(respo));
         })
         .catch(resp => alert(resp));
-        alert('do the home routing');
     }
 }
 
