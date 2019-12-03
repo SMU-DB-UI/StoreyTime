@@ -20,7 +20,9 @@ function App() {
             <Route path="/home" component={Home} />
             <Route path="/profile" component={Profile} />
             <Route path="/groups" component={GroupHomepage} />
+            <Route path="/group/:group_id" component={GroupHomepage} />
             <Route path="/candidates" component={Candidates} />
+            <Route path="/candidate/:candidate_id" component={Candidates} />
             <Route component={Login} />
           </Switch>
         </BrowserRouter>
