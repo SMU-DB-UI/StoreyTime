@@ -92,8 +92,7 @@ class Login extends React.Component {
               </button>
             </div>
             <div className='login-register-wrapper'>
-              <p>Dont have an account? Register</p>
-              <NavLink to="/register">here</NavLink>
+            <p>Dont have an account? Register <NavLink to="/register">here!</NavLink></p>
             </div>
           </form>
         </div>
