@@ -115,6 +115,22 @@ User.getPoliticians = function(result)
     });
 };
 
+User.getTagsFollowing = function(id, result)
+{
+    connection.query("SELECT `tag_word` FROM `ballotBuddy`.`tags` WHERE tag_id in (SELECT `tag_id` from `ballotBuddy`.`tags_users_bridge` WHERE users_id = ?)", [id],
+    function(err, res)
+    {
+        if(err)
+        {
+            result(err, null);
+        }
+        else
+        {
+            result(null, {"code":200, res});
+        }
+    });
+};
+
 User.followTag = function(id, tag_word, result)
 {
     connection.query("SELECT * FROM `ballotBuddy`.`tags` WHERE tag_word = ?", [tag_word],
@@ -144,7 +160,7 @@ User.followTag = function(id, tag_word, result)
 
 User.getPollsFeed = function(id, result)
 {
-    connection.query("select `firstName`, `lastName`, `question`, `date_created`, `poll_id`, group_concat(`tag_word`), group_concat(`answer_text`) from `ballotBuddy`.`users` as U join ( select `tag_word`, `poll_id`, `creator_id`, `date_created`, `question`, `inactive`, `answer_text` from `ballotBuddy`.`polls_answers` as PO join ( select `tag_word`, `poll_id` as pID, `creator_id`, `date_created`, `question`, `inactive` from `ballotBuddy`.`tags` as T join ( select `tag_id`, `poll_id`,`creator_id`, `date_created`, `question`, `inactive` from `ballotBuddy`.`polls` as P join ( select `tag_id`, `poll_id` as P_ID FROM `ballotBuddy`.`tags_polls` where tag_id in ( select `tag_id` from `ballotBuddy`.`tags_users_bridge` where users_id=? )) as Tags on P.poll_id = Tags.P_ID) as Poll on T.tag_id = Poll.tag_id) as po on PO.poll_id = po.pID ) as OP on U.id = OP.creator_id group by poll_id order by date_created desc;", [id],
+    connection.query("select `firstName`, `lastName`, `question`, `date_created`, `poll_id`, I, group_concat(`tag_word`), group_concat(`answer_text`) from `ballotBuddy`.`users` as U join ( select `tag_word`, `poll_id`, `creator_id`, `date_created`, `question`, `inactive` as I, `answer_text` from `ballotBuddy`.`polls_answers` as PO join ( select `tag_word`, `poll_id` as pID, `creator_id`, `date_created`, `question`, `inactive` from `ballotBuddy`.`tags` as T join ( select `tag_id`, `poll_id`,`creator_id`, `date_created`, `question`, `inactive` from `ballotBuddy`.`polls` as P join ( select `tag_id`, `poll_id` as P_ID FROM `ballotBuddy`.`tags_polls` where tag_id in ( select `tag_id` from `ballotBuddy`.`tags_users_bridge` where users_id=? )) as Tags on P.poll_id = Tags.P_ID) as Poll on T.tag_id = Poll.tag_id) as po on PO.poll_id = po.pID ) as OP on U.id = OP.creator_id group by poll_id order by date_created desc;", [id],
     function(err, res)
     {
         if(err)
@@ -160,7 +176,7 @@ User.getPollsFeed = function(id, result)
 
 User.getPostsFeed = function(id, result)
 {
-    connection.query("select `firstName`, `lastName`, `title`, `post_text`, `date_created`, `post_id`, group_concat(`tag_word`) from `ballotBuddy`.`users` as U join (select `tag_word`, `post_id`, `creator_id`, `date_created`, `title`, `post_text`, `inactive` from `ballotBuddy`.`tags` as T join (select `tag_id`, `post_id`, `creator_id`, `date_created`, `title`, `post_text`, `inactive` from `ballotBuddy`.`posts` as P join (select `tag_id`, `post_id` as P_ID FROM `ballotBuddy`.`tags_posts` where tag_id in (select `tag_id` from `ballotBuddy`.`tags_users_bridge` where users_id=? )) as Tags on P.post_id=Tags.P_ID) as Post on T.tag_id = Post.tag_id) as OP on U.id = OP.creator_id group by post_id order by date_created desc;", [id],
+    connection.query("select `firstName`, `lastName`, `title`, `post_text`, `date_created`, I,`post_id`, group_concat(`tag_word`) from `ballotBuddy`.`users` as U join (select `tag_word`, `post_id`, `creator_id`, `date_created`, `title`, `post_text`, `inactive` as I from `ballotBuddy`.`tags` as T join (select `tag_id`, `post_id`, `creator_id`, `date_created`, `title`, `post_text`, `inactive` from `ballotBuddy`.`posts` as P join (select `tag_id`, `post_id` as P_ID FROM `ballotBuddy`.`tags_posts` where tag_id in (select `tag_id` from `ballotBuddy`.`tags_users_bridge` where users_id=? )) as Tags on P.post_id=Tags.P_ID) as Post on T.tag_id = Post.tag_id) as OP on U.id = OP.creator_id group by post_id order by date_created desc;", [id],
     function(err, res)
     {
         if(err)
