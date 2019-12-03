@@ -9,10 +9,34 @@ import { PostRepo } from '../../api/postRepo';
 class Home extends React.Component {
 
     constructor(props) {
+
         super(props);
 
         this.postRepo = new PostRepo();
         this.state = {
+            tags: [
+                "Republican",
+                "Conservative",
+                'Democrat',
+                'Liberal',
+                "Immigration",
+                'Abortion',
+                'Climate Change',
+                'Gun Control',
+                'Unemployment',
+                'Education',
+                'Religion',
+                'Drug Policy',
+                'Patriot Act',
+                'Net Neutrality',
+                'Equal Pay',
+                'Taxes',
+                'Welfare',
+                'Medicaid',
+                'Vaccinationas',
+                'Terrorism',
+                'Racism'
+            ],
             feed: [
                 {
                     id: 0,
@@ -42,7 +66,7 @@ class Home extends React.Component {
             newPost: {
                 title: '',
                 body: '',
-                availableTags: this.tags,
+                availableTags: [],
                 tags: [],
                 nextTag: ''
             },
@@ -55,39 +79,17 @@ class Home extends React.Component {
             }
         }
     }
-  
-    tags = [
-        "Republican",
-        "Conservative",
-        'Democrat',
-        'Liberal',
-        "Immigration",
-        'Abortion',
-        'Climate Change',
-        'Gun Control',
-        'Unemployment',
-        'Education',
-        'Religion',
-        'Drug Policy',
-        'Patriot Act',
-        'Net Neutrality',
-        'Equal Pay',
-        'Taxes',
-        'Welfare',
-        'Medicaid',
-        'Vaccinationas',
-        'Terrorism',
-        'Racism'
-    ]
 
     resetPostTags() {
         this.setState(prevState => {
-            for (var i = 0; i < this.tags.length; i++) {
-                prevState.newPost.availableTags.push(this.tags[i])
+            for (var i = 0; i < this.state.tags.length; i++) {
+                debugger;
+                prevState.newPost.availableTags.push(this.state.tags[i])
             }
-        }
+            return prevState;
+        })
     }
-        
+
     submitPost() {
         // let id = -1;
         let newP = {
@@ -95,42 +97,44 @@ class Home extends React.Component {
             post_text: this.state.newPost.body
         };
         this.postRepo.createPost(newP)
-        .then(res => {
-            console.log(res);
-            this.state.newPost.tags.forEach(tag => {
-                console.log(tag);
-                this.postRepo.addTags(res.post_id, tag)
-                    .then(resp => (console.log(resp)))
-                    .catch(resp => (console.log(resp)));
+            .then(res => {
+                console.log(res);
+                this.state.newPost.tags.forEach(tag => {
+                    console.log(tag);
+                    this.postRepo.addTags(res.post_id, tag)
+                        .then(resp => (console.log(resp)))
+                        .catch(resp => (console.log(resp)));
+                });
+                var feedItem = {
+                    id: res.post_id,
+                    tags: this.state.newPost.tags,
+                    title: newP.post_title,
+                    text: newP.post_text,
+                    user: `${localStorage.getItem('firstName')} ${localStorage.getItem('lastName')}`,
+                    userId: localStorage.getItem('id'),
+                    date: new Date().toDateString(),
+                    dateTime: new Date(),
+                    isPoll: false
+                };
+                console.log(feedItem);
+                this.setState({
+                    feed: [feedItem, ...this.state.feed]
+                });
+                this.resetNewPost();
+                this.resetPostTags();
+                debugger;
+            })
+            .catch(res => {
+                alert(res);
             });
-            var feedItem = {
-                id: res.post_id,
-                tags: this.state.newPost.tags,
-                title: newP.post_title,
-                text: newP.post_text,
-                user: `${localStorage.getItem('firstName')} ${localStorage.getItem('lastName')}`,
-                userId: localStorage.getItem('id'),
-                date: new Date().toDateString(),
-                dateTime: new Date(),
-                isPoll: false
-            };
-            console.log(feedItem);
-            this.setState({
-                feed: [feedItem, ...this.state.feed]
-            });
-            this.resetNewPost();
-            this.resetPostTags();
-        })
-        .catch(res => {
-            alert(res);
-        });
     }
 
     resetPollTags() {
         this.setState(prevState => {
-            for (var i = 0; i < this.tags.length; i++) {
-                prevState.newPoll.availableTags.push(this.tags[i])
+            for (var i = 0; i < this.state.tags.length; i++) {
+                prevState.newPoll.availableTags.push(this.state.tags[i])
             }
+            return prevState;
         })
     }
 
@@ -159,9 +163,6 @@ class Home extends React.Component {
     }
 
     componentWillMount() {
-        debugger;
-        this.resetPostTags();
-        this.resetPollTags();
     }
 
     render() {
@@ -183,7 +184,7 @@ class Home extends React.Component {
                                                 <input className="form-control mr-sm-3" type="text" placeholder="Search"
                                                     aria-label="Search" />
                                                 <select className="form-control mr-md-3" type="tag" placeholder="Tag">
-                                                    {this.tags.map((tag, index) =>
+                                                    {this.state.tags.map((tag, index) =>
                                                         <option value={tag} key={index}>{tag}</option>)}
                                                 </select>
                                                 <button type="button" className="btn mr-3" data-toggle="modal" data-target="#postModal">
@@ -208,22 +209,22 @@ class Home extends React.Component {
                                                             <form className="post-modal">
                                                                 <label htmlFor="post-title" className="text-left">Title</label>
                                                                 <div className="form-group">
-                                                                    <input type="text" 
-                                                                        className="form-control" 
-                                                                        id="post-title" 
+                                                                    <input type="text"
+                                                                        className="form-control"
+                                                                        id="post-title"
                                                                         placeholder="Post title"
                                                                         value={this.state.newPost.title}
-                                                                        onChange={e => { var val = e.target.value; this.setState(prev => { prev.newPost.title = val; return prev; })}} 
+                                                                        onChange={e => { var val = e.target.value; this.setState(prev => { prev.newPost.title = val; return prev; }) }}
                                                                     />
                                                                 </div>
                                                                 <label htmlFor="post-body">Body</label>
                                                                 <div className="form-group">
-                                                                    <textarea className="form-control w-100" 
-                                                                        id="post-body" 
-                                                                        rows="3" 
+                                                                    <textarea className="form-control w-100"
+                                                                        id="post-body"
+                                                                        rows="3"
                                                                         placeholder="Post body"
                                                                         value={this.state.newPost.body}
-                                                                        onChange={e => { var val = e.target.value; this.setState(prev => { prev.newPost.body = val; return prev; })}} 
+                                                                        onChange={e => { var val = e.target.value; this.setState(prev => { prev.newPost.body = val; return prev; }) }}
                                                                     ></textarea>
                                                                 </div>
                                                                 <label htmlFor="post-tags">Tags</label>
@@ -326,7 +327,7 @@ class Home extends React.Component {
                                                                         });
                                                                         this.forceUpdate()
                                                                     }}>Add Tag</button>}
-                                                        </form>
+                                                            </form>
                                                         </div>
                                                         <div className="modal-footer">
                                                             <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={() => { this.resetNewPoll(); this.resetPollTags() }}>Submit Poll</button>
@@ -359,7 +360,8 @@ class Home extends React.Component {
     }
 
     componentDidMount() {
-
+        this.resetPostTags();
+        this.resetPollTags();
     }
 }
 
