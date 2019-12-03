@@ -4,13 +4,16 @@ var Event = require('../Models/events');
 
 exports.createEvent = function(req,res){
     var newEvent = new Event(req.body);
-    if(!newEvent.event_id || !newEvent.group_id || !newEvent.date_created || !newEvent.event_date || !newEvent.event_desc){
-        res.status(400).jason({
-            "code":400,
-            "response":"Insufficient Input."
-        });
-    }else{
-        Event.createEvent(newEvent,function(err,event){
+    if(!newEvent.event_id || !newEvent.date_created || !newEvent.event_date || !newEvent.event_desc)
+    {
+        res.status(400).json({"code":400, "response":"Insufficient Input."});
+    }
+    else if(!req.params.group_id) 
+    {
+        res.status(400).json({"code":200, "response":"missing group ID in params"});
+    }
+    else { 
+        Event.createEvent(group_id, newEvent,function(err,event){
             if(err)
                 res.send(err);
             else

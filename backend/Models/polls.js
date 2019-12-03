@@ -1,17 +1,14 @@
 'use strict';
-
 var sql = require('./db.js');
-
-
+//copy constructor poll
 var Poll = function(poll){
-
     //poll_id INT(10) PRIMARY KEY,
     this.poll_id = poll.poll_id,
     //INT(10) PRIMARY KEY //id of the polls
     
     // creator_id INT(10), 
     this.creator_id = poll.creator_id,
-    //INT(10) //id of the creater
+    //INT(10) //id of the creator
     
     //question VARCHAR(150),
     this.question = poll.question,
@@ -20,266 +17,122 @@ var Poll = function(poll){
     //date_created DATE
     this.date_created = poll.date_created,
     //DATE // Time of creation
-
-    //answer1 VARCHAR(50), 
-    this.answer1 = poll.answer1,
-    //VARCHAR(150) // detials of answer1
-
-    //answer2 VARCHAR(50), 
-    this.answer2 = poll.answer2,
-    //VARCHAR(150) // detials of answer2
-
-    //count_answer1 INT, 
-    this.count_answer1 = poll.count_answer1,
-    //INT // NUM number of the votes
-
-    //count_answer2 INT, 
-    this.count_answer2 = poll.count_answer2
-     //INT // NUM number of the votes
-
-     //we just have 2 answer， and the quesiton is a T/F question
+    //TINYINT : declaration of whether this poll is soft deleted
+    this.inactive = poll.inactive
+    //answers and tags of polls will be recorded in another tables
 };
-
-
-Poll.createPoll = function(newPoll, result) {
-  sql.query("INSERT INTO `ballotBuddy`.`polls` (`creater_id`,`question`,`date_created`,`answer1`,`answer2`,`count_answer1`,`count_answer2`) VALUES ('" + newPoll.creator_id + "', '" + newPoll.question + "', '" + newPoll.date_created + "', '" + newPoll.answer1 + "', '" + newPoll.answer2 + "', '" + newPoll.count_answer1 + "', '" + newPoll.count_answer2 + "');",
+//copy constructor poll_answer
+var PollAnswer = function(answer){
+    //INT(10) PRIMARY KEY : id of the polls
+    this.poll_id = answer.poll_id,
+    //VARCHAR(150) PRIMARY KEY : text of this very answer
+    this.answer_text = answer.answer_text,
+    //INT : count of vote
+    this.answer_count = answer.answer_count
+};
+//copy constructor tags_poll
+var PollTag = function(tag){
+    //INT(10) PRIMARY KEY : id of the tags
+    this.tag_id = tag.tag_id,
+    //INT(10) PRIMARY KEY : id of the polls
+    this.poll_id = answer.poll_id
+};
+//insert new tuple into the table
+Poll.createPoll = function(creator_id,newPoll, result) {
+    //get datetime
+    var t = new Date;
+    var yearTime = t.getFullYear();
+    var monthTime = t.getMonth();
+    var dayTime = t.getDate();
+    var time = t.getHours() + ':' + t.getMinutes() + ':' + t.getSeconds();
+    var dateTime = yearTime + '-' + monthTime + '-' + day + ' ' + time;  
+  sql.query("INSERT INTO `ballotBuddy`.`polls` (`creater_id`,`question`,`date_created`) VALUES ('" + creator_id + "', '" + newPoll.question + "', '" + dateTime +  "');",
     function(err, res) {
-      if (err){
+    if (err){
         result(err, null);
-      }else{
-        result(null,{
-            "code":200 
-        });
-      }
+    }else{
+        sql.query("SELECT MAX(poll_id) FROM `ballotBuddy`.`polls` WHERE `creator_id`  = ?;",[creator_id],
+        function(err1,rew1){
+              console.log(res1);
+              if(res2.length > 0){
+                  result(null,{
+                      "code" : 200, 
+                      "poll_id" : res1[0]['MAX(poll_id)'],
+                      "creator_id" : creator_id
+                  })
+              }else{
+                  result(err2,null);
+              }
+        }); 
+    }
     });
 };
-
-// Poll.updateCreatorByPollId = function updateCreatorByPollId(poll_id,creator_id,result){
-//     sql.query("UPDATE `ballotBuddy`.`polls` SET creator_id=? WHERE poll_id = ?;", [creator_id, poll_id],
-//     function(err,res){
-//         if(err){
-//             result(err,null);
-//         }else{
-//             result(null,{
-//                 "code":200,
-//                 "response":"Update complete.",
-//                 "creator_id":creator_id
-//             });
-//         }
-//     });
-// };
-
-Poll.updateQuestionById = function updateQuestionById(creator_id, poll_id, question, result){
-    sql.query("UPDATE `ballotBuddy`.`polls` SET question = ? WHERE poll_id = ? AND creator_id = ?",[question, poll_id, creator_id],
+//adding a new tag to certain poll
+Poll.addTag = function(poll_id, creator_id, tag_word, result){
+    sql.query("SELECT tag_id FROM `ballotBuddy`.`tags` WHERE tag_word = ?;", [tag_word],
     function(err,res){
-        if(err){
+        if(err)
             result(err,null);
-        }else{
-            result(null,{
-                "code":200,
-                "question":question,
-                "poll_id": poll_id
+        else{
+            sql.query("INSERT INTO `ballotBuddy`.`tags_polls` (`tag_id`, `poll_id`) VALUES ( '" + res[0].tag_id + "', '" + poll_id + "');", 
+            function(err1,res1){
+                if(err1)
+                    result(err1,null);
+                else{
+                    result(null,{
+                        "code" : 200,
+                        "poll_id" : poll_id,
+                        "user_id" : creator_id
+                    });
+                }
             });
         }
     });
 };
-
-// Poll.updateCreationDateById = function updateCreationDateById(poll_id,date_created,result){
-//     sql.query("UPDATE `ballotBuddy`.`polls` SET date_created = ? WHERE poll_id = ?", [date_created,poll_id],
-//     function(err,res){
-//         if(err){
-//             result(err,null);
-//         }else{
-//             result(null,{
-//                 "code":200,
-//                 "response":"Update compete",
-//                 "date_created":date_created 
-//             });
-//         }
-//     });
-
-// };
-
-Poll.updateAnswer1ById = function updateAnswer1ById(creator_id, poll_id,answer1,result){
-    sql.query("UPDATE `ballotBuddy`.`polls` SET answer1 = ? WHERE poll_id = ? AND creator_id = ?", [answer1, poll_id, creator_id],
+//adding a new option for the answer
+Poll.addOption = function(poll_id, answer_text, result){
+    sql.query("INSERT INTO `ballotBuddy`.`polls_answers` (`poll_id`,`answer_text`,`answer_count`) VALUES ('" + poll_id + "', '" + answer_text + "', 1);",
     function(err,res){
-        if(err){
+        if(err)
             result(err,null);
-        }else{
+        else{
             result(null,{
-                "code":200,
-                "response":"Update compete",
-                "answer1":answer1
+                "code" : 200,
+                "poll_id" : poll_id,
+                "response" : "New option added successfully."
             });
         }
     });
 };
-
-Poll.updateAnswer2ById = function updateAnswer2ById(creator_id, poll_id,answer2,result){
-    sql.query("UPDATE `ballotBuddy`.`polls` SET answer2 = ? WHERE poll_id = ? AND creator_id = ?", [answer2,poll_id, creator_id],
+//update counting of a certain answer, locating by poll_id and answer_text
+//This function will match up poll_id and answer_text in polls_answer table,
+//which poll_id and answer_text are unique in the table, and update the answer_count
+Poll.updateAnswerCount = function(poll_id,answer_text,answer_count,result){
+    sql.query("UPDATE `ballotBuddy`.`polls_answers` SET answer_count = ? WHERE poll_id = ? AND answer_text = ?;",[answer_count,poll_id,answer_text],
     function(err,res){
-        if(err){
+        if(err)
             result(err,null);
-        }else{
+        else    
             result(null,{
-                "code":200,
-                "response":"Update compete",
-                "answer2":answer2
+                "code" : 200,
+                "poll_id" : poll_id,
+                "answer_text" : answer_text,
+                "answer_count" : answer_count
             });
-        }
     });
+
 };
 
-Poll.updateCount1ById = function updateCount1ById(poll_id,count_answer1,result){
-    sql.query("UPDATE `ballotBuddy`.`polls` SET count_answer1 = ? WHERE poll_id = ? ", [count_answer1,poll_id],
+Poll.deletePoll = function(poll_id,result){
+    sql.query("UPDATE `ballotBuddy`.`polls` SET inactive = 1 WHERE poll_id = ?", [poll_id],
     function(err,res){
-        if(err){
+        if(err)
             result(err,null);
-        }else{
+        else 
             result(null,{
-                "code":200,
-                "response":"Update compete",
-                "count_answer1":count_answer1
+                "code" : 200,
             });
-        }
     });
 };
-
-Poll.updateCount2ById = function updateCount2ById(poll_id,count_answer2,result){
-    sql.query("UPDATE `ballotBuddy`.`polls` SET count_answer2 = ? WHERE poll_id = ? ", [count_answer2,poll_id],
-    function(err,res){
-        if(err){
-            result(err,null);
-        }else{
-            result(null,{
-                "code":200,
-                "response":"Update compete",
-                "count_answer2":count_answer2
-            });
-        }
-    });
-};
-//******************************************************************************
-Poll.getAnswer1ById = function getAnswer1ById(poll_id,reulst){
-    sql.query("SELECT answer1 FROM POLL WHERE poll_id = ? ;", [poll_id],
-    function(err,res){
-        if(err) {
-            result({
-                "code":204,
-                "response":"Cannot find this ID in the table."
-            }, null);
-          }else{
-            result(null, res);
-        }
-    });
-};
-
-Poll.getAnswer2ById = function getAnswer2ById(poll_id,reulst){
-    sql.query("SELECT answer2 FROM POLL WHERE poll_id = ? ;", [poll_id],
-    function(err,res){
-        if(err) {
-            result({
-                "code":204,
-                "response":"Cannot find this ID in the table."
-            }, null);
-          }else{
-            result(null, res);
-        }
-    });
-};
-
-Poll.getCountAnswer1 = function getCountAnswer1(poll_id,result){
-    sql.query("SELECT count_answer1 FROM POLL WHERE poll_id = ? ;", [poll_id],
-    function(err,res){
-        if(err) {
-            result({
-                "code":204,
-                "response":"Cannot find this ID in the table."
-            }, null);
-          }else{
-            result(null, res);
-        }
-    });
-};
-
-Poll.getCountAnswer2 = function getCountAnswer2(poll_id,result){
-    sql.query("SELECT count_answer2 FROM POLL WHERE poll_id = ? ;", [poll_id],
-    function(err,res){
-        if(err) {
-            result({
-                "code":204,
-                "response":"Cannot find this ID in the table."
-            }, null);
-          }else{
-            result(null, res);
-        }
-    });
-};
-
-Poll.getCreationDate = function getCreationDate(poll_id,result){
-    sql.query("SELECT date_created FROM POLL WHERE poll_id = ? ;", [poll_id],
-    function(err,res){
-        if(err){
-            result({
-                "code":204,
-                "response" : "Cannot find this ID in the table."
-            },null);
-        }else{
-            result(null,res);
-        }
-    });
-};
-
-Poll.getQuestionById = function getQuestionById(poll_id,result){
-    sql.query("SELECT question FROM POLL WHERE poll_id = ?;", [poll_id],
-    function(err,res){
-        if(err){
-            result({
-                "code":204,
-                "response" : "Cannot find this ID in the table."
-            },null);
-        }else{
-            result(null,res);
-        }
-    });
-};
-
-Poll.getCreatorId = function getCreatorId(poll_id,result){
-    sql.query("SELECT creator_id FROM POLL WHERE poll_id = ?;", [poll_id],
-    function(err,res){
-        if(err){
-            result({
-                "code":204,
-                "response" : "Cannot find this ID in the table."
-            },null);
-        }else{
-            result(null,res);
-        }
-    });
-};
-
-Poll.getAllPolls = function getAllPolls(result) {
-    sql.query("SELECT * FROM Poll;", [], 
-    function(err, res){
-      if(err) {
-        result(err, null);
-      }else{
-        result(null, res);
-      }
-    });
-};
-  
-Poll.getPollByID = function getPollByID(poll_id, result) {
-    sql.query("Select * FROM Poll WHERE poll_id = ?;", [poll_id], 
-    function(err, res){
-      if(err) {
-        result(err, null);
-      } else {
-        result(null, res);
-      }
-    });
-  };
-
-
 
 module.exports = Poll;
