@@ -5,12 +5,10 @@ var connection = require('./db.js');
 var Post = function(post) {
     this.post_id = post.post_id;
     this.creator_id = post.creator_id;
-    this.tag_id1 = post.tag_id1;
-    this.tag_id2 = post.tag_id2;
-    this.tag_id3 = post.tag_id3;
     this.date_created = post.date_created;
     this.title = post.title;
     this.post_text = post.post_text;
+    this.inactive = post.inactive;
 };
 
 Post.createPost = function(creator_id, newPost, result)
@@ -93,7 +91,23 @@ Post.getPost = function(post_id, result)
 
 Post.getPosts = function(result)
 {
-    connection.query("SELECT firstName, lastName, title, post_text, date_created FROM `ballotBuddy`.`users` AS U JOIN (SELECT * FROM `ballotBuddy`.`posts`) AS P ON U.id = P.creator_id WHERE P.inactive != 1 ORDER BY date_created DESC",
+    connection.query("SELECT id, firstName, lastName, title, post_text, date_created FROM `ballotBuddy`.`users` AS U JOIN (SELECT * FROM `ballotBuddy`.`posts`) AS P ON U.id = P.creator_id WHERE P.inactive != 1 ORDER BY date_created DESC",
+    function(err, res)
+    {
+        if(err)
+        {
+            result(err, null);
+        }
+        else
+        {
+            result(null, {"code":200, res});
+        }
+    });
+};
+
+Post.myPosts = function(creator_id, result)
+{
+    connection.query("SELECT * from `ballotBuddy`.`posts` WHERE creator_id = ?", [creator_id],
     function(err, res)
     {
         if(err)

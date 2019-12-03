@@ -85,6 +85,9 @@ module.exports = function(app) {
     app.route('/user/getPost/:post_id') //DONE
       .get(postController.getPost);
 
+    app.route('/user/getMyPosts/:id') //DONE
+      .get(postController.myPosts);
+
     app.route('/getAllPosts') //DONE
       .get(postController.getPosts);
 

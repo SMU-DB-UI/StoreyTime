@@ -83,6 +83,27 @@ exports.addTags = function(request, result) {
     }
 };
 
+exports.myPosts = function(request, result) {
+    if(! request.params.id)
+    {
+        result.status(400).json({"code":400, "response":"Missing post id in body"});
+    }
+    else
+    {
+        Post.myPosts(request.params.id, function(err, post)
+        {
+            if(err)
+            {
+                result.send(err);
+            }
+            else
+            {
+                result.json(post);
+            }
+        });
+    }
+};
+
 exports.editPost = function(request, result) {
     if( ! request.body.post_id)
     {
