@@ -272,7 +272,7 @@ class Profile extends Component {
                                         htmlFor={tag}
                                         value={tag} 
                                         onChange={e => {
-                                            var val = console.log(tag);
+                                            // var val = console.log(tag);
                                             if(!this.state.followedTags.includes(tag)){
                                                 this.setState(pstate => { return pstate.followedTags.push(tag) });
                                             }else{

@@ -17,7 +17,7 @@ export class PollRepo {
 
     addTags(poll_id, tag_word) {
         return new Promise((resolve, reject) => {
-            axios.put(this.url + 'user/newPoll/addTags/' + localStorage.getItem('id'), {poll_id, tag_word})
+            axios.put(this.url + 'user/newPoll/addTag/' + localStorage.getItem('id'), {poll_id, tag_word})
                 .then(resp => resolve(resp.data))
                 .catch(resp => reject(resp));
         })
@@ -25,7 +25,7 @@ export class PollRepo {
 
     addOption(poll_id, answer_text) {
         return new Promise((resolve, reject) => {
-            axios.put(this.url + 'user/newPoll/addOption/' + poll_id, answer_text)
+            axios.put(this.url + 'user/newPoll/addOption/' + poll_id, {answer_text})
                 .then(resp => resolve(resp.data))
                 .catch(resp => reject(resp));
         })

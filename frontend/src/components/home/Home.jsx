@@ -122,33 +122,33 @@ class Home extends React.Component {
         .then(res => {
             this.state.newPoll.tags.forEach(tag => {
                 this.pollRepo.addTags(res.poll_id, tag)
-                .then(resp => {
-                    this.state.newPoll.answers.forEach(answer => {
-                        this.pollRepo.addOption(resp.poll_id, answer)
-                        .then(respo => console.log(respo))
-                        .catch(respo => alert(respo));
-                    });
-                    var feedItem = {
-                        id: res.poll_id,
-                        tags: this.state.newPoll.tags,
-                        question: this.state.newPoll.question,
-                        answers: this.state.newPoll.answers,
-                        votes: new Array(this.state.newPoll.answers.length).fill(0),
-                        totalVotes: 0,
-                        user: `${localStorage.getItem('firstName')} ${localStorage.getItem('lastName')}`,
-                        userId: localStorage.getItem('id'),
-                        date: new Date().toDateString(),
-                        dateTime: new Date(),
-                        isPoll: true
-                    };
-                    this.setState({
-                        feed: [feedItem, ...this.state.feed]
-                    });
-                    this.resetNewPoll();
-                    this.resetPollTags();
-                })
+                .then(resp => console.log(resp))
                 .catch(resp => alert(resp));
             });
+            this.state.newPoll.answers.forEach(answer => {
+                debugger;
+                this.pollRepo.addOption(res.poll_id, answer)
+                .then(resp => console.log(resp))
+                .catch(resp => alert(resp));
+            });
+            var feedItem = {
+                id: res.poll_id,
+                tags: this.state.newPoll.tags,
+                question: this.state.newPoll.question,
+                answers: this.state.newPoll.answers,
+                votes: new Array(this.state.newPoll.answers.length).fill(0),
+                totalVotes: 0,
+                user: `${localStorage.getItem('firstName')} ${localStorage.getItem('lastName')}`,
+                userId: localStorage.getItem('id'),
+                date: new Date().toDateString(),
+                dateTime: new Date(),
+                isPoll: true
+            };
+            this.setState({
+                feed: [feedItem, ...this.state.feed]
+            });
+            this.resetNewPoll();
+            this.resetPollTags();
         })
         .catch(res => alert(res));
     }
@@ -315,7 +315,13 @@ class Home extends React.Component {
                                                             <form className="poll-modal">
                                                                 <label htmlFor="poll-title" className="text-left">Title</label>
                                                                 <div className="form-group">
-                                                                    <input type="text" className="form-control" id="poll-title" placeholder="Poll title" />
+                                                                    <input type="text" 
+                                                                        className="form-control" 
+                                                                        id="poll-title" 
+                                                                        placeholder="Poll title"
+                                                                        value={this.state.newPoll.question}
+                                                                        onChange={e => { var val = e.target.value; this.setState(prevState => { prevState.newPoll.question = val; return prevState })}}
+                                                                    />
                                                                 </div>
                                                                 <div className="form-group" id="poll-answers">
                                                                     <label htmlFor="poll-answers" className="text-left">Options</label>
@@ -379,7 +385,7 @@ class Home extends React.Component {
                                                             </form>
                                                         </div>
                                                         <div className="modal-footer">
-                                                            <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={() => { this.resetNewPoll(); this.resetPollTags() }}>Submit Poll</button>
+                                                            <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={() => { this.submitPoll() }}>Submit Poll</button>
                                                         </div>
                                                     </div>
                                                 </div>
