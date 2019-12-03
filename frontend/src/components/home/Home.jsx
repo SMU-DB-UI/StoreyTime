@@ -83,7 +83,6 @@ class Home extends React.Component {
     resetPostTags() {
         this.setState(prevState => {
             for (var i = 0; i < this.state.tags.length; i++) {
-                debugger;
                 prevState.newPost.availableTags.push(this.state.tags[i])
             }
             return prevState;
