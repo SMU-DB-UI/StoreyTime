@@ -182,10 +182,6 @@ class Home extends React.Component {
                                             <form className="form-inline feed-top">
                                                 <input className="form-control mr-sm-3" type="text" placeholder="Search"
                                                     aria-label="Search" />
-                                                <select className="form-control mr-md-3" type="tag" placeholder="Tag">
-                                                    {this.state.tags.map((tag, index) =>
-                                                        <option value={tag} key={index}>{tag}</option>)}
-                                                </select>
                                                 <button type="button" className="btn mr-3" data-toggle="modal" data-target="#postModal">
                                                     New Post
                                                 </button>
