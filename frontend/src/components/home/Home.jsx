@@ -4,52 +4,58 @@ import PostCard from '../postCard/PostCard'
 import PollCard from '../pollCard/PollCard'
 import './home.css';
 import { Redirect } from 'react-router-dom';
+import { PostRepo } from '../../api/postRepo';
 
 class Home extends React.Component {
 
-    state = {
-        feed: [
-            {
-                id: 0,
-                tags: ['Guns', 'School', 'Children'],
-                title: 'Give All Children Guns',
-                text: 'Just like we teach them reading and writing, necessary skills. We would teach shooting and firearm competency. It wouldn’t matter if a child’s parents weren’t good at it. We’d find them a mentor. It wouldn’t matter if they didn’t want to learn. We would make it necessary to advance to the next grade.',
-                user: 'Hayden Center',
-                userId: 0,
-                date: '11/21/2019',
-                dateTime: new Date(),
-                isPoll: false
+    constructor(props) {
+        super(props);
+
+        this.postRepo = new PostRepo();
+        this.state = {
+            feed: [
+                {
+                    id: 0,
+                    tags: ['Guns', 'School', 'Children'],
+                    title: 'Give All Children Guns',
+                    text: 'Just like we teach them reading and writing, necessary skills. We would teach shooting and firearm competency. It wouldn’t matter if a child’s parents weren’t good at it. We’d find them a mentor. It wouldn’t matter if they didn’t want to learn. We would make it necessary to advance to the next grade.',
+                    user: 'Hayden Center',
+                    userId: 0,
+                    date: new Date().toDateString(),
+                    dateTime: new Date(),
+                    isPoll: false
+                },
+                {
+                    id: 1,
+                    tags: ['Parties', 'President', 'Alignment'],
+                    question: 'Democrat or Republican?',
+                    answers: ['Democrat', 'Republican', 'Other'],
+                    votes: [42, 40, 18],
+                    totalVotes: 100, //find a way to compute this before putting in
+                    user: 'Hayden Center',
+                    userId: 0,
+                    date: new Date().toDateString(),
+                    dateTime: new Date(),
+                    isPoll: true
+                }
+            ],
+            newPost: {
+                title: '',
+                body: '',
+                availableTags: this.tags,
+                tags: [],
+                nextTag: ''
             },
-            {
-                id: 1,
-                tags: ['Parties', 'President', 'Alignment'],
-                question: 'Democrat or Republican?',
-                answers: ['Democrat', 'Republican', 'Other'],
-                votes: [42, 40, 18],
-                totalVotes: 100, //find a way to compute this before putting in
-                user: 'Hayden Center',
-                userId: 0,
-                date: '11/21/2019',
-                dateTime: new Date(),
-                isPoll: true
+            newPoll: {
+                question: '',
+                answers: [],
+                availableTags: [],
+                tags: [],
+                nextTag: ''
             }
-        ],
-        newPost: {
-            title: '',
-            body: '',
-            availableTags: [],
-            tags: [],
-            nextTag: ''
-        },
-        newPoll: {
-            question: '',
-            answers: [],
-            availableTags: [],
-            tags: [],
-            nextTag: ''
         }
     }
-
+  
     tags = [
         "Republican",
         "Conservative",
@@ -79,7 +85,45 @@ class Home extends React.Component {
             for (var i = 0; i < this.tags.length; i++) {
                 prevState.newPost.availableTags.push(this.tags[i])
             }
+        }
+    }
+        
+    submitPost() {
+        // let id = -1;
+        let newP = {
+            post_title: this.state.newPost.title,
+            post_text: this.state.newPost.body
+        };
+        this.postRepo.createPost(newP)
+        .then(res => {
+            console.log(res);
+            this.state.newPost.tags.forEach(tag => {
+                console.log(tag);
+                this.postRepo.addTags(res.post_id, tag)
+                    .then(resp => (console.log(resp)))
+                    .catch(resp => (console.log(resp)));
+            });
+            var feedItem = {
+                id: res.post_id,
+                tags: this.state.newPost.tags,
+                title: newP.post_title,
+                text: newP.post_text,
+                user: `${localStorage.getItem('firstName')} ${localStorage.getItem('lastName')}`,
+                userId: localStorage.getItem('id'),
+                date: new Date().toDateString(),
+                dateTime: new Date(),
+                isPoll: false
+            };
+            console.log(feedItem);
+            this.setState({
+                feed: [feedItem, ...this.state.feed]
+            });
+            this.resetNewPost();
+            this.resetPostTags();
         })
+        .catch(res => {
+            alert(res);
+        });
     }
 
     resetPollTags() {
@@ -164,14 +208,26 @@ class Home extends React.Component {
                                                             <form className="post-modal">
                                                                 <label htmlFor="post-title" className="text-left">Title</label>
                                                                 <div className="form-group">
-                                                                    <input type="text" className="form-control" id="post-title" placeholder="Post title" />
+                                                                    <input type="text" 
+                                                                        className="form-control" 
+                                                                        id="post-title" 
+                                                                        placeholder="Post title"
+                                                                        value={this.state.newPost.title}
+                                                                        onChange={e => { var val = e.target.value; this.setState(prev => { prev.newPost.title = val; return prev; })}} 
+                                                                    />
                                                                 </div>
                                                                 <label htmlFor="post-body">Body</label>
                                                                 <div className="form-group">
-                                                                    <textarea className="form-control w-100" id="post-body" rows="3" placeholder="Post body"></textarea>
+                                                                    <textarea className="form-control w-100" 
+                                                                        id="post-body" 
+                                                                        rows="3" 
+                                                                        placeholder="Post body"
+                                                                        value={this.state.newPost.body}
+                                                                        onChange={e => { var val = e.target.value; this.setState(prev => { prev.newPost.body = val; return prev; })}} 
+                                                                    ></textarea>
                                                                 </div>
                                                                 <label htmlFor="post-tags">Tags</label>
-                                                                {this.state.newPost.tags.length !== 0 &&
+                                                                {this.state.newPost.tags &&
                                                                     <div className="form-group">
                                                                         <ul className="list-group">
                                                                             {this.state.newPost.tags.map((tag, index) => <li className="list-group-item" key={index}>{tag}</li>)}
@@ -211,7 +267,7 @@ class Home extends React.Component {
                                                             </form>
                                                         </div>
                                                         <div className="modal-footer">
-                                                            <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={() => { this.resetNewPost(); this.resetPostTags() }}>Submit Post</button>
+                                                            <button type="button" className="btn btn-primary" data-dismiss="modal" onClick={() => { this.submitPost(); }}>Submit Post</button>
                                                         </div>
                                                     </div>
                                                 </div>
