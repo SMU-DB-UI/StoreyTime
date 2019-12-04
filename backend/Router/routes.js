@@ -44,6 +44,9 @@ module.exports = function(app) {
     app.route('/user/followTag/:id') //DONE
       .post(userController.followTag);
 
+    app.route('/user/unfollowTag/:id') //DONE
+      .put(userController.unfollowTag);
+
     app.route('/user/update/password/:id') //DONE
       .put(userController.resetPassword);
 

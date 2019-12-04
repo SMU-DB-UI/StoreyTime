@@ -158,6 +158,33 @@ User.followTag = function(id, tag_word, result)
     });
 };
 
+User.unfollowTag = function(id, tag_word, result)
+{
+    connection.query("SELECT * FROM `ballotBuddy`.`tags` WHERE tag_word = ?", [tag_word],
+    function(err, res)
+    {
+        if(err)
+        {
+            result(err, null);
+        }
+        else
+        {
+            connection.query("Update `ballotBuddy`.`tags_users_bridge` set inactive = 1 WHERE users_id=? AND tag_id=?", [id, res[0].tag_id],
+            function(err1, res1)
+            {
+                if(err1)
+                {
+                    result(err1, null);
+                }
+                else
+                {
+                    result(null, {"code":200});
+                }
+            });
+        } 
+    });
+};
+
 User.getPollsFeed = function(id, result)
 {
     connection.query("select `firstName`, `lastName`, `question`, `date_created`, `poll_id`, I, group_concat(`tag_word`), group_concat(`answer_text`) from `ballotBuddy`.`users` as U join ( select `tag_word`, `poll_id`, `creator_id`, `date_created`, `question`, `inactive` as I, `answer_text` from `ballotBuddy`.`polls_answers` as PO join ( select `tag_word`, `poll_id` as pID, `creator_id`, `date_created`, `question`, `inactive` from `ballotBuddy`.`tags` as T join ( select `tag_id`, `poll_id`,`creator_id`, `date_created`, `question`, `inactive` from `ballotBuddy`.`polls` as P join ( select `tag_id`, `poll_id` as P_ID FROM `ballotBuddy`.`tags_polls` where tag_id in ( select `tag_id` from `ballotBuddy`.`tags_users_bridge` where users_id=? )) as Tags on P.poll_id = Tags.P_ID) as Poll on T.tag_id = Poll.tag_id) as po on PO.poll_id = po.pID ) as OP on U.id = OP.creator_id group by poll_id order by date_created desc;", [id],
