@@ -16,6 +16,28 @@ exports.createPolitician = function(request, result)
     });
 };
 
+exports.getInformation = function(request, result)
+{
+    if(!request.params.id)
+    {
+        result.status(400).json({"code":400, "response":"Missing id in params"});
+    }
+    else
+    {
+        Politician.getInformation(request.params.id, function(err, politician)
+        {
+            if(err)
+            {
+                result.send(err);
+            }
+            else
+            {
+                result.json(politician);
+            }
+        });
+    }
+};
+
 exports.updatePhone = function(request, result)
 {
     if(! request.params.id)

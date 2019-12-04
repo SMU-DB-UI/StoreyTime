@@ -27,6 +27,21 @@ Politician.createPolitician = function(newPolitician, result)
     });
 };
 
+Politician.getInformation = function(id, result) {
+    connection.query("SELECT `office_email`, `office_phone` FROM `ballotBuddy`.`politicians` WHERE user_id=?", [id],
+    function(err, res)
+    {
+        if(err)
+        {
+            result(err, null);
+        }
+        else
+        {
+            result(null, {"code":200, res});
+        }
+    });
+};
+
 Politician.updateOfficeEmail = function(id, office_email, result) {
     connection.query("UPDATE `ballotBuddy`.`politicians` SET office_email = ? WHERE user_id = ?", [office_email, id], 
     function(err, res)
