@@ -50,6 +50,8 @@ services:
       - 3000:3000
     networks:
       - frontend
+    links:
+      - backend-api:backend-api
 
 networks: 
   backend:

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export class GroupRepo {
 
-    url = 'http://localhost:8000/';
+    url = '';
     config = {
 
     };
