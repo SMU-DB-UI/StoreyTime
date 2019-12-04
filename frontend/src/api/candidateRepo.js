@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 export class CandidateRepo {
-
-    url = '';
+    
+    url = 'http://ec2-18-191-12-251.us-east-2.compute.amazonaws.com:8000/';
     config = {
 
     };
