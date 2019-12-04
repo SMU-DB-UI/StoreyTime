@@ -15,7 +15,7 @@ class Home extends React.Component {
 
         this.postRepo = new PostRepo();
         this.pollRepo = new PollRepo();
-
+        this.filteredFeed = [];
         this.state = {
             tags: [
                 "Republican",
@@ -55,7 +55,7 @@ class Home extends React.Component {
                 {
                     id: 1,
                     tags: ['Parties', 'President', 'Alignment'],
-                    question: 'Democrat or Republican?',
+                    title: 'Democrat or Republican?',
                     answers: ['Democrat', 'Republican', 'Other'],
                     votes: [42, 40, 18],
                     totalVotes: 100, //find a way to compute this before putting in
@@ -74,7 +74,7 @@ class Home extends React.Component {
                 nextTag: ''
             },
             newPoll: {
-                question: '',
+                title: '',
                 answers: ['', ''],
                 availableTags: [],
                 tags: [],
@@ -89,67 +89,67 @@ class Home extends React.Component {
             post_text: this.state.newPost.body
         };
         this.postRepo.createPost(newP)
-        .then(res => {
-            this.state.newPost.tags.forEach(tag => {
-                this.postRepo.addTags(res.post_id, tag)
-                .then(resp => console.log(resp))
-                .catch(resp => console.log(resp));
-            });
-            var feedItem = {
-                id: res.post_id,
-                tags: this.state.newPost.tags,
-                title: newP.title,
-                text: newP.post_text,
-                user: `${localStorage.getItem('firstName')} ${localStorage.getItem('lastName')}`,
-                userId: localStorage.getItem('id'),
-                date: new Date().toDateString(),
-                dateTime: new Date(),
-                isPoll: false
-            };
-            this.setState({
-                feed: [feedItem, ...this.state.feed]
-            });
-            this.resetNewPost();
-            this.resetPostTags();
-        })
-        .catch(res => alert(res));
+            .then(res => {
+                this.state.newPost.tags.forEach(tag => {
+                    this.postRepo.addTags(res.post_id, tag)
+                        .then(resp => console.log(resp))
+                        .catch(resp => console.log(resp));
+                });
+                var feedItem = {
+                    id: res.post_id,
+                    tags: this.state.newPost.tags,
+                    title: newP.title,
+                    text: newP.post_text,
+                    user: `${localStorage.getItem('firstName')} ${localStorage.getItem('lastName')}`,
+                    userId: localStorage.getItem('id'),
+                    date: new Date().toDateString(),
+                    dateTime: new Date(),
+                    isPoll: false
+                };
+                this.setState({
+                    feed: [feedItem, ...this.state.feed]
+                });
+                this.resetNewPost();
+                this.resetPostTags();
+            })
+            .catch(res => alert(res));
     }
 
     submitPoll() {
-        let newP = { question: this.state.newPoll.question };
+        let newP = { title: this.state.newPoll.title };
 
         this.pollRepo.createPoll(newP)
-        .then(res => {
-            this.state.newPoll.tags.forEach(tag => {
-                this.pollRepo.addTags(res.poll_id, tag)
-                .then(resp => console.log(resp))
-                .catch(resp => alert(resp));
-            });
-            this.state.newPoll.answers.forEach(answer => {
-                this.pollRepo.addOption(res.poll_id, answer)
-                .then(resp => console.log(resp))
-                .catch(resp => alert(resp));
-            });
-            var feedItem = {
-                id: res.poll_id,
-                tags: this.state.newPoll.tags,
-                question: this.state.newPoll.question,
-                answers: this.state.newPoll.answers,
-                votes: new Array(this.state.newPoll.answers.length).fill(0),
-                totalVotes: 0,
-                user: `${localStorage.getItem('firstName')} ${localStorage.getItem('lastName')}`,
-                userId: localStorage.getItem('id'),
-                date: new Date().toDateString(),
-                dateTime: new Date(),
-                isPoll: true
-            };
-            this.setState({
-                feed: [feedItem, ...this.state.feed]
-            });
-            this.resetNewPoll();
-            this.resetPollTags();
-        })
-        .catch(res => alert(res));
+            .then(res => {
+                this.state.newPoll.tags.forEach(tag => {
+                    this.pollRepo.addTags(res.poll_id, tag)
+                        .then(resp => console.log(resp))
+                        .catch(resp => alert(resp));
+                });
+                this.state.newPoll.answers.forEach(answer => {
+                    this.pollRepo.addOption(res.poll_id, answer)
+                        .then(resp => console.log(resp))
+                        .catch(resp => alert(resp));
+                });
+                var feedItem = {
+                    id: res.poll_id,
+                    tags: this.state.newPoll.tags,
+                    title: this.state.newPoll.title,
+                    answers: this.state.newPoll.answers,
+                    votes: new Array(this.state.newPoll.answers.length).fill(0),
+                    totalVotes: 0,
+                    user: `${localStorage.getItem('firstName')} ${localStorage.getItem('lastName')}`,
+                    userId: localStorage.getItem('id'),
+                    date: new Date().toDateString(),
+                    dateTime: new Date(),
+                    isPoll: true
+                };
+                this.setState({
+                    feed: [feedItem, ...this.state.feed]
+                });
+                this.resetNewPoll();
+                this.resetPollTags();
+            })
+            .catch(res => alert(res));
     }
 
     resetPostTags() {
@@ -187,13 +187,17 @@ class Home extends React.Component {
         this.setState({
             newPoll:
             {
-                question: '',
+                title: '',
                 answers: ['', ''],
                 availableTags: [],
                 tags: [],
                 nextTag: ''
             }
         })
+    }
+
+    componentWillMount() {
+        this.filteredFeed = this.state.feed;
     }
 
     render() {
@@ -212,8 +216,19 @@ class Home extends React.Component {
                                     <div className="row">
                                         <div className="col-12">
                                             <form className="form-inline feed-top">
-                                                <input className="form-control mr-sm-3 mb-sm-0 mb-2" type="text" placeholder="Search"
-                                                    aria-label="Search" />
+                                                <input className="form-control mr-sm-3 mb-sm-0 mb-2"
+                                                    type="text"
+                                                    placeholder="Search"
+                                                    aria-label="Search"
+                                                    onChange={e => {
+                                                        var val = e.target.value;
+                                                        this.filteredFeed = this.state.feed.filter(x => 
+                                                            x.title.toUpperCase().indexOf(val.toUpperCase()) > -1
+                                                            || x.user.toUpperCase().indexOf(val.toUpperCase()) > -1
+                                                            );
+                                                        console.log(this.filteredFeed);
+                                                        this.forceUpdate();
+                                                    }} />
                                                 <button type="button" className="form-control mr-sm-3 mb-sm-0 mb-2" data-toggle="modal" data-target="#postModal">
                                                     New Post
                                                 </button>
@@ -314,12 +329,12 @@ class Home extends React.Component {
                                                             <form className="poll-modal">
                                                                 <label htmlFor="poll-title" className="text-left">Title</label>
                                                                 <div className="form-group">
-                                                                    <input type="text" 
-                                                                        className="form-control" 
-                                                                        id="poll-title" 
+                                                                    <input type="text"
+                                                                        className="form-control"
+                                                                        id="poll-title"
                                                                         placeholder="Poll title"
-                                                                        value={this.state.newPoll.question}
-                                                                        onChange={e => { var val = e.target.value; this.setState(prevState => { prevState.newPoll.question = val; return prevState })}}
+                                                                        value={this.state.newPoll.title}
+                                                                        onChange={e => { var val = e.target.value; this.setState(prevState => { prevState.newPoll.title = val; return prevState }) }}
                                                                     />
                                                                 </div>
                                                                 <div className="form-group" id="poll-answers">
@@ -392,7 +407,7 @@ class Home extends React.Component {
 
                                         </div>
                                     </div>
-                                    {this.state.feed.map(feed =>
+                                    {this.filteredFeed.map(feed =>
                                         <div className="post-item" key={feed.id}><br />
                                             <div className="row">
                                                 <div className="col-12">
@@ -417,21 +432,21 @@ class Home extends React.Component {
         this.resetPollTags();
 
         this.postRepo.getHomePosts()
-        .then(resp => {
-            this.setState(pstate => {
-                pstate.feed.concat(resp);
-                return pstate;
-            });
-            this.pollRepo.getHomePolls()
-            .then(respo => {
-                this.setState(pState => {
-                    pState.feed.concat(respo);
-                    return pState;
+            .then(resp => {
+                this.setState(pstate => {
+                    pstate.feed.concat(resp);
+                    return pstate;
                 });
+                this.pollRepo.getHomePolls()
+                    .then(respo => {
+                        this.setState(pState => {
+                            pState.feed.concat(respo);
+                            return pState;
+                        });
+                    })
+                    .catch(respo => alert(respo));
             })
-            .catch(respo => alert(respo));
-        })
-        .catch(resp => alert(resp));
+            .catch(resp => alert(resp));
     }
 }
 

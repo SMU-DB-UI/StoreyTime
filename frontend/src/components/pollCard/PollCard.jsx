@@ -6,7 +6,7 @@ const PollCard = props => (
         <div className="card-body">
             <div className="row">
                 <div className='text-left col-lg-6 col-12'>
-                    <h4>{props.poll.question}</h4>
+                    <h4>{props.poll.title}</h4>
                 </div>
                 <div className='text-lg-right text-left col-lg-6 col-12'>
                     <p className='text-muted'>{props.poll.user} - {props.poll.date}</p>
