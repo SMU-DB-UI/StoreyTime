@@ -44,7 +44,11 @@ class Profile extends Component {
             state: localStorage.getItem('state'),
             user_type: localStorage.getItem('user_type'),
             edit: false,
-            followedTags: []
+            followedTags: [],
+            isCandidate: false,
+            officePhone: '',
+            officeEmail: '',
+            candidateType: ''
         }
     }
 
@@ -249,6 +253,56 @@ class Profile extends Component {
                                                         </div>
                                                     </div>
                                                 </div>
+                                                {this.state.isCandidate &&
+                                                    <>
+                                                        <div className="row">
+                                                            <div className="col-12 text-left">
+                                                                <div className="form-group">
+                                                                    <label htmlFor="profile-officePhone">Office Phone</label>
+                                                                    <input
+                                                                        disabled={!this.state.edit}
+                                                                        className='profile-officePhone form-control'
+                                                                        type='text'
+                                                                        name='profile-officePhone'
+                                                                        value={this.state.officePhone}
+                                                                        onChange={e => this.setState({ officePhone: e.target.value })}
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="row">
+                                                            <div className="col-12 text-left">
+                                                                <div className="form-group">
+                                                                    <label htmlFor="profile-officeEmail">Office Email</label>
+                                                                    <input
+                                                                        disabled={!this.state.edit}
+                                                                        className='profile-officeEmail form-control'
+                                                                        type='text'
+                                                                        name='profile-officeEmail'
+                                                                        value={this.state.officeEmail}
+                                                                        onChange={e => this.setState({ officeEmail: e.target.value })}
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="row">
+                                                            <div className="col-12 text-left">
+                                                                <div className="form-group">
+                                                                    <label htmlFor="profile-candidateTitle">Candidate Title</label>
+                                                                    <input
+                                                                        disabled={!this.state.edit}
+                                                                        className='profile-candidateTitle form-control'
+                                                                        type='text'
+                                                                        name='profile-candidateTitle'
+                                                                        value={this.state.candidateTitle}
+                                                                        onChange={e => this.setState({ candidateTitle: e.target.value })}
+                                                                    />
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </>
+                                                }
                                                 <div className="row">
                                                     <div className="col-12 text-left">
                                                         <label htmlFor="profile-tags">Tags I'm Following</label>

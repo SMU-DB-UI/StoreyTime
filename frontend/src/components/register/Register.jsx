@@ -15,7 +15,11 @@ class Register extends Component {
             password: '',
             state: '',
             user_type: 0,
-            isRegistered: false
+            isRegistered: false,
+            isCandidate: false,
+            officeEmail: '',
+            officePhone: '',
+            candidateType: ''
         }
     }
 
@@ -165,6 +169,52 @@ class Register extends Component {
                                 <option value='WI'>Wisconsin</option>
                                 <option value='WY'>Wyoming</option>
                             </select>
+                        </div>
+                        {this.state.isCandidate &&
+                            <>
+                                <div className='register-officePhone-wrapper'>
+                                    <i className="fas fa-plus-square"></i>
+                                    <input
+                                        className='register-officePhone'
+                                        type='text'
+                                        name='register-officePhone'
+                                        placeholder='Office Phone'
+                                        value={this.state.officePhone}
+                                        onChange={e => this.setState({ officePhone: e.target.value })}
+                                    />
+                                </div>
+                                <div className='register-officeEmail-wrapper'>
+                                    <i className="fas fa-plus-square"></i>
+                                    <input
+                                        className='register-officeEmail'
+                                        type='text'
+                                        name='register-officeEmail'
+                                        placeholder='Office Email'
+                                        value={this.state.officeEmail}
+                                        onChange={e => this.setState({ officeEmail: e.target.value })}
+                                    />
+                                </div>
+                                <div className='register-candidateType-wrapper'>
+                                    <i className="fas fa-plus-square"></i>
+                                    <input
+                                        className='register-candidateType'
+                                        type='text'
+                                        name='register-candidateType'
+                                        placeholder='Candidate Type'
+                                        value={this.state.candidateType}
+                                        onChange={e => this.setState({ candidateType: e.target.value })}
+                                    />
+                                </div>
+                            </>}
+                        <div className="register-candidate-wrapper">
+                            <div className="col-12 text-left">
+                                <div className="custom-control custom-checkbox">
+                                    <input className="custom-control-input" type="checkbox" id="isCandidate" name="isCandidate"
+                                        value={this.state.isCandidate}
+                                        onChange={e => this.setState({ isCandidate: e.target.checked })} />
+                                    <label className="custom-control-label" htmlFor="isCandidate">Candidate</label>
+                                </div>
+                            </div>
                         </div>
                         <div className='register-button-wrapper'>
                             <button

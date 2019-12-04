@@ -40,7 +40,10 @@
 .register-lastname-wrapper,
 .register-email-wrapper,
 .register-state-wrapper,
-.register-password-wrapper {
+.register-password-wrapper,
+.register-officePhone-wrapper,
+.register-officeEmail-wrapper,
+.register-candidateType-wrapper {
     width: 100%;
     position: relative;
     border-bottom: 2px solid rgba(255, 255, 255, 0.24);
@@ -49,8 +52,11 @@
 .register-firstname,
 .register-lastname,
 .register-email,
+.register-state,
 .register-password,
-.register-state {
+.register-officePhone,
+.register-officeEmail,
+.register-candidateType {
     font-size: 16px;
     color: #fff;
     line-height: 1.2;
