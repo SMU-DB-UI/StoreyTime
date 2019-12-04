@@ -72,6 +72,27 @@ exports.inviteMembers = function(request, result) {
     }
 };
 
+exports.getMembers = function(request, result) {
+    if(!request.params.group_id)
+    {
+        result.status(400).json({"code":400, "response":"Missing group ID in params"});
+    }
+    else
+    {
+        Group.getMembers(request.params.group_id, function(err, group)
+        {
+            if(err)
+            {
+                result.send(err);
+            }
+            else
+            {
+                result.json(group);
+            }
+        });
+    }
+};
+
 exports.removeUserFromGroup = function(request, result) {
    if(!request.params.group_id)
    {

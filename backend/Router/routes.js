@@ -72,6 +72,9 @@ module.exports = function(app) {
     app.route('/register/politician') //DONE
       .post(politicianController.createPolitician);
 
+    app.route('/user/getPoliticianInfo/:id')
+      .get(politicianController.getInformation);
+
     app.route('/user/politician/updateOfficePhone/:id') //DONE
       .put(politicianController.updatePhone);
 
@@ -144,6 +147,9 @@ module.exports = function(app) {
 
     app.route('/user/group/addNewMembers/:group_id') //DONE
       .post(groupController.inviteMembers);
+
+    app.route('/user/group/getAllMembers/:group_id') //DONE
+      .get(groupController.getMembers);
 
     app.route('/user/group/removeMember/:group_id') //DONE
       .put(groupController.removeUserFromGroup);

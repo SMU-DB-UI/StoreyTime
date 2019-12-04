@@ -101,7 +101,7 @@ User.login = function(user, result) {
 
 User.getPoliticians = function(result)
 {
-    connection.query("SELECT U.firstName, U.lastName, P.politician_type, P.inactive from `ballotBuddy`.`politicians` as P join (SELECT id, firstName, lastName FROM `ballotBuddy`.`users`) as U ON P.user_id = U.id;", 
+    connection.query("SELECT U.id, U.firstName, U.lastName, U.state_residence, P.politician_type, P.office_email, P.office_phone, P.inactive from `ballotBuddy`.`politicians` as P join (SELECT id, firstName, lastName, state_residence FROM `ballotBuddy`.`users`) as U ON P.user_id = U.id;", 
     function(err, res)
     {
         if(err)

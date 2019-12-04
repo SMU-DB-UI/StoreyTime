@@ -10,8 +10,7 @@ var Group = function(group) {
 };
 
 Group.createGroup = function(creator_id, newGroup, result) {
-    var name = connection.escape(newGroup.group_name);
-    connection.query("INSERT INTO `ballotBuddy`.`groups` (`creator_id`, `group_name`, `inactive`) VALUES ('"+ creator_id +"','"+ name +"','"+ 0 +"');",
+    connection.query("INSERT INTO `ballotBuddy`.`groups` (`creator_id`, `group_name`, `inactive`) VALUES ('"+ creator_id +"', '"+ newGroup.group_name +"', '"+ 0 +"');",
     function(err, res)
     {
         if (err)
@@ -20,7 +19,7 @@ Group.createGroup = function(creator_id, newGroup, result) {
         }
         else 
         {
-            connection.query("SELECT MAX(`group_id`) FROM `ballotBuddy`.`groups` WHERE creator_id = ?", [newGroup.creator_id], 
+            connection.query("SELECT MAX(`group_id`) FROM `ballotBuddy`.`groups` WHERE creator_id = ?", [creator_id], 
             function(err1, res1)
             {
                 if(err1)
@@ -29,6 +28,7 @@ Group.createGroup = function(creator_id, newGroup, result) {
                 }
                 else 
                 {
+                    console.log(res1);
                     result(null, {"code":200, "group_id": res1[0]['MAX(`group_id`)'], "creator_id": newGroup.creator_id});
                 }
             });
@@ -68,6 +68,20 @@ Group.inviteMembers = function(member_id, group_id, result)
     });
 };
 
+Group.getMembers = function(group_id, result) {
+    connection.query("SELECT `firstName`, `lastName`, `user_type`, `id` FROM `ballotBuddy`.`users` as U join (select `member_id` FROM `ballotBuddy`.`groups_members_bridge` WHERE group_id=?) as G on U.id = G.member_id", [group_id],
+    function(err, res)
+    {
+        if(err)
+        {
+            result(err, null);
+        }
+        else
+        {
+            result(null, {"code":200, res});
+        }
+    });
+};
 
 Group.removeMembersFromGroup = function(member_id,group_id,result) {
     connection.query("UPDATE `ballotBuddy`.`groups_members_bridge` SET `inactive` = 1 WHERE member_id = ? AND group_id = ?", [member_id,group_id],
