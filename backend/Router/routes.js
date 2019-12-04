@@ -38,8 +38,14 @@ module.exports = function(app) {
     app.route('/getPoliticians') //DONE
       .get(userController.getPoliticians);
 
+    app.route('/user/getTagsFollowing/:id') //DONE
+      .get(userController.getTagsFollowing);
+
     app.route('/user/followTag/:id') //DONE
       .post(userController.followTag);
+
+    app.route('/user/unfollowTag/:id') //DONE
+      .put(userController.unfollowTag);
 
     app.route('/user/update/password/:id') //DONE
       .put(userController.resetPassword);
@@ -84,6 +90,9 @@ module.exports = function(app) {
 
     app.route('/user/getPost/:post_id') //DONE
       .get(postController.getPost);
+
+    app.route('/user/getMyPosts/:id') //DONE
+      .get(postController.myPosts);
 
     app.route('/getAllPosts') //DONE
       .get(postController.getPosts);

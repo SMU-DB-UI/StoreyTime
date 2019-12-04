@@ -102,10 +102,56 @@ exports.getUser = function(request, result) {
     }
 };
 
+exports.getTagsFollowing = function(request, result) {
+    if(!request.params.id)
+    {
+        result.status(400).json({"code":400, "response":"Missing ID in params"});
+    }
+    else
+    {
+        User.getTagsFollowing(request.params.id, function(err, user)
+        {
+            if(err)
+            {
+                result.send(err);
+            }
+            else
+            {
+                result.json(user);
+            }
+        });
+    }
+};
+
+exports.unfollowTag = function(request, result) {
+    if(!request.params.id)
+    {
+        result.status(400).json({"code":400, "response":"Missing ID in params"});
+    }
+    else if(! request.body.tag_word)
+    {
+        result.status(400).json({"code":400, "response": "Missing tag word in body"});
+    }
+    else
+    {
+        User.unfollowTag(request.params.id, request.body.tag_word, function(err, user)
+        {
+            if(err)
+            {
+                result.send(err);
+            }
+            else
+            {
+                result.json(user);
+            }
+        });
+    }
+};
+
 exports.getPostsFeed = function(request, result) {
     if(!request.params.id)
     {
-        result.status(400).json({"code":400, "response":"Missing ID in request"});
+        result.status(400).json({"code":400, "response":"Missing ID in params"});
     }
     else
     {
