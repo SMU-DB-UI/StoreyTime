@@ -61,8 +61,19 @@ Poll.addTag = function(poll_id, creator_id, tag_word, result){
     });
 };
 
-Poll.getAllPolls = function(result) {
-    //sql.query("SELECT ")
+Poll.getMyPolls = function(creator_id, result) {
+    sql.query("select `creator_id`, PID, `question`, group_concat(distinct `tag_word`), group_concat(distinct `answer_text`), group_concat(distinct `answer_count`), `date_created`, `inactive` from `ballotBuddy`.`polls` as p_o join (select `poll_id` as PID, `answer_text`, `answer_count`, `tag_word` from `ballotBuddy`.`polls_answers` as p_a join (select `tag_word`, `tag_id`, `poll_id` as pid from `ballotBuddy`.`tags` as T join (select `poll_id`, `tag_id` as tid from `ballotBuddy`.`tags_polls`) as P on T.tag_id=P.tid) as p_t on p_a.poll_id = p_t.pid) as a_p on p_o.poll_id = a_p.PID where creator_id=? group by PID order by date_created desc;", [creator_id],
+    function(err, res)
+    {
+        if(err)
+        {
+            result(err, null);
+        }
+        else
+        {
+            result(null, {"code":200, res});
+        }
+    });
 };
 
 //adding a new option for the answer
