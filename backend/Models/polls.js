@@ -17,7 +17,7 @@ Poll.createPoll = function(creator_id,newPoll, result) {
     var day = t.getDate();
     var time = t.getHours() + ':' + t.getMinutes() + ':' + t.getSeconds();
     var dateTime = yearTime + '-' + monthTime + '-' + day + ' ' + time;  
-  sql.query("INSERT INTO `ballotBuddy`.`polls` (`creator_id`,`question`,`date_created`) VALUES ('" + creator_id + "', '" + newPoll.question + "', '" + dateTime +  "');",
+  sql.query("INSERT INTO `ballotBuddy`.`polls` (`creator_id`,`question`,`date_created`, `inactive`) VALUES ('" + creator_id + "', '" + newPoll.question + "', '" + dateTime +  "', '"+ 0 +"');",
     function(err, res) {
     if (err){
         result(err, null);
