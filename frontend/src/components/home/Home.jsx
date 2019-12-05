@@ -78,7 +78,7 @@ class Home extends React.Component {
     }
 
     submitPoll() {
-        let newP = { title: this.state.newPoll.title };
+        let newP = { question: this.state.newPoll.title };
 
         this.pollRepo.createPoll(newP)
             .then(res => {
@@ -350,7 +350,7 @@ class Home extends React.Component {
                                         this.state.feed.length > 0 ?
                                         (
                                             this.state.feed.map(f =>
-                                                <div className="post-item" key={(f.post_id ? "post-" : "poll-")+(f.post_id || f.PID)}><br />
+                                                <div className="post-item" key={(f.post_id ? "post-" : "poll-")+(f.post_id || f.poll_id)}><br />
                                                     <div className="row">
                                                         <div className="col-12">
                                                             {(f.post_id && <PostCard post={f} onRemove={(id) => this.postRepo.deletePost(id).then(window.location.reload()).catch()} key={f.post_id} />)}
@@ -399,7 +399,7 @@ class Home extends React.Component {
                     this.pollRepo.getMyPolls()
                     .then(respo => {
                         respo.res.forEach(item => {
-                            if(!feedarray.find(ele => item.poll_id === ele.poll_id && item.poll_id === ele.PID))
+                            if(!feedarray.find(ele => item.PID === ele.poll_id || item.PID === ele.PID))
                                 feedarray = [ ...feedarray, item ];
                         });
                         // feedarray = feedarray.reduce((ele, ind) => {

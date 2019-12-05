@@ -46,8 +46,8 @@ class Group extends Component {
                                                             </thead>
                                                             <tbody>
                                                                 {this.state.members.length > 0 && this.state.members.map(member => 
-                                                                    <tr className="text-left">
-                                                                        <td><p>&nbsp; {member}</p></td>
+                                                                    <tr className="text-left" key={member.id}>
+                                                                        <td><p>&nbsp; {member.firstName + " " + member.lastName}</p></td>
                                                                     </tr>
                                                                 )}
                                                             </tbody>
@@ -68,7 +68,7 @@ class Group extends Component {
 
     componentDidMount() {
         this.groupRepo.getAllMembers(this.state.id)
-        .then(resp => this.setState({ members: resp}))
+        .then(resp => this.setState({ members: resp.res}))
         .catch();
     }
 }

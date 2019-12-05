@@ -33,7 +33,7 @@ export class GroupRepo {
 
     getAllGroups() {
         return new Promise((res, rej) => {
-            axios.get(this.url + '')
+            axios.get(this.url + 'getGroups')
             .then(resp => res(resp.data))
             .catch(resp => rej(resp.data));
         })

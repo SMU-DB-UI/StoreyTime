@@ -82,7 +82,7 @@ class GroupHomepage extends Component {
                                                     {this.state.groups.map(group =>
                                                         <tr key={group.id}>
                                                             <td className="text-left">
-                                                                <p><a href={"/group/" + group.id}>&nbsp; {group.name}</a></p>
+                                                                <p><a href={"/group/" + group.group_id}>&nbsp; {group.group_name}</a></p>
                                                             </td>
                                                         </tr>
                                                     )}

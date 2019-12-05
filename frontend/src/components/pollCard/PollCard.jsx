@@ -10,9 +10,9 @@ const PollCard = props => (
                 </div>
                 <div className='text-lg-right text-left col-lg-6 col-12'>
                     <p className='text-muted'>
-                        {(props.poll.firstName || localStorage.getItem('firstName')) + " " + (props.poll.lastName || localStorage.getItem('lastName'))} - {props.poll.date_created}
+                        {(props.poll.first_name || localStorage.getItem('firstName')) + " " + (props.poll.last_name || localStorage.getItem('lastName'))} - {props.poll.date_created}
                     </p>
-                    {(localStorage.getItem('id') == props.poll.creator_id) && <button className="btn btn-danger" onClick={() => props.onRemove(props.poll.PID || props.poll.poll_ID, props.poll.creator_id)}>X</button>}
+                    {(localStorage.getItem('id') == props.poll.creator_id) && <button className="btn btn-danger" onClick={() => props.onRemove(props.poll.PID || props.poll.poll_id, props.poll.creator_id)}>X</button>}
                 </div>
             </div>
             {props.poll['group_concat(distinct `answer_text`)'].split(',').map((answer, index) => (
