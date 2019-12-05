@@ -62,7 +62,7 @@ Poll.addTag = function(poll_id, creator_id, tag_word, result){
 };
 
 Poll.getAllPolls = function(result) {
-    sql.query("SELECT ")
+    //sql.query("SELECT ")
 };
 
 //adding a new option for the answer
