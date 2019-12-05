@@ -96,7 +96,7 @@ exports.getMembers = function(request, result) {
 exports.removeUserFromGroup = function(request, result) {
    if(!request.params.group_id)
    {
-       result.status(400).json({"code":200, "response":"Missing group id in request"});
+       result.status(400).json({"code":400, "response":"Missing group id in request"});
    }
    else if(!request.body.member_id)
    {

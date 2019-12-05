@@ -102,6 +102,20 @@ exports.getUser = function(request, result) {
     }
 };
 
+exports.getAllGroups = function(request, result) {
+User.getAllGroups(function(err, user)
+{
+    if(err)
+    {
+        result.send(err);
+    }
+    else
+    {
+        result.json(user);
+    }
+});
+};
+
 exports.getTagsFollowing = function(request, result) {
     if(!request.params.id)
     {
