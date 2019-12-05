@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import './register.css';
 import { UserRepo } from '../../api';
+import { CandidateRepo } from '../../api/candidateRepo';
 
 class Register extends Component {
 
     userRepo = new UserRepo();
+    candidateRepo = new CandidateRepo();
 
     constructor(props) {
         super(props);
@@ -32,24 +34,41 @@ class Register extends Component {
             state_residence: this.state.state,
             user_type: this.state.user_type
         }
-
+    
         await this.userRepo.registerUser(user)
-            .then(resp => {
-                this.setState(pState => {
-                    pState.email = '';
-                    pState.password = '';
-                    pState.firstName = '';
-                    pState.lastName = '';
-                    pState.state = '';
-                    pState.user_type = '';
-                    pState.isRegistered = true;
-                    return pState;
+        .then(resp => {
+            if (this.state.user_type === 1){
+                var newCandidate = {
+                    user_id: resp.id,
+                    politician_type: this.state.candidateType,
+                    office_phone: this.state.officePhone,
+                    office_email: this.state.officeEmail
+                }
+                this.candidateRepo.registerCandidate(newCandidate)
+                .then(respo => {
+                    console.log(respo);
+                })
+                .catch(respo => {
+                    console.log(respo);
                 });
-            })
-            .catch(resp => {
-                console.log(resp);
-                alert(resp);
+            }
+            this.setState(pState => {
+                pState.email = '';
+                pState.password = '';
+                pState.firstName = '';
+                pState.lastName = '';
+                pState.state = '';
+                pState.politician_type = '';
+                pState.officePhone = '';
+                pState.officeEmail = '';
+                pState.isRegistered = true;
+                return pState;
             });
+        })
+        .catch(resp => {
+            console.log(resp);
+            alert(resp);
+        });
     }
 
     render() {
@@ -211,7 +230,14 @@ class Register extends Component {
                                 <div className="custom-control custom-checkbox">
                                     <input className="custom-control-input" type="checkbox" id="isCandidate" name="isCandidate"
                                         value={this.state.isCandidate}
-                                        onChange={e => this.setState({ isCandidate: e.target.checked })} />
+                                        onChange={e => {
+                                            this.setState({ isCandidate: e.target.checked });
+                                            if(e.target.checked){
+                                                this.setState({ user_type: 1 });
+                                            }else if(!e.target.checked){
+                                                this.setState({ user_type: 0 });
+                                            }
+                                        }} />
                                     <label className="custom-control-label" htmlFor="isCandidate">Candidate</label>
                                 </div>
                             </div>

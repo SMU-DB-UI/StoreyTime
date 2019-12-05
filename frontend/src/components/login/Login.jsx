@@ -1,12 +1,13 @@
 import React from 'react';
 import './login.css';
 import Logo from '../../imgs/logo.png';
-import { UserRepo } from '../../api';
+import { UserRepo, CandidateRepo } from '../../api';
 import { Redirect, NavLink } from 'react-router-dom';
 
 class Login extends React.Component {
 
   userRepo = new UserRepo();
+  candidateRepo = new CandidateRepo();
 
   state = {
     email: '',
@@ -24,6 +25,13 @@ class Login extends React.Component {
     this.userRepo.userLogin(user)
       .then(() => {
         if (localStorage.getItem('code') === '200') {
+          if(localStorage.getItem('user_type') === 1 ){
+            this.candidateRepo.getCandidate(localStorage.getItem('id'))
+            .then(resp => {
+              
+            })
+            .catch();
+          }
           this.setState({ redirect: '/home' })
         } else {
           this.setState({ showError: true })
