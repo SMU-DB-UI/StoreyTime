@@ -1,0 +1,21 @@
+.home-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0);
+    background-attachment: fixed;
+}
+
+.groups-top {
+    justify-content: space-evenly;
+}
+
+.groups-top input {
+    display: inline-block;
+    vertical-align: middle;
+    flex-grow: 1;
+}
+
+.table a:hover {
+    text-decoration: none;
+}

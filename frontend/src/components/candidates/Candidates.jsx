@@ -10,8 +10,7 @@ class Candidates extends Component {
             candidates: [
                 {
                     id: 1,
-                    firstName: 'John',
-                    lastName: 'Doe',
+                    name: 'John Doe',
                     officePhone: '1-800-555-9000',
                     officeEmail: 'johndoe@politics.gov',
                     candidateType: 'Senator',
@@ -19,21 +18,24 @@ class Candidates extends Component {
                 },
                 {
                     id: 2,
-                    firstName: 'Jane',
-                    lastName: 'Doe',
+                    name: 'Jane Doe',
                     officePhone: '1-800-555-6000',
                     officeEmail: 'janedoe@politics.gov',
                     candidateType: 'Congresswoman',
                     state: 'TX'
                 }
-            ],
-            search: ''
+            ]
         };
+        this.filteredCandidates = [];
         this.candidateRepo = new CandidateRepo();
     }
 
     filter() {
         console.log('here');
+    }
+
+    componentWillMount() {
+        this.filteredCandidates = this.state.candidates;
     }
 
     componentWillUpdate() {
@@ -53,23 +55,30 @@ class Candidates extends Component {
                                     <div className="row">
                                         <div className="col-12">
                                             <form className="form-inline candidates-top">
-                                                <input className="form-control mr-sm-3 mb-sm-0 mb-2"
+                                                <input className="form-control mb-2"
                                                     type="text"
                                                     placeholder="Search candidates"
                                                     aria-label="Search"
                                                     value={this.state.search}
-                                                    onChange={e => { this.setState({ search: e.target.value }); this.filter(); }}
+                                                    onChange={e => {
+                                                        var val = e.target.value;
+                                                        this.filteredCandidates = this.state.candidates.filter(x =>
+                                                            x.name.toUpperCase().indexOf(val.toUpperCase()) > -1
+                                                        );
+                                                        console.log(this.filteredCandidates);
+                                                        this.forceUpdate();
+                                                    }}
                                                 />
                                             </form>
                                             <br />
                                             <div>
                                                 {
-                                                    this.state.candidates.map(candidate =>
-                                                        <div className="card" onClickkey={candidate.id}>
+                                                    this.filteredCandidates.map(candidate =>
+                                                        <div className="card" key={candidate.id}>
                                                             <div className="card-body">
                                                                 <div className="row">
                                                                     <div className="col-6 text-left">
-                                                                        <p>{candidate.firstName} {candidate.lastName}</p>
+                                                                        <p>{candidate.name}</p>
                                                                         <p className="text-muted">{candidate.candidateType} - {candidate.state}</p>
                                                                     </div>
                                                                     <div className="col-6 text-right">

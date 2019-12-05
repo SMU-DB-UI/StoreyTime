@@ -10,7 +10,9 @@ const PostCard = props => (
                         <h4>{props.post.title}</h4>
                     </div>
                     <div className='text-lg-right text-left col-lg-6 col-12'>
-                        <p className='text-muted'>{props.post.user} - {props.post.date}</p>
+                        <p className='text-muted'>{props.post.user} - {props.post.date}
+                            {(localStorage.getItem('id') === props.post.id) && <p onClick={() => {/*remove me from the whole thing*/ }}>a{test}</p>}
+                        </p>
                     </div>
                 </div>
             </div>

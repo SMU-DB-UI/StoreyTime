@@ -9,7 +9,9 @@ const PollCard = props => (
                     <h4>{props.poll.title}</h4>
                 </div>
                 <div className='text-lg-right text-left col-lg-6 col-12'>
-                    <p className='text-muted'>{props.poll.user} - {props.poll.date}</p>
+                    <p className='text-muted'>{props.poll.user} - {props.poll.date}
+                        {(localStorage.getItem('id') === props.poll.id) && <a onClick={() => {/*remove me from the whole thing*/ }}>x</a>}
+                    </p>
                 </div>
             </div>
             {props.poll.votes.map((voteCount, index) => (
