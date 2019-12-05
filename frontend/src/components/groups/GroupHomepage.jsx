@@ -34,7 +34,7 @@ class GroupHomepage extends Component {
                                                     placeholder="Search groups"
                                                     aria-label="Search"
                                                     value={this.state.search}
-                                                    onChange={e => this.setState({ search: e.target.value })}
+                                                    onChange={e => { this.setState({ search: e.target.value }); this.refreshGroups(); }}
                                                 />
                                                 <button type="button" className="form-control btn" data-toggle="modal" data-target="#groupModal">
                                                     Create Group
@@ -80,7 +80,7 @@ class GroupHomepage extends Component {
                                                 </thead>
                                                 <tbody>
                                                     {this.state.groups.map(group =>
-                                                        <tr key={group.id}>
+                                                        <tr key={group.group_id}>
                                                             <td className="text-left">
                                                                 <p><a href={"/group/" + group.group_id}>&nbsp; {group.group_name}</a></p>
                                                             </td>
@@ -108,6 +108,20 @@ class GroupHomepage extends Component {
         this.groupRepo.createGroup(this.state.groupname)
         .then(() => window.location.reload())
         .catch();
+    }
+
+    refreshGroups() {
+        var x = document.querySelectorAll('tbody > tr');
+        x.forEach(group => {
+            if(!group.innerHTML.toLowerCase().includes(this.state.search.toLowerCase())){
+                
+                group.classList.add('d-none');
+            }else{
+                group.classList.remove('d-none');
+                
+            }
+        });
+        this.forceUpdate();
     }
 }
 export default GroupHomepage;

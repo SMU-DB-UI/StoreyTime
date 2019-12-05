@@ -17,10 +17,6 @@ class Candidates extends Component {
         console.log('here');
     }
 
-    componentWillMount() {
-        this.filteredCandidates = this.state.candidates;
-    }
-
     render() {
         return (<>
             <Navbar />
@@ -39,7 +35,7 @@ class Candidates extends Component {
                                                     placeholder="Search candidates"
                                                     aria-label="Search"
                                                     value={this.state.search}
-                                                    onChange={e => this.setState({ search: e.target.value })}
+                                                    onChange={e => { this.setState({ search: e.target.value }); this.filteredCandidates(); }}
                                                 />
                                             </form>
                                             <br />
@@ -78,8 +74,17 @@ class Candidates extends Component {
         this.candidateRepo.getCandidates()
         .then(res => this.setState({ candidates: res }))
         .catch();
+    }
 
-        this.filteredCandidates = this.state.candidates;
+    filteredCandidates() {
+        var x = document.querySelectorAll('.card')
+        x.forEach(cand => {
+            if(!cand.innerHTML.toLowerCase().includes(this.state.search.toLowerCase())){
+                cand.classList.add('d-none');
+            }else{
+                cand.classList.remove('d-none');
+            }
+        })
     }
 }
 export default Candidates;

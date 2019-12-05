@@ -165,7 +165,7 @@ class Home extends React.Component {
                                                     placeholder="Search"
                                                     aria-label="Search"
                                                     value={this.state.search}
-                                                    onChange={e => this.setState({ search: e.target.value })} 
+                                                    onChange={e => {this.setState({ search: e.target.value }); this.filterFeed(); }} 
                                                 />
                                                 <button type="button" className="form-control mr-sm-3 mb-sm-0 mb-2" data-toggle="modal" data-target="#postModal">
                                                     New Post
@@ -442,8 +442,20 @@ class Home extends React.Component {
             .catch(respo => alert(respo));
         })
         .catch(resp => alert(resp));
+    }
 
-        this.filteredFeed = this.state.feed;
+    filterFeed() {
+        var x = document.querySelectorAll('.post-item');
+        x.forEach(post => {
+            if(!post.innerHTML.toLowerCase().includes(this.state.search.toLowerCase())){
+                
+                post.classList.add('d-none');
+            }else{
+                post.classList.remove('d-none');
+                
+            }
+        })
+        this.forceUpdate();
     }
 }
 
