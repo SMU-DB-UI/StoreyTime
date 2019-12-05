@@ -28,7 +28,7 @@ Politician.createPolitician = function(newPolitician, result)
 };
 
 Politician.getInformation = function(id, result) {
-    connection.query("SELECT `user_id`, `office_email`, `office_phone` FROM `ballotBuddy`.`politicians` WHERE user_id=?", [id],
+    connection.query("SELECT `user_id`, `politician_type`, `office_email`, `office_phone` FROM `ballotBuddy`.`politicians` WHERE user_id=?", [id],
     function(err, res)
     {
         if(err)
