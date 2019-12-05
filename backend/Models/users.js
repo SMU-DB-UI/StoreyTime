@@ -115,6 +115,22 @@ User.getPoliticians = function(result)
     });
 };
 
+User.getAllGroups = function(result)
+{
+    connection.query("SELECT group_id, group_name FROM `ballotBuddy`.`groups` where inactive=0;", 
+    function(err, res)
+    {
+        if(err)
+        {
+            result(err, null);
+        }
+        else
+        {
+            result(null, res);
+        }
+    });
+};
+
 User.getTagsFollowing = function(id, result)
 {
     connection.query("SELECT `tag_word` FROM `ballotBuddy`.`tags` WHERE tag_id in (SELECT `tag_id` from `ballotBuddy`.`tags_users_bridge` WHERE users_id = ?)", [id],
