@@ -19,7 +19,6 @@ export class UserRepo {
         return new Promise((resolve, reject) => {
             axios.post(this.url + 'login', user)
                 .then(resp => {
-                    resolve(resp.data);
                     localStorage.setItem('email', resp.data.email);
                     localStorage.setItem('firstName', resp.data.firstName);
                     localStorage.setItem('lastName', resp.data.lastName);
@@ -27,6 +26,7 @@ export class UserRepo {
                     localStorage.setItem('user_type', resp.data.user_type);
                     localStorage.setItem('code', resp.data.code);
                     localStorage.setItem('id', resp.data.id);
+                    resolve(resp.data);
                 })
                 .catch(resp => reject(resp));
         });
@@ -85,6 +85,30 @@ export class UserRepo {
             axios.put(this.url + 'user/update/state_residence/' + localStorage.getItem('id'), {state_residence}, this.config)
                 .then(resp => res(resp.data))
                 .catch(resp => rej(resp));
+        })
+    }
+
+    getFollowedTags() {
+        return new Promise((res, rej) => {
+            axios.get(this.url + 'user/getTagsFollowing/' + localStorage.getItem('id'))
+            .then(resp => res(resp.data))
+            .catch(resp => rej(resp));
+        })
+    }
+
+    followTag(tag_word) {
+        return new Promise((res, rej) => {
+            axios.post(this.url + 'user/followTag/' + localStorage.getItem('id'), {tag_word})
+            .then(resp => res(resp.data))
+            .catch(resp => rej(resp));
+        })
+    }
+
+    unfollowTag(tag_word) {
+        return new Promise((res, rej) => {
+            axios.put(this.url + 'user/unfollowTag/' + localStorage.getItem('id'), {tag_word})
+            .then(resp => res(resp.data))
+            .catch(resp => rej(resp));
         })
     }
 }

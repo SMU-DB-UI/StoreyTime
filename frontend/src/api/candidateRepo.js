@@ -25,9 +25,39 @@ export class CandidateRepo {
 
     getCandidate(id) {
         return new Promise((resolve, reject) => {
-            axios.post(this.url + 'user/getPoliticianInfo/' + id)
+            axios.get(this.url + 'user/getPoliticianInfo/' + id)
             .then(resp => resolve(resp.data))
             .catch(resp => reject(resp));
+        })
+    }
+
+    changeOfficePhone(office_phone) {
+        return new Promise((res, rej) => {
+            axios.put(this.url + 'user/politician/updateOfficePhone/' + localStorage.getItem('id'), { office_phone })
+                .then(resp => {
+                    res(resp.data);
+                })
+                .catch(resp => rej(resp));
+        })
+    }
+
+    changeOfficeEmail(office_email) {
+        return new Promise((res, rej) => {
+            axios.put(this.url + 'user/politician/updateOfficeEmail/' + localStorage.getItem('id'), { office_email })
+                .then(resp => {
+                    res(resp.data);
+                })
+                .catch(resp => rej(resp));
+        })
+    }
+
+    changeCandidateType(politician_type) {
+        return new Promise((res, rej) => {
+            axios.put(this.url + 'user/politician/updatePoliticianType/' + localStorage.getItem('id'), { politician_type })
+                .then(resp => {
+                    res(resp.data);
+                })
+                .catch(resp => rej(resp));
         })
     }
 

@@ -25,14 +25,21 @@ class Login extends React.Component {
     this.userRepo.userLogin(user)
       .then(() => {
         if (localStorage.getItem('code') === '200') {
-          if(localStorage.getItem('user_type') === 1 ){
+          if(localStorage.getItem('user_type') === '1' ){
             this.candidateRepo.getCandidate(localStorage.getItem('id'))
             .then(resp => {
-              
+              localStorage.setItem('officeEmail', resp.res[0].office_email);
+              localStorage.setItem('officePhone', resp.res[0].office_phone);
+              localStorage.setItem('candidateType', resp.res[0].politician_type);
             })
-            .catch();
+            .catch((resp) =>{
+              this.setState({ showError: true });
+              console.log(resp);
+            });
           }
-          this.setState({ redirect: '/home' })
+          if (!this.state.showError){
+            this.setState({ redirect: '/home' });
+          }
         } else {
           this.setState({ showError: true })
         }

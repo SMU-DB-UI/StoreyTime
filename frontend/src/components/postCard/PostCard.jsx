@@ -7,19 +7,22 @@ const PostCard = props => (
             <div className='card-title'>
                 <div className="row">
                     <div className='text-left col-lg-6 col-12'>
-                        <h4>{props.post.title}</h4>
+                        <h4>{props.post.title.replace("'", "").replace("'", "")}</h4>
                     </div>
                     <div className='text-lg-right text-left col-lg-6 col-12'>
-                        <p className='text-muted'>{props.post.user} - {props.post.date}</p>
+                        <p className='text-muted'>
+                            {(props.post.firstName || localStorage.getItem('firstName')) + " " + (props.post.lastName || localStorage.getItem('lastName'))} - {props.post.date_created}
+                        </p>
+                        {((localStorage.getItem('id') == props.post.id) || (localStorage.getItem('id') == props.post.creator_id)) && <p onClick={() => props.onRemove(props.post.post_id)}>X</p>}
                     </div>
                 </div>
             </div>
             <div className='card-text text-left'>
-                <p>{props.post.text}</p>
+                <p>{props.post.post_text.replace("'", "").replace("'", "")}</p>
             </div>
             <div className='card-text text-left'>
                 <h5>
-                    {props.post.tags.map((tag, index) => <span className="badge badge-primary mr-3 mt-1" key={index}>{tag}</span>)}
+                    {props.post['group_concat(distinct `tag_word`)'] && props.post['group_concat(distinct `tag_word`)'].split(',').map((tag, index) => <span className="badge badge-primary mr-3 mt-1" key={index}>{tag}</span>)}
                 </h5>
             </div>
         </div>

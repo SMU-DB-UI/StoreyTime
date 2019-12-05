@@ -39,4 +39,21 @@ export class PollRepo {
         })
     }
 
+    getMyPolls() {
+        return new Promise((res, rej) => {
+            axios.get(this.url + 'user/getMyPolls/' + localStorage.getItem('id'))
+            .then(resp => res(resp.data))
+            .catch(resp => rej(resp));
+        })
+    }
+
+    deletePoll(poll_id, creator_id) {
+        return new Promise((res, rej) => {
+            axios.put(this.url + 'user/deletePoll/' + poll_id, {creator_id})
+            .then(resp => res(resp.data))
+            .catch(resp => rej(resp));
+
+        })
+    }
+
 }

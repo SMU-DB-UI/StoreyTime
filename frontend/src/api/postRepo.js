@@ -31,17 +31,25 @@ export class PostRepo {
         });
     }
 
-    deletePost(post_id){
-        return new Promise((resolve, reject) => {
-            axios.put(this.url + 'user/deletePost/' + localStorage.getItem('id'), post_id)
-                .then(resp => resolve(resp.data))
-                .catch(resp => reject(resp));
-        });
-    }
-
     getHomePosts() {
         return new Promise((res, rej) => {
             axios.get(this.url + 'postsHome/' + localStorage.getItem('id'))
+            .then(resp => res(resp.data))
+            .catch(resp => rej(resp));
+        })
+    }
+
+    getMyPosts() {
+        return new Promise((res, rej) => {
+            axios.get(this.url + 'user/getMyPosts/' + localStorage.getItem('id'))
+            .then(resp => res(resp.data))
+            .catch(resp => rej(resp));
+        })
+    }
+
+    deletePost(post_id) {
+        return new Promise((res, rej) => {
+            axios.put(this.url + 'user/deletePost/' + localStorage.getItem('id'), {post_id})
             .then(resp => res(resp.data))
             .catch(resp => rej(resp));
         })

@@ -15,7 +15,6 @@ class Home extends React.Component {
 
         this.postRepo = new PostRepo();
         this.pollRepo = new PollRepo();
-        this.filteredFeed = [];
         this.state = {
             tags: [
                 "Republican",
@@ -40,32 +39,7 @@ class Home extends React.Component {
                 'Terrorism',
                 'Racism'
             ],
-            feed: [
-                {
-                    id: 0,
-                    tags: ['Guns', 'School', 'Children'],
-                    title: 'Give All Children Guns',
-                    text: 'Just like we teach them reading and writing, necessary skills. We would teach shooting and firearm competency. It wouldn’t matter if a child’s parents weren’t good at it. We’d find them a mentor. It wouldn’t matter if they didn’t want to learn. We would make it necessary to advance to the next grade.',
-                    user: 'Hayden Center',
-                    userId: 0,
-                    date: new Date().toDateString(),
-                    dateTime: new Date(),
-                    isPoll: false
-                },
-                {
-                    id: 1,
-                    tags: ['Parties', 'President', 'Alignment'],
-                    title: 'Democrat or Republican?',
-                    answers: ['Democrat', 'Republican', 'Other'],
-                    votes: [42, 40, 18],
-                    totalVotes: 100, //find a way to compute this before putting in
-                    user: 'Hayden Center',
-                    userId: 0,
-                    date: new Date().toDateString(),
-                    dateTime: new Date(),
-                    isPoll: true
-                }
-            ],
+            feed: [ ],
             newPost: {
                 title: '',
                 body: '',
@@ -79,7 +53,8 @@ class Home extends React.Component {
                 availableTags: [],
                 tags: [],
                 nextTag: ''
-            }
+            },
+            search: ''
         }
     }
 
@@ -91,26 +66,13 @@ class Home extends React.Component {
         this.postRepo.createPost(newP)
             .then(res => {
                 this.state.newPost.tags.forEach(tag => {
-                    this.postRepo.addTags(res.post_id, tag)
+                    this.postRepo.addTags(res.post_id, tag.toLowerCase())
                         .then(resp => console.log(resp))
                         .catch(resp => console.log(resp));
                 });
-                var feedItem = {
-                    id: res.post_id,
-                    tags: this.state.newPost.tags,
-                    title: newP.title,
-                    text: newP.post_text,
-                    user: `${localStorage.getItem('firstName')} ${localStorage.getItem('lastName')}`,
-                    userId: localStorage.getItem('id'),
-                    date: new Date().toDateString(),
-                    dateTime: new Date(),
-                    isPoll: false
-                };
-                this.setState({
-                    feed: [feedItem, ...this.state.feed]
-                });
                 this.resetNewPost();
                 this.resetPostTags();
+                window.location.reload();
             })
             .catch(res => alert(res));
     }
@@ -121,7 +83,7 @@ class Home extends React.Component {
         this.pollRepo.createPoll(newP)
             .then(res => {
                 this.state.newPoll.tags.forEach(tag => {
-                    this.pollRepo.addTags(res.poll_id, tag)
+                    this.pollRepo.addTags(res.poll_id, tag.toLowerCase())
                         .then(resp => console.log(resp))
                         .catch(resp => alert(resp));
                 });
@@ -130,24 +92,9 @@ class Home extends React.Component {
                         .then(resp => console.log(resp))
                         .catch(resp => alert(resp));
                 });
-                var feedItem = {
-                    id: res.poll_id,
-                    tags: this.state.newPoll.tags,
-                    title: this.state.newPoll.title,
-                    answers: this.state.newPoll.answers,
-                    votes: new Array(this.state.newPoll.answers.length).fill(0),
-                    totalVotes: 0,
-                    user: `${localStorage.getItem('firstName')} ${localStorage.getItem('lastName')}`,
-                    userId: localStorage.getItem('id'),
-                    date: new Date().toDateString(),
-                    dateTime: new Date(),
-                    isPoll: true
-                };
-                this.setState({
-                    feed: [feedItem, ...this.state.feed]
-                });
                 this.resetNewPoll();
                 this.resetPollTags();
+                window.location.reload();
             })
             .catch(res => alert(res));
     }
@@ -196,11 +143,8 @@ class Home extends React.Component {
         })
     }
 
-    componentWillMount() {
-        this.filteredFeed = this.state.feed;
-    }
-
     render() {
+
         if (!localStorage.getItem('id')) {
             return <Redirect to="/login" />
         }
@@ -220,15 +164,9 @@ class Home extends React.Component {
                                                     type="text"
                                                     placeholder="Search"
                                                     aria-label="Search"
-                                                    onChange={e => {
-                                                        var val = e.target.value;
-                                                        this.filteredFeed = this.state.feed.filter(x => 
-                                                            x.title.toUpperCase().indexOf(val.toUpperCase()) > -1
-                                                            || x.user.toUpperCase().indexOf(val.toUpperCase()) > -1
-                                                            );
-                                                        console.log(this.filteredFeed);
-                                                        this.forceUpdate();
-                                                    }} />
+                                                    value={this.state.search}
+                                                    onChange={e => this.setState({ search: e.target.value })} 
+                                                />
                                                 <button type="button" className="form-control mr-sm-3 mb-sm-0 mb-2" data-toggle="modal" data-target="#postModal">
                                                     New Post
                                                 </button>
@@ -407,16 +345,37 @@ class Home extends React.Component {
 
                                         </div>
                                     </div>
-                                    {this.filteredFeed.map(feed =>
-                                        <div className="post-item" key={feed.id}><br />
-                                            <div className="row">
-                                                <div className="col-12">
-                                                    {feed.isPoll === false && (<PostCard post={feed} key={feed.post_id} />)}
-                                                    {feed.isPoll === true && (<PollCard poll={feed} key={feed.post_id} />)}
+                                    
+                                    {
+                                        this.state.search === "" ?
+                                        (
+                                            this.state.feed.map(f =>
+                                                <div className="post-item" key={(f.post_id ? "post-" : "poll-")+(f.post_id || f.PID)}><br />
+                                                    <div className="row">
+                                                        <div className="col-12">
+                                                            {(f.post_id && <PostCard post={f} onRemove={(id) => this.postRepo.deletePost(id).then(window.location.reload()).catch()} key={f.post_id} />)}
+                                                            {(f.PID && <PollCard poll={f} onRemove={(id, c_id) => this.pollRepo.deletePoll(id, c_id).then(window.location.reload()).catch()} key={f.PID} />)}
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    )}
+                                            )
+                                        ) 
+                                        :
+                                        (
+                                            this.state.feed.filter(f => 
+                                                (f) && (
+                                                    <div className="post-item" key={(f.post_id ? "post-" : "poll-")+(f.post_id || f.PID)}><br />
+                                                        <div className="row">
+                                                            <div className="col-12">
+                                                                {(f.post_id && <PostCard post={f} onRemove={(id) => this.postRepo.deletePost(id).then(window.location.reload()).catch()} key={f.post_id} />)}
+                                                                {(f.PID && <PollCard poll={f} onRemove={(id, c_id) => this.pollRepo.deletePoll(id, c_id).then(window.location.reload()).catch()} key={f.PID} />)}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            )
+                                        )
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -430,23 +389,56 @@ class Home extends React.Component {
     componentDidMount() {
         this.resetPostTags();
         this.resetPollTags();
+        var feedarray = [];
 
         this.postRepo.getHomePosts()
-            .then(resp => {
-                this.setState(pstate => {
-                    pstate.feed.concat(resp);
-                    return pstate;
+        .then(resp => {
+            resp.forEach(item => {
+                feedarray = [ ...feedarray, item ];
+            });
+            this.pollRepo.getHomePolls()
+            .then(respo => {
+                respo.res.forEach(item => {
+                    feedarray = [ ...feedarray, item ];
                 });
-                this.pollRepo.getHomePolls()
+                this.postRepo.getMyPosts()
+                .then(resp => {
+                    resp.res.forEach(item => {
+                        feedarray = [ ...feedarray, item ];
+                    });
+                    this.pollRepo.getMyPolls()
                     .then(respo => {
-                        this.setState(pState => {
-                            pState.feed.concat(respo);
-                            return pState;
+                        respo.res.forEach(item => {
+                            feedarray = [ ...feedarray, item ];
                         });
+                        // debugger;
+                        feedarray = feedarray.filter( (ele, ind) => {
+                            return ind === feedarray.findIndex( elem => {
+                                if (elem.post_id){
+                                    return elem.post_id === ele.post_id;
+                                }
+                                if (elem.PID){
+                                    return elem.PID === ele.PID;
+                                }
+                                return false;
+                            });
+                        });
+                        feedarray = feedarray.filter(elem => {
+                            if(elem.I == 1)
+                                return false;
+                            return !elem.inactive;
+                        })
+                        this.setState({ feed: feedarray })
                     })
                     .catch(respo => alert(respo));
+                })
+                .catch(resp => alert(resp));
             })
-            .catch(resp => alert(resp));
+            .catch(respo => alert(respo));
+        })
+        .catch(resp => alert(resp));
+
+        this.filteredFeed = this.state.feed;
     }
 }
 

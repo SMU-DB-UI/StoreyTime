@@ -6,20 +6,23 @@ const PollCard = props => (
         <div className="card-body">
             <div className="row">
                 <div className='text-left col-lg-6 col-12'>
-                    <h4>{props.poll.title}</h4>
+                    <h4>{props.poll.question}</h4>
                 </div>
                 <div className='text-lg-right text-left col-lg-6 col-12'>
-                    <p className='text-muted'>{props.poll.user} - {props.poll.date}</p>
+                    <p className='text-muted'>
+                        {(props.poll.firstName || localStorage.getItem('firstName')) + " " + (props.poll.lastName || localStorage.getItem('lastName'))} - {props.poll.date_created}
+                    </p>
+                    {(localStorage.getItem('id') == props.poll.creator_id) && <p onClick={() => props.onRemove(props.poll.PID, props.poll.creator_id)}>X</p>}
                 </div>
             </div>
-            {props.poll.votes.map((voteCount, index) => (
+            {props.poll['group_concat(distinct `answer_text`)'].split(',').map((answer, index) => (
                 <div className="text-left" key={index}>
-                    <label className="text-left">{props.poll.answers[index]}</label>
+                    <label className="text-left">{answer}</label>
                     <div className="progress">
                         <div className="progress-bar"
                             role="progressbar"
-                            style={{ width: voteCount / props.poll.totalVotes * 100 + '%' }}
-                            aria-valuenow={voteCount}
+                            // style={{ width: voteCount / props.poll.totalVotes * 100 + '%' }}
+                            // aria-valuenow={voteCount}
                             aria-valuemin="0"
                             aria-valuemax="100"></div>
                     </div>
@@ -28,7 +31,7 @@ const PollCard = props => (
             ))}
             <div className='card-text text-left'>
                 <h5>
-                    {props.poll.tags.map((tag, index) => <span className="badge badge-primary mr-3 mt-1" key={index}>{tag}</span>)}
+                    {props.poll['group_concat(distinct `tag_word`)'].split(',').map((tag, index) => <span className="badge badge-primary mr-3 mt-1" key={index}>{tag}</span>)}
                 </h5>
             </div>
         </div>

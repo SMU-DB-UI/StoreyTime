@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './profile.css';
-import { UserRepo } from '../../api';
+import { UserRepo, CandidateRepo } from '../../api';
 import { NavLink, Redirect } from 'react-router-dom';
 import Navbar from '../navbar/Navbar';
 
@@ -8,6 +8,7 @@ import Navbar from '../navbar/Navbar';
 class Profile extends Component {
 
     userRepo = new UserRepo();
+    candidateRepo = new CandidateRepo();
 
     constructor(props) {
         super(props);
@@ -31,7 +32,7 @@ class Profile extends Component {
             'Taxes',
             'Welfare',
             'Medicaid',
-            'Vaccinationas',
+            'Vaccinations',
             'Terrorism',
             'Racism'
         ]
@@ -46,9 +47,9 @@ class Profile extends Component {
             edit: false,
             followedTags: [],
             isCandidate: false,
-            officePhone: '',
-            officeEmail: '',
-            candidateType: ''
+            officePhone: localStorage.getItem('officePhone'),
+            officeEmail: localStorage.getItem('officeEmail'),
+            candidateType: localStorage.getItem('candidateType')
         }
     }
 
@@ -56,56 +57,69 @@ class Profile extends Component {
         this.setState({ edit: false });
         if (this.state.firstName !== localStorage.getItem('firstName')) {
             await this.userRepo.changeFirstName(this.state.firstName)
-                .then(resp => {
-                    localStorage.setItem('firstName', this.state.firstName);
-                })
-                .catch(resp => {
-                    this.setState({ firstName: localStorage.getItem('firstName') });
-                });
+            .then(() => localStorage.setItem('firstName', this.state.firstName))
+            .catch(() => this.setState({ firstName: localStorage.getItem('firstName') }));
         }
 
         if (this.state.lastName !== localStorage.getItem('lastName')) {
             await this.userRepo.changeLastName(this.state.lastName)
-                .then(resp => {
-                    localStorage.setItem('lastName', this.state.lastName);
-                })
-                .catch(resp => {
-                    this.setState({ lastName: localStorage.getItem('lastName') });
-                });
+            .then(() => localStorage.setItem('lastName', this.state.lastName))
+            .catch(() => this.setState({ lastName: localStorage.getItem('lastName') }));
         }
 
         if (this.state.email !== localStorage.getItem('email')) {
             await this.userRepo.changeEmail(this.state.email)
-                .then(resp => {
-                    localStorage.setItem('email', this.state.email);
-                })
-                .catch(resp => {
-                    this.setState({ email: localStorage.getItem('email') });
-                });
+            .then(() => localStorage.setItem('email', this.state.email))
+            .catch(() => this.setState({ email: localStorage.getItem('email') }));
         }
 
         if (this.state.pass !== 'xxxxxxxx') {
             await this.userRepo.changePassword(this.state.pass)
-                .then()
-                .catch(resp => {
-                    console.log(resp);
-                });
+            .then()
+            .catch(resp => console.log(resp));
         }
 
-        if (this.state.state !== localStorage.getItem('state')) {
-            await this.userRepo.changeState(this.state.state)
-                .then(resp => {
-                    localStorage.setItem('state', this.state.state);
-                })
-                .catch(resp => {
-                    this.setState({ state: localStorage.getItem('state') });
-                });
+        if(localStorage.getItem('user_type') === '1'){
+            if (this.state.state !== localStorage.getItem('state')) {
+                await this.userRepo.changeState(this.state.state)
+                .then(() => localStorage.setItem('state', this.state.state))
+                .catch(() => this.setState({ state: localStorage.getItem('state') }));
+            }
+
+            if(this.state.officeEmail !== localStorage.getItem('officeEmail')) {
+                await this.candidateRepo.changeOfficeEmail(this.state.officeEmail)
+                .then(() => localStorage.setItem('officeEmail', this.state.officeEmail))
+                .catch(() => this.setState({ officeEmail: localStorage.getItem('officeEmail') }));
+            }
+
+            if(this.state.officePhone !== localStorage.getItem('officePhone')) {
+                await this.candidateRepo.changeOfficePhone(this.state.officePhone)
+                .then(() => localStorage.setItem('officePhone', this.state.officePhone))
+                .catch(() => this.setState({ officePhone: localStorage.getItem('officePhone') }));
+            }
+
+            if(this.state.candidateType !== localStorage.getItem('candidateType')) {
+                await this.candidateRepo.changeCandidateType(this.state.candidateType)
+                .then(() => localStorage.setItem('candidateType', this.state.candidateType))
+                .catch(() => this.setState({ candidateType: localStorage.getItem('candidateType') }));
+            }
         }
     }
 
-    handleTagChange() {
-
+    componentDidMount() {
+        this.userRepo.getFollowedTags()
+        .then(res => {
+            console.log(res.res);
+            res.res.forEach(word => {
+                this.setState(prevstate => { 
+                    prevstate.followedTags.push(word.tag_word);
+                    return prevstate;
+                });
+            });
+        })
+        .catch(res => alert(res));
     }
+    
 
     render() {
         if (!localStorage.getItem('id')) {
@@ -253,7 +267,7 @@ class Profile extends Component {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                {this.state.isCandidate &&
+                                                {localStorage.getItem('user_type') === '1' &&
                                                     <>
                                                         <div className="row">
                                                             <div className="col-12 text-left">
@@ -294,8 +308,8 @@ class Profile extends Component {
                                                                         className='profile-candidateTitle form-control'
                                                                         type='text'
                                                                         name='profile-candidateTitle'
-                                                                        value={this.state.candidateTitle}
-                                                                        onChange={e => this.setState({ candidateTitle: e.target.value })}
+                                                                        value={this.state.candidateType}
+                                                                        onChange={e => this.setState({ candidateType: e.target.value })}
                                                                     />
 
                                                                 </div>
@@ -317,30 +331,35 @@ class Profile extends Component {
                                                                                     type="checkbox"
                                                                                     id={tag}
                                                                                     value={tag}
-                                                                                    onChange={e => {
-                                                                                        if (!this.state.followedTags.includes(tag)) {
-                                                                                            this.setState(pstate => { return pstate.followedTags.push(tag) });
-                                                                                        } else {
-                                                                                            this.setState(pstate => {
-                                                                                                pstate.followedTags.splice(pstate.followedTags.indexOf(tag), 1);
-                                                                                                return pstate;
-                                                                                            });
+                                                                                    checked={this.state.followedTags.includes(tag.toLowerCase())}
+                                                                                    onClick={e => {
+                                                                                        e.persist();
+                                                                                        console.log(e.target.checked);
+                                                                                        if(!e.target.checked){
+                                                                                            this.setState(pstate => { pstate.followedTags.splice(pstate.followedTags.indexOf(tag.toLowerCase()), 1); return pstate; });
+                                                                                            this.userRepo.unfollowTag(tag.toLowerCase()).then().catch();
+                                                                                        }else{
+                                                                                            this.setState(pstate => { pstate.followedTags.push(tag); return pstate; });
+                                                                                            this.userRepo.followTag(tag.toLowerCase()).then(() => e.target.checked = true).catch();
+                                                                                            // e.target.checked = true;
                                                                                         }
                                                                                     }}
+                                                                                    
                                                                                 />
                                                                                 <label className="custom-control-label"
                                                                                     htmlFor={tag}
                                                                                     value={tag}
                                                                                     onChange={e => {
+                                                                                        // this.handleFollow(e);
                                                                                         // var val = console.log(tag);
-                                                                                        if (!this.state.followedTags.includes(tag)) {
-                                                                                            this.setState(pstate => { return pstate.followedTags.push(tag) });
-                                                                                        } else {
-                                                                                            this.setState(pstate => {
-                                                                                                pstate.followedTags.splice(pstate.followedTags.indexOf(tag), 1);
-                                                                                                return pstate;
-                                                                                            });
-                                                                                        }
+                                                                                        // if (!this.state.followedTags.includes(tag)) {
+                                                                                        //     this.setState(pstate => { return pstate.followedTags.push(tag) });
+                                                                                        // } else {
+                                                                                        //     this.setState(pstate => {
+                                                                                        //         pstate.followedTags.splice(pstate.followedTags.indexOf(tag), 1);
+                                                                                        //         return pstate;
+                                                                                        //     });
+                                                                                        // }
                                                                                     }}
                                                                                 >{tag}</label>
                                                                             </div>
@@ -364,7 +383,7 @@ class Profile extends Component {
                                                             <button
                                                                 type="button"
                                                                 className="form-control edit-button"
-                                                                onClick={(e) => { e.preventDefault(); this.handleSubmit(); }}
+                                                                onClick={(e) => { this.handleSubmit(); window.location.reload(false); }}
                                                             >Submit</button>
                                                         }
                                                     </div>
