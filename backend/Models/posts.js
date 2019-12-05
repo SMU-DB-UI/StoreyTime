@@ -107,7 +107,7 @@ Post.getPosts = function(result)
 
 Post.myPosts = function(creator_id, result)
 {
-    connection.query("SELECT * from `ballotBuddy`.`posts` WHERE creator_id = ?", [creator_id],
+    connection.query("SELECT `creator_id` as creator_id, `title`, `post_text`, `date_created`, `inactive` as I,`post_id`, group_concat(distinct `tag_word`) from `ballotBuddy`.`posts` as P join (select tag_word, post_id as p_id from `ballotBuddy`.`tags` as ta join( select * from `ballotBuddy`.`tags_posts` ) as tp on ta.tag_id = tp.tag_id) as T on P.post_id = T.p_id WHERE creator_id = ? GROUP BY post_id", [creator_id],
     function(err, res)
     {
         if(err)
