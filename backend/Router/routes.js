@@ -126,6 +126,9 @@ module.exports = function(app) {
     app.route('/user/newPoll/:creator_id') //DONE
       .post(pollController.createPoll);
 
+    app.route('/user/getMyPolls/:id')
+      .get(pollController.getMyPolls);
+
     app.route('/user/newPoll/addTag/:creator_id') //DONE
       .put(pollController.addTag);
 

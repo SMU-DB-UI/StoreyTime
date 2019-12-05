@@ -68,6 +68,28 @@ exports.addOption = function(req,res){
 
 };
 
+exports.getMyPolls = function(request, result)
+{
+    if(!request.params.id)
+    {
+        result.status(400).json({"code":400, "response":"Missing ID in params"});
+    }
+    else
+    {
+        Poll.getMyPolls(request.params.id, function(err, poll)
+        {
+            if(err)
+            {
+                result.send(err);
+            }
+            else
+            {
+                result.json(poll);
+            }
+        });
+    }
+};
+
 //update answercount end point
 exports.updateAnswerCount = function(req,res){
     if(!req.params.poll_id){
