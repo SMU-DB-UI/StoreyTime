@@ -117,7 +117,7 @@ User.getPoliticians = function(result)
 
 User.getTagsFollowing = function(id, result)
 {
-    connection.query("SELECT `tag_word` FROM `ballotBuddy`.`tags` WHERE tag_id in (SELECT `tag_id` from `ballotBuddy`.`tags_users_bridge` WHERE users_id = ? AND inactive=0)", [id],
+    connection.query("SELECT `tag_word` FROM `ballotBuddy`.`tags` WHERE tag_id in (SELECT `tag_id` from `ballotBuddy`.`tags_users_bridge` WHERE users_id = ?)", [id],
     function(err, res)
     {
         if(err)
@@ -169,7 +169,7 @@ User.unfollowTag = function(id, tag_word, result)
         }
         else
         {
-            connection.query("Update `ballotBuddy`.`tags_users_bridge` set inactive = 1 WHERE users_id=? AND tag_id=?", [id, res[0].tag_id],
+            connection.query("delete from `ballotBuddy`.`tags_users_bridge` WHERE users_id=? AND tag_id=?", [id, res[0].tag_id],
             function(err1, res1)
             {
                 if(err1)
