@@ -347,14 +347,14 @@ class Home extends React.Component {
                                     </div>
                                     
                                     {
-                                        this.state.search === "" ?
+                                        this.state.feed.length > 0 ?
                                         (
                                             this.state.feed.map(f =>
                                                 <div className="post-item" key={(f.post_id ? "post-" : "poll-")+(f.post_id || f.PID)}><br />
                                                     <div className="row">
                                                         <div className="col-12">
                                                             {(f.post_id && <PostCard post={f} onRemove={(id) => this.postRepo.deletePost(id).then(window.location.reload()).catch()} key={f.post_id} />)}
-                                                            {(f.PID && <PollCard poll={f} onRemove={(id, c_id) => this.pollRepo.deletePoll(id, c_id).then(window.location.reload()).catch()} key={f.PID} />)}
+                                                            {((f.PID || f.poll_id) && <PollCard poll={f} onRemove={(id, c_id) => this.pollRepo.deletePoll(id, c_id).then(window.location.reload()).catch()} key={f.PID || f.poll_id} />)}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -362,18 +362,7 @@ class Home extends React.Component {
                                         ) 
                                         :
                                         (
-                                            this.state.feed.filter(f => 
-                                                (f) && (
-                                                    <div className="post-item" key={(f.post_id ? "post-" : "poll-")+(f.post_id || f.PID)}><br />
-                                                        <div className="row">
-                                                            <div className="col-12">
-                                                                {(f.post_id && <PostCard post={f} onRemove={(id) => this.postRepo.deletePost(id).then(window.location.reload()).catch()} key={f.post_id} />)}
-                                                                {(f.PID && <PollCard poll={f} onRemove={(id, c_id) => this.pollRepo.deletePoll(id, c_id).then(window.location.reload()).catch()} key={f.PID} />)}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                )
-                                            )
+                                            <h1>Oh no, your feed is empty, either create a post or follow tags in your <a href="/profile">profile</a> page!</h1>
                                         )
                                     }
                                 </div>
@@ -404,25 +393,41 @@ class Home extends React.Component {
                 this.postRepo.getMyPosts()
                 .then(resp => {
                     resp.res.forEach(item => {
-                        feedarray = [ ...feedarray, item ];
+                        if(!feedarray.find(ele => item.post_id === ele.post_id))
+                            feedarray = [ ...feedarray, item ];
                     });
                     this.pollRepo.getMyPolls()
                     .then(respo => {
                         respo.res.forEach(item => {
-                            feedarray = [ ...feedarray, item ];
+                            if(!feedarray.find(ele => item.poll_id === ele.poll_id && item.poll_id === ele.PID))
+                                feedarray = [ ...feedarray, item ];
                         });
-                        // debugger;
-                        feedarray = feedarray.filter( (ele, ind) => {
-                            return ind === feedarray.findIndex( elem => {
-                                if (elem.post_id){
-                                    return elem.post_id === ele.post_id;
-                                }
-                                if (elem.PID){
-                                    return elem.PID === ele.PID;
-                                }
-                                return false;
-                            });
-                        });
+                        // feedarray = feedarray.reduce((ele, ind) => {
+                        //     var x;
+                        //     if(ind.post_id)
+
+                        //         x= ele.find(item => item.post_id === ind.post_id);
+                        //     if(ind.PID)
+                        //         x= ele.find(item => item.PID === ind.PID);
+                        //     if(ind.poll_id)
+                        //         x= ele.find(item => item.PID === ind.poll);
+                        //     if(!x)
+                        //         return ele.concat([ind]);
+                        //     else
+                        //         return ele;
+                        // });
+
+                        // feedarray = feedarray.filter( (ele, ind) => {
+                        //     return ind === feedarray.findIndex( elem => {
+                        //         if (elem.post_id)
+                        //             return elem.post_id === ele.post_id;
+                        //         if (elem.PID)
+                        //             return elem.PID === ele.PID;
+                        //         if (elem.poll_id)
+                        //             return elem.poll_id === ele.poll_id;
+                        //         return false;
+                        //     });
+                        // });
                         feedarray = feedarray.filter(elem => {
                             if(elem.I == 1)
                                 return false;

@@ -1,19 +1,16 @@
 import React, { Component } from 'react';
 import Navbar from '../navbar/Navbar';
+import { GroupRepo } from '../../api/groupRepo';
 
 class Group extends Component {
     constructor(props) {
         super(props);
         this.state = {
             id: props.match.params.group_id,
-            name: 'The Troop Haters',
-            members: [
-                'Jaymie',
-                'Harrison',
-                'Jack',
-                'Hayden'
-            ]
+            name: '',
+            members: []
         }
+        this.groupRepo = new GroupRepo();
     }
 
     render() {
@@ -32,6 +29,10 @@ class Group extends Component {
                                                 <div className="row">
                                                     <div className="col-12">
                                                         <h1>{this.state.name}</h1>
+                                                        <button className="btn btn-large" 
+                                                        type="button"
+                                                        onClick={e => {this.groupRepo.joinGroup(this.state.id, localStorage.getItem('id')).then().catch(); window.location.reload()}}
+                                                        >Join group</button>
                                                     </div>
                                                 </div>
                                                 <br />
@@ -44,7 +45,7 @@ class Group extends Component {
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                {this.state.members.map(member => 
+                                                                {this.state.members.length > 0 && this.state.members.map(member => 
                                                                     <tr className="text-left">
                                                                         <td><p>&nbsp; {member}</p></td>
                                                                     </tr>
@@ -64,7 +65,11 @@ class Group extends Component {
             </>
         );
     }
+
     componentDidMount() {
+        this.groupRepo.getAllMembers(this.state.id)
+        .then(resp => this.setState({ members: resp}))
+        .catch();
     }
 }
 export default Group;

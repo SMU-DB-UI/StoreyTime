@@ -5,6 +5,7 @@ import Home from './components/home/Home';
 import Register from './components/register/Register';
 import Profile from './components/profile/Profile';
 import GroupHomepage from './components/groups/GroupHomepage';
+import Group from './components/groups/Group';
 import Candidates from './components/candidates/Candidates';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
@@ -19,10 +20,9 @@ function App() {
             <Route path="/register" component={Register} />
             <Route path="/home" component={Home} />
             <Route path="/profile" component={Profile} />
+            <Route path="/group/:group_id" component={Group} />
             <Route path="/groups" component={GroupHomepage} />
-            <Route path="/group/:group_id" component={GroupHomepage} />
             <Route path="/candidates" component={Candidates} />
-            <Route path="/candidate/:candidate_id" component={Candidates} />
             <Route component={Login} />
           </Switch>
         </BrowserRouter>

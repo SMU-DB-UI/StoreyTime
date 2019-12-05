@@ -11,13 +11,13 @@ const Navbar = props => (
         <div className="collapse navbar-collapse" id="ballotBuddyNav">
             <ul className="navbar-nav">
                 <li className="nav-item">
-                    <a className="nav-link" href="https://vote.gov/">Voter Registration</a>
+                    <NavLink to="https://vote.gov/" className="nav-link">Voter Registration</NavLink>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link" href="/groups">My Groups</a>
+                    <NavLink to="/groups" className="nav-link" activeClassName="nav-link border border-white rounded-pill rounded-sm">Groups</NavLink>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link" href="/candidates">Candidates</a>
+                    <NavLink to="/candidates" className="nav-link" activeClassName="nav-link border border-white rounded-pill rounded-sm">Candidates</NavLink>   
                 </li>
             </ul>
             <ul className="navbar-nav ml-auto">
@@ -25,7 +25,7 @@ const Navbar = props => (
                     <NavLink to="/login" className="nav-link" onClick={() => { localStorage.clear() }}>Log out</NavLink>
                 </li>
                 <li className="nav-item">
-                    <NavLink to="/profile" className="nav-link">Profile</NavLink>
+                    <NavLink to="/profile" className="nav-link" activeClassName="nav-link border border-white rounded-pill rounded-sm">Profile</NavLink>
                 </li>
             </ul>
         </div>

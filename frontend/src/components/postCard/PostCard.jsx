@@ -13,7 +13,7 @@ const PostCard = props => (
                         <p className='text-muted'>
                             {(props.post.firstName || localStorage.getItem('firstName')) + " " + (props.post.lastName || localStorage.getItem('lastName'))} - {props.post.date_created}
                         </p>
-                        {((localStorage.getItem('id') == props.post.id) || (localStorage.getItem('id') == props.post.creator_id)) && <p onClick={() => props.onRemove(props.post.post_id)}>X</p>}
+                        {((localStorage.getItem('id') == props.post.id) || (localStorage.getItem('id') == props.post.creator_id)) && <button className="btn btn-danger" onClick={() => props.onRemove(props.post.post_id)}>X</button>}
                     </div>
                 </div>
             </div>

@@ -45,49 +45,22 @@ class Candidates extends Component {
                                             <br />
                                             <div>
                                                 {
-                                                    (this.state.search === "" ?
-                                                        this.state.candidates.map(candidate =>
-                                                            <div className="card" key={candidate.id}>
-                                                                <div className="card-body">
-                                                                    <div className="row">
-                                                                        <div className="col-6 text-left">
-                                                                            <p>{candidate.firstName + " " + candidate.lastName}</p>
-                                                                            <p className="text-muted">{candidate.politician_type} - {candidate.state_residence}</p>
-                                                                        </div>
-                                                                        <div className="col-6 text-right">
-                                                                            <p>{candidate.office_email}</p>
-                                                                            <p className="text-muted">{candidate.office_phone}</p>
-                                                                        </div>
+                                                    this.state.candidates.map(candidate =>
+                                                        <div className="card" key={candidate.id}>
+                                                            <div className="card-body">
+                                                                <div className="row">
+                                                                    <div className="col-6 text-left">
+                                                                        <p>{candidate.firstName + " " + candidate.lastName}</p>
+                                                                        <p className="text-muted">{candidate.politician_type} - {candidate.state_residence}</p>
+                                                                    </div>
+                                                                    <div className="col-6 text-right">
+                                                                        <p>{candidate.office_email}</p>
+                                                                        <p className="text-muted">{candidate.office_phone}</p>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        ) 
-                                                        :
-                                                        this.state.candidates.filter(candidate =>
-                                                            ((candidate.firstName+" "+candidate.lastName).toLowerCase().includes(this.state.search.toLowerCase()) 
-                                                            || candidate.state_residence.toLowerCase().includes(this.state.search.toLowerCase())
-                                                            || candidate.politician_type.toLowerCase().includes(this.state.search.toLowerCase())
-                                                            || candidate.office_email.toLowerCase().includes(this.state.search.toLowerCase())
-                                                            || candidate.office_phone.toLowerCase().includes(this.state.search.toLowerCase())) 
-                                                            &&
-                                                            <div className="card" key={candidate.id}>
-                                                                <div className="card-body">
-                                                                    <div className="row">
-                                                                        <div className="col-6 text-left">
-                                                                            <p>{candidate.firstName + " " + candidate.lastName}</p>
-                                                                            <p className="text-muted">{candidate.politician_type} - {candidate.state_residence}</p>
-                                                                        </div>
-                                                                        <div className="col-6 text-right">
-                                                                            <p>{candidate.office_email}</p>
-                                                                            <p className="text-muted">{candidate.office_phone}</p>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        ) 
-                                                    )
-
-
+                                                        </div>
+                                                    ) 
                                                 }
                                             </div>
                                         </div>

@@ -12,7 +12,7 @@ const PollCard = props => (
                     <p className='text-muted'>
                         {(props.poll.firstName || localStorage.getItem('firstName')) + " " + (props.poll.lastName || localStorage.getItem('lastName'))} - {props.poll.date_created}
                     </p>
-                    {(localStorage.getItem('id') == props.poll.creator_id) && <p onClick={() => props.onRemove(props.poll.PID, props.poll.creator_id)}>X</p>}
+                    {(localStorage.getItem('id') == props.poll.creator_id) && <button className="btn btn-danger" onClick={() => props.onRemove(props.poll.PID || props.poll.poll_ID, props.poll.creator_id)}>X</button>}
                 </div>
             </div>
             {props.poll['group_concat(distinct `answer_text`)'].split(',').map((answer, index) => (
