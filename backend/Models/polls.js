@@ -61,6 +61,10 @@ Poll.addTag = function(poll_id, creator_id, tag_word, result){
     });
 };
 
+Poll.getAllPolls = function(result) {
+    sql.query("SELECT ")
+};
+
 //adding a new option for the answer
 Poll.addOption = function(poll_id, answer_text, result){
     sql.query("INSERT INTO `ballotBuddy`.`polls_answers` (`poll_id`,`answer_text`,`answer_count`) VALUES ('" + poll_id + "', '" + answer_text + "', '"+0+"');",

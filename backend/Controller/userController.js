@@ -236,7 +236,7 @@ exports.changeFirstName = function(request, result) {
             {
                 result.json(user);
             }
-        })
+        });
 
     }
 };
@@ -262,7 +262,7 @@ exports.changeLastName = function(request, result) {
             {
                 result.json(user);
             }
-        })
+        });
 
     }
 };
