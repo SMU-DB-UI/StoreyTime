@@ -39,7 +39,7 @@ class Home extends React.Component {
                 'Terrorism',
                 'Racism'
             ],
-            feed: [ ],
+            feed: [],
             newPost: {
                 title: '',
                 body: '',
@@ -165,7 +165,7 @@ class Home extends React.Component {
                                                     placeholder="Search"
                                                     aria-label="Search"
                                                     value={this.state.search}
-                                                    onChange={e => {this.setState({ search: e.target.value }); this.filterFeed(); }} 
+                                                    onChange={e => { this.setState({ search: e.target.value }); this.filterFeed(); }}
                                                 />
                                                 <button type="button" className="form-control mr-sm-3 mb-sm-0 mb-2" data-toggle="modal" data-target="#postModal">
                                                     New Post
@@ -345,25 +345,28 @@ class Home extends React.Component {
 
                                         </div>
                                     </div>
-                                    
+
                                     {
                                         this.state.feed.length > 0 ?
-                                        (
-                                            this.state.feed.map(f =>
-                                                <div className="post-item" key={(f.post_id ? "post-" : "poll-")+(f.post_id || f.poll_id)}><br />
-                                                    <div className="row">
-                                                        <div className="col-12">
-                                                            {(f.post_id && <PostCard post={f} onRemove={(id) => this.postRepo.deletePost(id).then(window.location.reload()).catch()} key={f.post_id} />)}
-                                                            {((f.PID || f.poll_id) && <PollCard poll={f} votes={f} onVote={(post_id, answer_text, answer_count) => {this.onVote(post_id, answer_text, answer_count)}} onRemove={(id, c_id) => this.pollRepo.deletePoll(id, c_id).then(window.location.reload()).catch()} key={f.PID || f.poll_id} />)}
+                                            (
+                                                this.state.feed.map(f =>
+                                                    <div className="post-item" key={(f.post_id ? "post-" : "poll-") + (f.post_id || f.poll_id)}><br />
+                                                        <div className="row">
+                                                            <div className="col-12">
+                                                                {(f.post_id && <PostCard post={f} onRemove={(id) => this.postRepo.deletePost(id).then(window.location.reload()).catch()} key={f.post_id} />)}
+                                                                {((f.PID || f.poll_id) && <PollCard poll={f} votes={f} onVote={(post_id, answer_text, answer_count) => { this.onVote(post_id, answer_text, answer_count) }} onRemove={(id, c_id) => this.pollRepo.deletePoll(id, c_id).then(window.location.reload()).catch()} key={f.PID || f.poll_id} />)}
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                )
                                             )
-                                        ) 
-                                        :
-                                        (
-                                            <h1>Oh no, your feed is empty, either create a post or follow tags in your <a href="/profile">profile</a> page!</h1>
-                                        )
+                                            :
+                                            (
+                                                <>
+                                                    <br />
+                                                    <h1>Oh no, your feed is empty, either create a post or follow tags in your <a href="/profile">profile</a> page!</h1>
+                                                </>
+                                            )
                                     }
                                 </div>
                             </div>
@@ -381,58 +384,58 @@ class Home extends React.Component {
         var feedarray = [];
 
         this.postRepo.getHomePosts()
-        .then(resp => {
-            resp.forEach(item => {
-                feedarray = [ ...feedarray, item ];
-            });
-            this.pollRepo.getHomePolls()
-            .then(respo => {
-                respo.res.forEach(item => {
-                    feedarray = [ ...feedarray, item ];
+            .then(resp => {
+                resp.forEach(item => {
+                    feedarray = [...feedarray, item];
                 });
-                this.postRepo.getMyPosts()
-                .then(resp => {
-                    resp.res.forEach(item => {
-                        if(!feedarray.find(ele => item.post_id === ele.post_id))
-                            feedarray = [ ...feedarray, item ];
-                    });
-                    this.pollRepo.getMyPolls()
+                this.pollRepo.getHomePolls()
                     .then(respo => {
                         respo.res.forEach(item => {
-                            if(!feedarray.find(ele => item.PID === ele.poll_id || item.PID === ele.PID))
-                                feedarray = [ ...feedarray, item ];
+                            feedarray = [...feedarray, item];
                         });
-                        feedarray = feedarray.filter(elem => {
-                            if(elem.I == 1)
-                                return false;
-                            return !elem.inactive;
-                        })
-                        feedarray.forEach(item => {
-                            let x = [];
-                            if(item.poll_id || item.PID){
-                                for(let j = 0; j < item['group_concat( `answer_count`)'].split(',').length; j = j + item['group_concat(distinct `tag_word`)'].split(',').length){
-                                    x.push(item['group_concat( `answer_count`)'].split(',')[j]);
-                                }
-                                item['group_concat( `answer_count`)'] = x;
-                            }
-                        });
-                        this.setState({ feed: feedarray })
+                        this.postRepo.getMyPosts()
+                            .then(resp => {
+                                resp.res.forEach(item => {
+                                    if (!feedarray.find(ele => item.post_id === ele.post_id))
+                                        feedarray = [...feedarray, item];
+                                });
+                                this.pollRepo.getMyPolls()
+                                    .then(respo => {
+                                        respo.res.forEach(item => {
+                                            if (!feedarray.find(ele => item.PID === ele.poll_id || item.PID === ele.PID))
+                                                feedarray = [...feedarray, item];
+                                        });
+                                        feedarray = feedarray.filter(elem => {
+                                            if (elem.I == 1)
+                                                return false;
+                                            return !elem.inactive;
+                                        })
+                                        feedarray.forEach(item => {
+                                            let x = [];
+                                            if (item.poll_id || item.PID) {
+                                                for (let j = 0; j < item['group_concat( `answer_count`)'].split(',').length; j = j + item['group_concat(distinct `tag_word`)'].split(',').length) {
+                                                    x.push(item['group_concat( `answer_count`)'].split(',')[j]);
+                                                }
+                                                item['group_concat( `answer_count`)'] = x;
+                                            }
+                                        });
+                                        this.setState({ feed: feedarray })
+                                    })
+                                    .catch(respo => alert(respo));
+                            })
+                            .catch(resp => alert(resp));
                     })
                     .catch(respo => alert(respo));
-                })
-                .catch(resp => alert(resp));
             })
-            .catch(respo => alert(respo));
-        })
-        .catch(resp => alert(resp));
+            .catch(resp => alert(resp));
     }
 
     filterFeed() {
         var x = document.querySelectorAll('.post-item');
         x.forEach(post => {
-            if(!post.innerHTML.toLowerCase().includes(this.state.search.toLowerCase())){
+            if (!post.innerHTML.toLowerCase().includes(this.state.search.toLowerCase())) {
                 post.classList.add('d-none');
-            }else{
+            } else {
                 post.classList.remove('d-none');
             }
         })
@@ -441,8 +444,8 @@ class Home extends React.Component {
 
     onVote(post_id, answer_text, answer_count) {
         this.pollRepo.pollVote(post_id, answer_text, answer_count)
-        .then(resp => this.forceUpdate())
-        .catch(resp => {});
+            .then(resp => this.forceUpdate())
+            .catch(resp => { });
         debugger;
         this.forceUpdate();
     }

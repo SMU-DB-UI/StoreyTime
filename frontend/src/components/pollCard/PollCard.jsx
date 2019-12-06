@@ -12,7 +12,6 @@ const PollCard = props => (
                     <p className='text-muted'>
                         {(props.poll.first_name || localStorage.getItem('firstName')) + " " + (props.poll.last_name || localStorage.getItem('lastName'))} - {props.poll.date_created}
                     </p>
-                    {(localStorage.getItem('id') == props.poll.creator_id) && <button className="btn btn-danger" onClick={() => props.onRemove(props.poll.PID || props.poll.poll_id, props.poll.creator_id)}>X</button>}
                 </div>
             </div>
             {props.poll['group_concat(distinct `answer_text`)'].split(',').map((answer, index) => (
@@ -20,13 +19,13 @@ const PollCard = props => (
                     <label className="text-left">{answer}</label>
                     <button className="btn btn-sm float-right"
                         onClick={e => {
-                            props.onVote(props.poll.PID || props.poll.poll_id, answer, parseInt(props.poll['group_concat( `answer_count`)'][index])+1);
+                            props.onVote(props.poll.PID || props.poll.poll_id, answer, parseInt(props.poll['group_concat( `answer_count`)'][index]) + 1);
                         }}
                     >Vote</button>
                     <div className="progress">
                         <div className="progress-bar"
                             role="progressbar"
-                            style={{ width: props.poll['group_concat( `answer_count`)'][index] / props.poll['group_concat( `answer_count`)'].reduce((a,b) => {return a + b}, 0) * 100 + '%' }}
+                            style={{ width: props.poll['group_concat( `answer_count`)'][index] / props.poll['group_concat( `answer_count`)'].reduce((a, b) => { return a + b }, 0) * 100 + '%' }}
                             aria-valuenow={props.poll['group_concat( `answer_count`)'][index]}
                             aria-valuemin="0"
                             aria-valuemax="100">
@@ -40,6 +39,9 @@ const PollCard = props => (
                 <h5>
                     {props.poll['group_concat(distinct `tag_word`)'].split(',').map((tag, index) => <span className="badge badge-primary mr-3 mt-1" key={index}>{tag}</span>)}
                 </h5>
+            </div>
+            <div className="card-text text-left">
+                {(localStorage.getItem('id') == props.poll.creator_id) && <button className="btn btn-danger" onClick={() => props.onRemove(props.poll.PID || props.poll.poll_id, props.poll.creator_id)}>X</button>}
             </div>
         </div>
     </div>
