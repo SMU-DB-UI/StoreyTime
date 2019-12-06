@@ -18,13 +18,20 @@ const PollCard = props => (
             {props.poll['group_concat(distinct `answer_text`)'].split(',').map((answer, index) => (
                 <div className="text-left" key={index}>
                     <label className="text-left">{answer}</label>
+                    <button className="btn btn-sm float-right"
+                        onClick={e => {
+                            props.onVote(props.poll.PID || props.poll.poll_id, answer, parseInt(props.poll['group_concat( `answer_count`)'][index])+1);
+                        }}
+                    >Vote</button>
                     <div className="progress">
                         <div className="progress-bar"
                             role="progressbar"
-                            // style={{ width: voteCount / props.poll.totalVotes * 100 + '%' }}
-                            // aria-valuenow={voteCount}
+                            style={{ width: props.poll['group_concat( `answer_count`)'][index] / props.poll['group_concat( `answer_count`)'].reduce((a,b) => {return a + b}, 0) * 100 + '%' }}
+                            aria-valuenow={props.poll['group_concat( `answer_count`)'][index]}
                             aria-valuemin="0"
-                            aria-valuemax="100"></div>
+                            aria-valuemax="100">
+                        </div>
+                        {props.poll['group_concat( `answer_count`)'][index]}
                     </div>
                     <br />
                 </div>

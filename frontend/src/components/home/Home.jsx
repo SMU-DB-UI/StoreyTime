@@ -354,7 +354,7 @@ class Home extends React.Component {
                                                     <div className="row">
                                                         <div className="col-12">
                                                             {(f.post_id && <PostCard post={f} onRemove={(id) => this.postRepo.deletePost(id).then(window.location.reload()).catch()} key={f.post_id} />)}
-                                                            {((f.PID || f.poll_id) && <PollCard poll={f} onRemove={(id, c_id) => this.pollRepo.deletePoll(id, c_id).then(window.location.reload()).catch()} key={f.PID || f.poll_id} />)}
+                                                            {((f.PID || f.poll_id) && <PollCard poll={f} votes={f} onVote={(post_id, answer_text, answer_count) => {this.onVote(post_id, answer_text, answer_count)}} onRemove={(id, c_id) => this.pollRepo.deletePoll(id, c_id).then(window.location.reload()).catch()} key={f.PID || f.poll_id} />)}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -402,37 +402,20 @@ class Home extends React.Component {
                             if(!feedarray.find(ele => item.PID === ele.poll_id || item.PID === ele.PID))
                                 feedarray = [ ...feedarray, item ];
                         });
-                        // feedarray = feedarray.reduce((ele, ind) => {
-                        //     var x;
-                        //     if(ind.post_id)
-
-                        //         x= ele.find(item => item.post_id === ind.post_id);
-                        //     if(ind.PID)
-                        //         x= ele.find(item => item.PID === ind.PID);
-                        //     if(ind.poll_id)
-                        //         x= ele.find(item => item.PID === ind.poll);
-                        //     if(!x)
-                        //         return ele.concat([ind]);
-                        //     else
-                        //         return ele;
-                        // });
-
-                        // feedarray = feedarray.filter( (ele, ind) => {
-                        //     return ind === feedarray.findIndex( elem => {
-                        //         if (elem.post_id)
-                        //             return elem.post_id === ele.post_id;
-                        //         if (elem.PID)
-                        //             return elem.PID === ele.PID;
-                        //         if (elem.poll_id)
-                        //             return elem.poll_id === ele.poll_id;
-                        //         return false;
-                        //     });
-                        // });
                         feedarray = feedarray.filter(elem => {
                             if(elem.I == 1)
                                 return false;
                             return !elem.inactive;
                         })
+                        feedarray.forEach(item => {
+                            let x = [];
+                            if(item.poll_id || item.PID){
+                                for(let j = 0; j < item['group_concat( `answer_count`)'].split(',').length; j = j + item['group_concat(distinct `tag_word`)'].split(',').length){
+                                    x.push(item['group_concat( `answer_count`)'].split(',')[j]);
+                                }
+                                item['group_concat( `answer_count`)'] = x;
+                            }
+                        });
                         this.setState({ feed: feedarray })
                     })
                     .catch(respo => alert(respo));
@@ -448,13 +431,19 @@ class Home extends React.Component {
         var x = document.querySelectorAll('.post-item');
         x.forEach(post => {
             if(!post.innerHTML.toLowerCase().includes(this.state.search.toLowerCase())){
-                
                 post.classList.add('d-none');
             }else{
                 post.classList.remove('d-none');
-                
             }
         })
+        this.forceUpdate();
+    }
+
+    onVote(post_id, answer_text, answer_count) {
+        this.pollRepo.pollVote(post_id, answer_text, answer_count)
+        .then(resp => this.forceUpdate())
+        .catch(resp => {});
+        debugger;
         this.forceUpdate();
     }
 }
