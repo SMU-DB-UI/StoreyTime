@@ -402,7 +402,6 @@ class Home extends React.Component {
                                 this.pollRepo.getMyPolls()
                                     .then(respo => {
                                         respo.res.forEach(item => {
-                                            if (!feedarray.find(ele => item.PID === ele.poll_id || item.PID === ele.PID))
                                                 feedarray = [...feedarray, item];
                                         });
                                         feedarray = feedarray.filter(elem => {
