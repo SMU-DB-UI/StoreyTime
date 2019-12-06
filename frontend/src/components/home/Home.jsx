@@ -419,6 +419,12 @@ class Home extends React.Component {
                                                 item['group_concat( `answer_count`)'] = x;
                                             }
                                         });
+                                        feedarray = feedarray.sort((a, b) => {
+                                            if(a.date_created > b.date_created)
+                                                return -1;
+                                            if(a.date_created < b.date_created)
+                                                return 1;
+                                        });
                                         this.setState({ feed: feedarray })
                                     })
                                     .catch(respo => alert(respo));
